@@ -63,8 +63,8 @@ listProductHTML.addEventListener('click', (event) => {
 
 const RetData = () => {
     const dbref = ref(db);
-    get(child(dbref, 'Product')).then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+    get(child(dbref, 'Product')).then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
             var value = childSnapshot.val();
             let newProduct = document.createElement('div');
             newProduct.classList.add('item');
@@ -215,30 +215,61 @@ const changeQuantity = (product_id, type) => {
 
 RetData();
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let buttons = document.querySelectorAll('.checkOut');
-    buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
+    buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
             window.location.href = 'pageCart.html';
         });
     });
 
+    // if (!isLoggedIn()) {
+    //     console.log("localStorage.getItem('userID'): ", localStorage.getItem('userID'))
+
+    //     // Tạo mảng rỗng
+    //     let array = [];
+
+    //     // Push giá trị từ localStorage vào mảng
+    //     array.push(localStorage.getItem('userID'));
+
+    //     // Xóa các phần tử rỗng, null hoặc chuỗi 'null' trong mảng
+    //     array = array.filter(item => item !== null && item !== '' && item !== 'null');
+
+    //     // Xuất ra độ dài của mảng
+    //     console.log(array.length);
+    // } else {
+    //     // addToCart(product_id);
+    //     console.log("log false: ", localStorage.getItem('userID'))
+
+    // }
+    console.log("type of local: ", typeof (localStorage.getItem('userID')))
+    if (localStorage.getItem('userID') != 'null'){
+        console.log("ID not nulllllllllllll");
+        console.log("localStorage.getItem('userID'): ", localStorage.getItem('userID'))
+        console.log("localStorage.getItem('userID'): ", typeof (localStorage.getItem('userID')))
+    }
+    else{
+        console.log("id nullll")
+        console.log("localStorage.getItem('userID'): ", localStorage.getItem('userID'))
+    }
+
     let ID = localStorage.getItem('userID');
 
     if (ID) {
+        console.log("IF ID true")
         const cartRef = ref(db, `User/${ID}/Cart`);
         get(cartRef).then((snapshot) => {
             if (snapshot.exists()) {
                 let firebaseCart = snapshot.val();
                 console.log(`firebaseCart: ${JSON.stringify(firebaseCart)}`);
-                
+
                 carts = []; // Clear local cart before updating
                 for (let productID in firebaseCart) {
                     let quantity = firebaseCart[productID];
                     carts.push({ ProductID: productID, quantity: quantity });
                 }
-                localStorage.setItem('cart', JSON.stringify(carts)); 
-                
+                localStorage.setItem('cart', JSON.stringify(carts));
+
                 console.log(`carts: ${JSON.stringify(carts)}`);
                 addCartToHTML();
             } else {
@@ -250,6 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error fetching cart from Firebase:", error);
         });
     } else {
+        console.log("IF ID false")
         addCartToHTML();
     }
 });
@@ -265,7 +297,7 @@ document.getElementById('alternateRecipient').addEventListener('change', functio
 });
 
 document.querySelectorAll('input[name="payments"]').forEach((input) => {
-    input.addEventListener('change', function() {
+    input.addEventListener('change', function () {
         document.querySelectorAll('.custom-color').forEach((div) => {
             div.classList.remove('active');
         });
