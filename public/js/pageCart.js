@@ -1,12 +1,3 @@
-document.getElementById('alternateRecipient').addEventListener('change', function () {
-    let popup = document.getElementById('alternateRecipient-popup');
-    if (this.checked) {
-        popup.style.display = 'block';
-    } else {
-        popup.style.display = 'none';
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function () {
 
     const provincesSelect = document.getElementById('provinces');
@@ -44,9 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function populateSelect(selectElement, data, valueField, textField, nextFetchFunction) {
         let defaultText = '-- Chọn --';
-        if (selectElement === provincesSelect) defaultText = '-- Chọn Tỉnh --';
-        if (selectElement === districtsSelect) defaultText = '-- Chọn Quận/Huyện --';
-        if (selectElement === wardsSelect) defaultText = '-- Chọn Phường/Xã --';
 
         selectElement.innerHTML = `<option selected>${defaultText}</option>`;
         data.forEach(item => {
@@ -85,49 +73,108 @@ document.addEventListener('DOMContentLoaded', function () {
         selectElement.disabled = true;
     }
 
-    // Function to retrieve products from localStorage
-    function getProductsFromLocalStorage() {
-        const products = localStorage.getItem('products');
-        if (products) {
-            return JSON.parse(products);
-        }
-        return [];
-    }
-
-    const displayCartItems = () => {
-        listCartHTML.innerHTML = ''; // Xóa nội dung cũ đi để cập nhật lại
-    
-        carts.forEach(cart => {
-            let product = listProducts.find(p => p.ProductID == cart.ProductID);
-            if (product) {
-                let newCartItem = document.createElement('div');
-                newCartItem.classList.add('cart-item');
-                newCartItem.innerHTML = `
-                    <div class="image">
-                        <img src="${product.Images ? product.Images[0].ImgURL : ''}" alt="${product.Name}">
-                    </div>
-                    <div class="details">
-                        <h3>${product.Name}</h3>
-                        <p>Đơn giá: ${product.Price}đ</p>
-                        <p>Số lượng: ${cart.quantity}</p>
-                        <p>Tổng tiền: ${product.Price * cart.quantity}đ</p>
-                    </div>
-                `;
-                listCartHTML.appendChild(newCartItem);
+    document.querySelectorAll('input[name="payments"]').forEach((input) => {
+        input.addEventListener('change', function () {
+            document.querySelectorAll('.custom-color').forEach((div) => {
+                div.classList.remove('active');
+            });
+            if (this.checked) {
+                this.closest('.custom-color').classList.add('active'); 
             }
         });
-    }
-    displayCartItems();
-});
-
-document.querySelectorAll('input[name="payments"]').forEach((input) => {
-    input.addEventListener('change', function() {
-        document.querySelectorAll('.custom-color').forEach((div) => {
-            div.classList.remove('active');
-        });
-        if (this.checked) {
-            this.closest('.custom-color').classList.add('active');
-        }
     });
-});
 
+    function addErrorMessage(element, message) {
+        let errorMessage = document.querySelector(`#${element.id} + .error-message`);
+        if (!errorMessage) {
+            errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = message;
+            element.parentNode.appendChild(errorMessage);
+        }
+        errorMessage.style.color = "red";
+        errorMessage.style.fontSize = "15px"; // Chỉnh sửa cách thêm kiểu chữ
+    }
+
+    function removeErrorMessage(element) {
+        const errorMessage = document.querySelector(`#${element.id} + .error-message`);
+        if (errorMessage) {
+            errorMessage.remove();
+        }
+    }
+
+    function scrollToElement(element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function validateFormPayment() {
+        const requiredFields = [
+            { id: 'name_recipient', message: 'Chưa nhập Họ và tên' },
+            { id: 'phoneNumber_recipient', message: 'Chưa nhập Số điện thoại' },
+            { id: 'email_recipient', message: 'Chưa nhập Email' },
+            { id: 'street', message: 'Chưa nhập Địa chỉ' },
+            { id: 'provinces', message: 'Chưa chọn Tỉnh' },
+            { id: 'districts', message: 'Chưa chọn Quận/Huyện' },
+            { id: 'wards', message: 'Chưa chọn Phường/Xã' }
+        ];
+
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        requiredFields.forEach(({ id, message }) => {
+            const element = document.getElementById(id);
+
+            if (element.tagName === 'SELECT') {
+                const isDefaultValue = element.value.startsWith('-- Chọn');
+                if (isDefaultValue) {
+                    element.classList.add('error');
+                    addErrorMessage(element, message);
+                    isValid = false;
+                    if (!firstInvalidElement) firstInvalidElement = element;
+                } else {
+                    element.classList.remove('error');
+                    removeErrorMessage(element);
+                }
+            } else {
+                if (element.value.trim() === '') {
+                    element.classList.add('error');
+                    addErrorMessage(element, message);
+                    isValid = false;
+                    if (!firstInvalidElement) firstInvalidElement = element;
+                } else {
+                    element.classList.remove('error');
+                    removeErrorMessage(element);
+                }
+            }
+        });
+
+        const paymentMethodHeader = document.getElementById('paymentMethod');
+        let paymentSelected = document.querySelector('input[name="payments"]:checked');
+        let paymentErrorMessage = document.querySelector('#paymentMethod + .error-message');
+
+        if (paymentSelected) {
+            if (paymentErrorMessage) {
+                paymentErrorMessage.remove();
+            }
+        } else {
+            if (!paymentErrorMessage) {
+                paymentErrorMessage = document.createElement('div');
+                paymentErrorMessage.className = 'error-message';
+                paymentErrorMessage.textContent = 'Chưa chọn hình thức thanh toán';
+                paymentErrorMessage.style.color = "red";
+                paymentErrorMessage.style.fontSize = "15px"; // Chỉnh sửa cách thêm kiểu chữ
+                paymentMethodHeader.parentNode.appendChild(paymentErrorMessage);
+            }
+            if (!firstInvalidElement) firstInvalidElement = paymentMethodHeader;
+        }
+
+        if (!isValid || !paymentSelected) {
+            if (firstInvalidElement) {
+                scrollToElement(firstInvalidElement);
+            }
+        }
+    }
+
+    let checkBtn = document.getElementById("btnMakePayment");
+    checkBtn.addEventListener('click', validateFormPayment);
+});

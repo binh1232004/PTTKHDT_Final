@@ -4,12 +4,14 @@ class CartView {
         this.iconCartSpan = document.querySelector('.icon-cart span');
         this.iconCart = document.querySelector('.icon-cart');
         this.closeBtn = document.querySelector('.cartTab .close');
+        this.checkoutBtn = document.querySelector('.cartTab .makePayment')
         this.body = document.querySelector('body');
 
         this.closeBtn.addEventListener('click', this.closeCart.bind(this));
+        this.checkoutBtn.addEventListener('click', this.openPayment.bind(this))
     }
 
-    renderCart(cartItems, products) {
+    renderCart(cartItems, products) {        
         this.listCartHTML.innerHTML = '';
         let totalQuantity = 0;
 
@@ -52,6 +54,10 @@ class CartView {
 
     closeCart() {
         this.body.classList.remove('showCart');
+    }
+    
+    openPayment(){
+        window.location.href = '../../pageCart.html'
     }
 
     bindChangeQuantity(handler) {
