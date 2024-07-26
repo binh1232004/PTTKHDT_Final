@@ -1,40 +1,40 @@
-/* ___________________________________________________ <main class="container-fluid"> ___________________________________________________ */
+/* ___________________________________________________ <main> ___________________________________________________ */
 * {
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
 }
 
-div.custom-color img {
+main div.custom-color img {
     max-width: 40px;
     height: auto;
 }
 
-#alternateRecipient-popup {
+main #alternateRecipient-popup {
     display: none;
     background-color: #f1f1f1;
     border-radius: 4px;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+main input[type="number"]::-webkit-inner-spin-button,
+main input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-label {
+main label {
     font-weight: 500;
 }
 
-select:hover,
-.left-container label:hover,
-option:hover,
-input:hover {
+main select:hover,
+main .left-container label:hover,
+main option:hover,
+main input:hover {
     cursor: pointer;
 }
 
-.custom-color {
-    border: 1px solid #ced4da;
+main .custom-color {
+    border: 2px solid #ced4da;
     border-radius: 10px;
     transition: all 0.15s ease-in-out;
     padding: 0.75rem;
@@ -42,13 +42,13 @@ input:hover {
     opacity: 50%;
 }
 
-.custom-color:hover,
-.custom-color.active {
+main .custom-color:hover,
+main .custom-color.active {
     opacity: 100%;
     border-color: #86b7fe;
 }
 
-.custom-color .form-check-input {
+main .custom-color .form-check-input {
     margin: 0;
     position: absolute;
     top: 50%;
@@ -56,35 +56,35 @@ input:hover {
     left: 20px;
 }
 
-div#showProduct {
+main div#showProduct {
     max-height: 800px;
     overflow-y: auto;
 }
 
-#deleteProduct:hover {
+main #deleteProduct:hover {
     cursor: pointer;
 }
 
-.align-checkbox-center {
+main .align-checkbox-center {
     display: flex;
     align-items: center;
     margin-right: 10px;
 }
 
-.custom_padding_checkbox_allProduct {
+main .custom_padding_checkbox_allProduct {
     padding-left: 33px;
 }
 
-#showProduct img {
+main #showProduct img {
     max-width: 100px;
     min-width: 100px;
 }
 
-#quantity {
+main #quantity {
     pointer-events: none;
 }
 
-.small-select {
+main .small-select {
     height: 30px;
     padding: 5px;
     font-size: 14px;
@@ -92,12 +92,12 @@ div#showProduct {
     /* Giảm chiều rộng */
 }
 
-.small-input-group {
+main .small-input-group {
     width: 100px;
     /* Giảm chiều rộng */
 }
 
-.small-input-group .btn {
+main .small-input-group .btn {
     height: 30px;
     padding: 5px;
     font-size: 14px;
@@ -107,7 +107,7 @@ div#showProduct {
     /* Màu border */
 }
 
-.small-input-group .form-control {
+main .small-input-group .form-control {
     height: 30px;
     padding: 5px;
     font-size: 14px;
@@ -120,44 +120,47 @@ div#showProduct {
     /* Màu border */
 }
 
-.btn .fa-solid {
+main .btn .fa-solid {
     pointer-events: none;
 }
 
-.btn:hover,
-.btn:active {
+main .btn:hover,
+main .btn:active {
     background-color: black !important;
     color: white !important;
     border-color: black !important;
 }
-#showProduct input[type="text"]{
+
+main #showProduct input[type="text"] {
     pointer-events: none;
 }
-#Pay_for_all_products{
+
+main #Pay_for_all_products {
     font-size: 18px;
     font-weight: 700;
 }
+
 @media (max-width: 1200px) {
-    .small-select {
+    main .small-select {
         width: 80px;
         /* Giảm chiều rộng trên màn hình nhỏ */
         font-size: 12px;
         padding: 3px;
     }
 
-    .small-input-group {
+    main .small-input-group {
         width: 80px;
         /* Giảm chiều rộng trên màn hình nhỏ */
     }
 
-    .small-input-group .btn {
+    main .small-input-group .btn {
         width: 25px;
         /* Giảm chiều rộng của nút trên màn hình nhỏ */
         font-size: 12px;
         padding: 3px;
     }
 
-    .small-input-group .form-control {
+    main .small-input-group .form-control {
         width: 30px;
         /* Giảm chiều rộng của input trên màn hình nhỏ */
         font-size: 12px;
@@ -166,23 +169,23 @@ div#showProduct {
 }
 
 @media (max-width: 991px) {
-    .small-select {
+    main .small-select {
         padding: 5px;
         font-size: 14px;
         width: 100px;
     }
 
-    .small-input-group {
+    main .small-input-group {
         width: 100px;
     }
 
-    .small-input-group .btn {
+    main .small-input-group .btn {
         padding: 5px;
         font-size: 14px;
         width: 30px;
     }
 
-    .small-input-group .form-control {
+    main .small-input-group .form-control {
         padding: 5px;
         font-size: 14px;
         width: 40px;
@@ -190,26 +193,26 @@ div#showProduct {
 }
 
 @media (max-width: 370px) {
-    .small-select {
+    main .small-select {
         width: 80px;
         /* Giảm chiều rộng trên màn hình nhỏ */
         font-size: 12px;
         padding: 3px;
     }
 
-    .small-input-group {
+    main .small-input-group {
         width: 80px;
         /* Giảm chiều rộng trên màn hình nhỏ */
     }
 
-    .small-input-group .btn {
+    main .small-input-group .btn {
         width: 25px;
         /* Giảm chiều rộng của nút trên màn hình nhỏ */
         font-size: 12px;
         padding: 3px;
     }
 
-    .small-input-group .form-control {
+    main .small-input-group .form-control {
         width: 30px;
         /* Giảm chiều rộng của input trên màn hình nhỏ */
         font-size: 12px;
@@ -218,7 +221,7 @@ div#showProduct {
 }
 
 /* Shimmer Effect CSS */
-.shimmer {
+main .shimmer {
     display: inline-block;
     width: 100%;
     height: 100%;
@@ -231,17 +234,18 @@ div#showProduct {
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }
 }
 
-.shimmer-container {
+main .shimmer-container {
     position: relative;
     overflow: hidden;
 }
 
-.shimmer-container::before {
+main .shimmer-container::before {
     content: '';
     position: absolute;
     top: 0;

@@ -42,7 +42,6 @@ class CartController {
                 userData.Role,
                 userData.UpdateDate
             );
-            console.log("User fetched: ", this.user); // Kiểm tra xem user đã được gán đúng
         } else {
             console.error('User data not found in Firebase');
         }
