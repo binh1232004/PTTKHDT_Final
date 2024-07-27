@@ -14,6 +14,8 @@ export default class CategoryManager {
             appId: "1:375046175781:web:0d1bfac1b8ca71234293cc",
             measurementId: "G-120GXQ1F6L"
         };
+        this.cateName = document.getElementById('CateNameInp');
+        this.cateID = document.getElementById('CateIdInp');
         this.app = initializeApp(this.firebaseConfig);
         this.db = getDatabase();
         this.initializeCounter();
@@ -41,7 +43,8 @@ export default class CategoryManager {
         document.getElementById('AddBtn').addEventListener('click', this.interface.bind(this));
         document.getElementById('UpdateBtn').addEventListener('click', this.interface.bind(this));
         document.getElementById('DeleteBtn').addEventListener('click', this.interface.bind(this));
-        window.addEventListener('load', this.getCategory.bind(this));
+        // window.addEventListener('load', this.getCategory.bind(this));
+        window.addEventListener('load', this.createTableData.bind(this));
         window.addEventListener('load', this.getClick.bind(this));
     }
 
@@ -91,8 +94,8 @@ export default class CategoryManager {
         });
     }
 
-    updateData(cateId) {
-        update(ref(this.db, 'Category/' + cateId), {
+    updateData() {
+        update(ref(this.db, 'Category/' + this.cateID.value), {
             CateName: document.getElementById('CateNameInp').value
         }).then(() => {
             alert("Data Updated Successfully");
@@ -103,8 +106,8 @@ export default class CategoryManager {
         });
     }
 
-    deleteData(cateId) {
-        remove(ref(this.db, 'Category/' + cateId)).then(() => {
+    deleteData() {
+        remove(ref(this.db, 'Category/' + this.cateID.value)).then(() => {
             alert("Data Deleted Successfully");
             location.reload();
         }).catch((error) => {
@@ -112,34 +115,76 @@ export default class CategoryManager {
             console.log(error);
         });
     }
+    // getCategory() {
+    //     const dbref = ref(this.db);
+    //     get(child(dbref, 'Category')).then((category) => {
+    //         category.forEach(std => {
+    //             this.addCategoryAsListItem(std);
+    //         });
+    //     });
+    // }
 
-    getCategory() {
+    // addCategoryAsListItem(std) {
+    //     let key = std.key;
+    //     let value = std.val();
+
+    //     let id = document.createElement('th');
+    //     let name = document.createElement('td');
+
+    //     id.innerHTML = key;
+    //     name.innerHTML = value.CateName;
+
+    //     let tr = document.createElement('tr');
+    //     tr.append(id, name);
+    //     tr.className = 'clickTable';
+    //     let tbody = document.createElement('tbody');
+    //     tbody.appendChild(tr);
+    //     document.getElementById('categoryList').append(tbody);
+    // }
+
+    createTableData() {
         const dbref = ref(this.db);
-        get(child(dbref, 'Category')).then((category) => {
-            category.forEach(std => {
-                this.addCategoryAsListItem(std);
+        var dataSet = [];
+        get(child(dbref, 'Category')).then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                var value = childSnapshot.val();
+                dataSet.push([
+                    childSnapshot.key,
+                    value.CateName
+                ]);
             });
+            console.log(dataSet);
+            var table = $('#categoryList').DataTable({
+                // DataTable options
+                data: dataSet,
+                columns: [
+                    { title: "ID" },
+                    { title: "Danh mục sản phẩm" }
+                ],
+                rowCallback: (row, data) => {
+                    $(row).on('click', () => {
+                        get(child(dbref, 'Category/' + data[0])).then((snapshot) => {
+                            if (snapshot.exists()) {
+                                // Handle row click event if needed
+                                this.cateName.value = snapshot.val().CateName;
+                                this.cateID.value = data[0];
+                            } else {
+                                alert("Category does not exist");
+                            }
+                        }).catch((error) => {
+                            alert("Unsuccessful");
+                            console.log(error);
+                        });
+                    });
+                    $(row).on('mouseenter', function () {
+                        // Add any additional functionality on mouse enter if needed
+                    });
+                }
+            });
+        }).catch((error) => {
+            console.log("Error fetching category data: ", error);
         });
     }
-
-    addCategoryAsListItem(std) {
-        let key = std.key;
-        let value = std.val();
-
-        let id = document.createElement('th');
-        let name = document.createElement('td');
-
-        id.innerHTML = key;
-        name.innerHTML = value.CateName;
-
-        let tr = document.createElement('tr');
-        tr.append(id, name);
-        tr.className = 'clickTable';
-        let tbody = document.createElement('tbody');
-        tbody.appendChild(tr);
-        document.getElementById('categoryList').append(tbody);
-    }
-
     getClick() {
         console.log('getClick');
         const dbref = ref(this.db);

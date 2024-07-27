@@ -7,7 +7,7 @@ class UserManager {
         this.ROLE = {
             USER: 1,
             ADMIN: 2,
-            WAREHOUSE: 3    
+            WAREHOUSE: 3
         }
         const firebaseConfig = {
             apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
@@ -39,10 +39,11 @@ class UserManager {
         this.stdno = 1;
 
         this.AddBtn.addEventListener('click', this.registerUser.bind(this));
-        this.UpdBtn.addEventListener('click', this.updateUser.bind(this));  
+        this.UpdBtn.addEventListener('click', this.updateUser.bind(this));
         this.DelBtn.addEventListener('click', this.deleteUser.bind(this));
-        window.addEventListener('load', this.getUser.bind(this));
+        // window.addEventListener('load', this.getUser.bind(this));
         window.addEventListener('load', this.getClick.bind(this));
+        window.addEventListener('load', this.createTableData.bind(this));
     }
     formatDateToDDMMYYYY(date) {
         const year = date.getFullYear();
@@ -61,7 +62,7 @@ class UserManager {
             console.log(error);
         });
     }
-    updateUser(){
+    updateUser() {
         let uid = this.ID.value;
         const today = new Date();
         const formattedDate = this.formatDateToDDMMYYYY(today);
@@ -82,57 +83,136 @@ class UserManager {
             console.log(error);
         });
     }
-    getUser() {
-        const dbref = ref(this.db);
+    // getUser() {
+    //     // const dbref = ref(this.db);
 
-        get(child(dbref, 'User')).then((user) => {
-            user.forEach(std => {
-                this.addUserAsList(std);
+    //     // get(child(dbref, 'User')).then((user) => {
+    //     //     user.forEach(std => {
+    //     //         this.addUserAsList(std);
+    //     //     });
+    //     // });
+    // }
+
+    // addUserAsList(std) {
+    //     let key = std.key;
+    //     let value = std.val();
+
+    //     let id = document.createElement('th');
+    //     let name = document.createElement('td');
+    //     let email = document.createElement('td');
+    //     let role = document.createElement('td');
+
+    //     id.innerHTML = key;
+    //     name.innerHTML = value.FullName;
+    //     email.innerHTML = value.Email;
+    //     if (value.Role == this.ROLE.ADMIN) {
+    //         role.innerHTML = 'Quản trị viên';
+    //         role.className = 'bg-success badge';
+    //     } else if(value.Role == this.ROLE.USER){
+    //         role.innerHTML = 'Người dùng';
+    //         role.className = 'bg-secondary badge';
+    //     }
+    //     else if(value.Role == this.ROLE.WAREHOUSE){
+    //         role.innerHTML = 'Quản  kho';
+    //         role.className = 'bg-warning badge';
+    //     }   
+    //     role.style.marginTop = '5px';
+
+    //     let tr = document.createElement('tr');
+    //     tr.append(id, email, name, role);
+    //     tr.className = 'clickTable';
+    //     let tbody = document.createElement('tbody');
+    //     tbody.appendChild(tr);
+    //     this.listUser.append(tbody);
+    //     this.stdno++;
+    // }
+
+    createTableData() {
+        const dbref = ref(this.db);
+        var dataSet = [];
+        get(child(dbref, 'User')).then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                var value = childSnapshot.val();
+                let meaningRole;
+                for (let key in this.ROLE) {
+                    if (this.ROLE[key] == value.Role) {
+                        meaningRole = key;
+                    }
+                }
+                if (meaningRole === 'USER')
+                    meaningRole = 'Người dùng';
+                else if (meaningRole === 'ADMIN')
+                    meaningRole = 'Quản trị viên';
+                else if (meaningRole === 'WAREHOUSE')
+                    meaningRole = 'Quản kho';
+                dataSet.push([
+                    childSnapshot.key,
+                    value.FullName,
+                    value.Email,
+                    meaningRole
+                ]);
             });
+            console.log(dataSet);
+            var table = $('#userList').DataTable({
+                // DataTable options
+                data: dataSet,
+                columns: [
+                    { title: "ID" },
+                    { title: "Họ và tên" },
+                    { title: "Email" },
+                    { title: "Phân quyền" },
+                ],
+                rowCallback: (row, data) => {
+                    const role = data[3];
+                    if (role == 'Quản trị viên') {
+                        $(row).addClass('bg-success text-white');
+                    } else if (role == 'Quản kho') {
+                        $(row).addClass('bg-warning text-white');
+                    }
+                    $(row).on('click', () => {
+                        get(child(dbref, 'User/' + data[0])).then((snapshot) => {
+                            if (snapshot.exists()) {
+                                let meaningRole;
+                                for (let key in this.ROLE) {
+                                    if (this.ROLE[key] == snapshot.val().Role) {
+                                        meaningRole = key;
+                                    }
+                                }
+                                this.Email.value = snapshot.val().Email;
+                                this.User.value = snapshot.val().FullName;
+                                this.Address.value = snapshot.val().Address;
+                                this.Birth.value = snapshot.val().Birth;
+                                this.Phone.value = snapshot.val().Phone;
+                                this.Role.value = meaningRole.toLowerCase();
+                                this.ID.value = data[0];
+                            } else {
+                                alert("User does not exist");
+                            }
+                        }).catch((error) => {
+                            alert("Unsuccessful");
+                            console.log(error);
+                        });
+                    });
+                    $(row).on('mouseenter', function () {
+                        // Add any additional functionality on mouse enter if needed
+                    });
+                }
+            });
+        }).catch((error) => {
+            console.log("Error fetching user data: ", error);
         });
     }
-
-    addUserAsList(std) {
-        let key = std.key;
-        let value = std.val();
-
-        let id = document.createElement('th');
-        let name = document.createElement('td');
-        let email = document.createElement('td');
-        let role = document.createElement('td');
-
-        id.innerHTML = key;
-        name.innerHTML = value.FullName;
-        email.innerHTML = value.Email;
-        if (value.Role == this.ROLE.ADMIN) {
-            role.innerHTML = 'Quản trị viên';
-            role.className = 'bg-success badge';
-        } else if(value.Role == this.ROLE.USER){
-            role.innerHTML = 'Người dùng';
-            role.className = 'bg-warning badge';
-        }
-        role.style.marginTop = '5px';
-
-        let tr = document.createElement('tr');
-        tr.append(id, email, name, role);
-        tr.className = 'clickTable';
-        let tbody = document.createElement('tbody');
-        tbody.appendChild(tr);
-        this.listUser.append(tbody);
-        this.stdno++;
-    }
-
     retData(ID) {
         const dbref = ref(this.db);
 
         get(child(dbref, 'User/' + ID)).then((snapshot) => {
             if (snapshot.exists()) {
                 let valRole;
-                for(let role in this.ROLE){
-                    if(this.ROLE[role] == snapshot.val().Role){
+                for (let role in this.ROLE) {
+                    if (this.ROLE[role] == snapshot.val().Role) {
                         valRole = role.toLowerCase();
                     }
-                }    
+                }
                 this.Email.value = snapshot.val().Email;
                 this.User.value = snapshot.val().FullName;
                 this.Address.value = snapshot.val().Address;
@@ -199,3 +279,82 @@ class UserManager {
 }
 
 const userManager = new UserManager();
+// class UserManager {
+//     constructor() {
+//         this.firebaseConfig = {
+//             apiKey: "YOUR_API_KEY",
+//             authDomain: "YOUR_AUTH_DOMAIN",
+//             databaseURL: "YOUR_DATABASE_URL",
+//             projectId: "YOUR_PROJECT_ID",
+//             storageBucket: "YOUR_STORAGE_BUCKET",
+//             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+//             appId: "YOUR_APP_ID",
+//             measurementId: "YOUR_MEASUREMENT_ID"
+//         };
+//         this.app = initializeApp(this.firebaseConfig);
+//         this.db = getDatabase();
+//         this.UserID = document.getElementById('UserID');
+//         this.UserName = document.getElementById('UserName');
+//         this.UserEmail = document.getElementById('UserEmail');
+//         this.UserRole = document.getElementById('UserRole');
+//         window.addEventListener('load', () => this.getUserData());
+//     }
+
+//     getUserData() {
+//         const dbref = ref(this.db);
+//         var dataSet = [];
+//         get(child(dbref, 'User')).then((snapshot) => {
+//             snapshot.forEach((childSnapshot) => {
+//                 var value = childSnapshot.val();
+//                 dataSet.push([
+//                     value.UserID,
+//                     value.Name,
+//                     value.Email,
+//                     value.Role,
+//                     value.CreateDate,
+//                     value.UpdateDate
+//                 ]);
+//             });
+//             console.log(dataSet);
+//             var table = $('#listUser').DataTable({
+//                 // DataTable options
+//                 data: dataSet,
+//                 columns: [
+//                     { title: "ID" },
+//                     { title: "Name" },
+//                     { title: "Email" },
+//                     { title: "Role" },
+//                     { title: "Create Date" },
+//                     { title: "Update Date" }
+//                 ],
+//                 rowCallback: (row, data) => {
+//                     $(row).on('click', () => {
+//                         get(child(dbref, 'User/' + data[0])).then((snapshot) => {
+//                             if (snapshot.exists()) {
+//                                 this.UserID.value = snapshot.val().UserID;
+//                                 this.UserName.value = snapshot.val().Name;
+//                                 this.UserEmail.value = snapshot.val().Email;
+//                                 this.UserRole.value = snapshot.val().Role;
+//                             } else {
+//                                 alert("User does not exist");
+//                             }
+//                         }).catch((error) => {
+//                             alert("Unsuccessful");
+//                             console.log(error);
+//                         });
+//                     });
+//                     $(row).on('mouseenter', function () {
+//                         // Add any additional functionality on mouse enter if needed
+//                     });
+//                 }
+//             });
+//         }).catch((error) => {
+//             console.log("Error fetching user data: ", error);
+//         });
+//     }
+// }
+
+// // Initialize UserManager
+// document.addEventListener('DOMContentLoaded', () => {
+//     new UserManager();
+// });
