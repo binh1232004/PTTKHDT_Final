@@ -19,5 +19,21 @@ class Utils {
                 return 'Warehouse';
         }
     }
+    getArrAllDaysInMonth(month, year){
+        const daysInMonth = new Date(year, month, 0).getDate();
+        return Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    }
+    getDayMonthYearInOrder(orderDate){
+        //2024-07-24
+        const [year, month, day] = orderDate.split('-');
+        const actualMonth = parseInt(month, 10);
+        const actualDay = parseInt(day, 10);
+        const actualYear = parseInt(year, 10);
+        return {
+            year: actualYear,
+            month: actualMonth,
+            day: actualDay
+        }
+    }
 }
 export default Utils;

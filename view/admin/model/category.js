@@ -115,32 +115,6 @@ export default class CategoryManager {
             console.log(error);
         });
     }
-    // getCategory() {
-    //     const dbref = ref(this.db);
-    //     get(child(dbref, 'Category')).then((category) => {
-    //         category.forEach(std => {
-    //             this.addCategoryAsListItem(std);
-    //         });
-    //     });
-    // }
-
-    // addCategoryAsListItem(std) {
-    //     let key = std.key;
-    //     let value = std.val();
-
-    //     let id = document.createElement('th');
-    //     let name = document.createElement('td');
-
-    //     id.innerHTML = key;
-    //     name.innerHTML = value.CateName;
-
-    //     let tr = document.createElement('tr');
-    //     tr.append(id, name);
-    //     tr.className = 'clickTable';
-    //     let tbody = document.createElement('tbody');
-    //     tbody.appendChild(tr);
-    //     document.getElementById('categoryList').append(tbody);
-    // }
 
     createTableData() {
         const dbref = ref(this.db);

@@ -38,12 +38,15 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
+            <!-- Statistic  -->
             <li class="nav-item">
                 <a class="nav-link" href="statistic.html">
                     <i class="bi bi-menu-button-wide"></i>
                     <span>Thống kê</span>
                 </a>
             </li>
+            <!-- Statistic  -->
+
             <li class="nav-item">
                 <a class="nav-link" href="category.html">
                     <i class="bi bi-menu-button-wide"></i>
@@ -83,12 +86,15 @@
 
     </aside><!-- End Sidebar-->
     <main id="main" class="main">
+
+  <canvas id="salesChart"></canvas>
+    </main>
+    <!-- <main id="main" class="main">
         <div class="pagetitle">
             <h1>Danh mục</h1>
-        </div><!-- End Page Title -->
+        </div>
         <section class="section dashboard">
             <div class="row">
-                <!-- Left side columns -->
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="card">
@@ -110,7 +116,6 @@
                             </div>
                         </div>
 
-                        <!-- Recent Sales -->
                         <div class="card recent-sales overflow-auto">
                             <div class="card-body">
                                 <h5 class="card-title">Danh sách</h5>
@@ -126,16 +131,21 @@
 
                             </div>
 
-                        </div><!-- End Recent Sales -->
+                        </div>
 
 
                     </div>
-                </div><!-- End Left side columns -->
+                </div>
 
             </div>
         </section>
 
-    </main><!-- End #main -->
+    </main> -->
+
+    <!-- End #main -->
+
+    <div>
+</div>
     <!--Icon & jquery-->
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -150,9 +160,15 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
-    <script type="module" src="./model/category.js"></script>
-    <script type="module" src="./js/category.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script type="module" src="./model/statistic.js" ></script>
     <script type="module" src="./js/adminLogout.js" defer></script>
+
+
+
+
 </body>
 
 </html>
