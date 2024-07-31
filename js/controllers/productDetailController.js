@@ -1,5 +1,6 @@
 import FirebaseService from '../services/firebaseService.js';
 import ProductDetailView from '../views/productDetailView.js';
+import Product from '../models/product.js';
 
 class ProductDetailController {
     constructor() {
@@ -19,7 +20,21 @@ class ProductDetailController {
 
         if (snapshot.exists()) {
             const productData = snapshot.val();
-            this.view.renderProductDetails(productData);
+            const product = new Product(
+                this.productId,
+                productData.Name,
+                productData.Price,
+                productData.Images ? Object.values(productData.Images)[0].ImgURL : '',
+                productData.Category,
+                productData.CreateDate,
+                productData.Description,
+                productData.Detail,
+                productData.ProductID,
+                productData.Promotion,
+                productData.Size,
+                productData.UpdateDate
+            );
+            this.view.renderProductDetails(product);
         } else {
             console.error('Product data not found in Firebase');
         }

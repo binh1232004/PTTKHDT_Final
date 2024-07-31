@@ -22,6 +22,7 @@ let Address = document.getElementById('AddressInp');
 let Phone = document.getElementById('PhoneInp');
 let Role = document.getElementById('RoleInp');
 let Birth = document.getElementById('current-time');
+let UserID = document.getElementById('UserID')
 
 let AddBtn = document.getElementById('AddBtn');
 let UpdBtn = document.getElementById('UpdateBtn');
@@ -37,6 +38,30 @@ function formatDateToDDMMYYYY(date) {
 const today = new Date();
 const formattedDate = formatDateToDDMMYYYY(today);
 
+function Interface(e) {
+    const dbref = ref(db);
+    let BtnId = e.target.id;
+    let Id = document.getElementById('UserID').value;
+
+    if (BtnId == 'AddBtn') {
+        RegisterUser();
+    } else {
+        get(child(dbref, 'User/' + Id)).then((snapshot)=>{
+            if(snapshot.exists() && (Id !== "")){
+                if (BtnId == 'UpdateBtn')
+                    UpdateData(Id);
+                else if (BtnId == 'DeleteBtn')
+                    DeleteData(Id); 
+            }
+            else {
+                if (BtnId == 'UpdateBtn')
+                    alert("Cannot update, category does not exist");
+                else if (BtnId == 'DeleteBtn')
+                    alert("Cannot delete, category does not exist");
+            }
+        });
+    }
+}
 
 let RegisterUser = evt => {
     evt.preventDefault();
@@ -65,7 +90,40 @@ let RegisterUser = evt => {
     })
 }
 
-AddBtn.addEventListener('click', RegisterUser);
+function UpdateData(UserID){
+    update(ref(db, 'User/' + UserID), {
+        FullName: User.value,
+        Email: Email.value,
+        Address: Address.value,
+        Birth: Birth.value,
+        Phone: Phone.value,
+        Role: (Role.value == 'admin'),
+        UpdateDate: formattedDate
+    }).then(()=>{
+        alert("Data Updated Successfully");
+        location.reload();
+    }).catch((error)=>{
+        alert("Unsuccessful");
+        console.log(error);
+    });
+}
+
+function DeleteData(userID){
+    remove(ref(db, 'User/' + userID)).then(()=>{
+        alert("Data Deleted Successfully");
+        location.reload();
+    }).catch((error)=>{
+        alert("Unsuccessful");
+        console.log(error);
+    });
+}
+
+
+AddBtn.addEventListener('click', Interface);
+UpdBtn.addEventListener('click', Interface);
+DelBtn.addEventListener('click', Interface);
+
+
 
 let listUser = document.getElementById('userList');
 let stdno = 1;
@@ -115,9 +173,9 @@ window.addEventListener('load', GetUser);
 
 function RetData(ID){
     const dbref = ref(db);
-
     get(child(dbref, 'User/' + ID)).then((snapshot)=>{
         if(snapshot.exists()) {
+            UserID.value = ID;
             Email.value = snapshot.val().Email;
             User.value = snapshot.val().FullName;
             Address.value = snapshot.val().Address;
