@@ -10,7 +10,7 @@ class CartPaymentController {
         this.user = null;
         this.userId = localStorage.getItem('userID');
         this.isUserFetched = false;
-        this.products = [];
+        this.products = {};
         this.selectedItems = [];
 
         this.view.bindQuantityChange(this.handleQuantityChange.bind(this));
@@ -74,12 +74,19 @@ class CartPaymentController {
                 value.Size,
                 value.UpdateDate
             );
-            this.products.push(product);
+            this.products[childSnapshot.key] = product;
         });
     }
 
     async handleQuantityChange(productId, type) {
         const currentQuantity = this.user.cart[productId];
+        let [proID, sizeCart] = productId.split('-')
+        if (currentQuantity == this.products[`${proID}`][`size`][`${sizeCart}`] && type == 'plus'){
+            this.view.showAlert("Số lượng bạn yêu cầu hiện không có sẵn", "info")
+            return;
+        }
+        console.log(productId)
+        // if (currentQuantity == this.products[])
         const newQuantity = type === 'plus' ? currentQuantity + 1 : currentQuantity - 1;
 
         if (newQuantity <= 0) {
@@ -91,6 +98,7 @@ class CartPaymentController {
         }
 
         this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
+        console.log("this.selectedItems: ", this.selectedItems)
         this.view.setCheckedItems(this.selectedItems);
         this.updateTotalPrice();
     }
@@ -113,7 +121,9 @@ class CartPaymentController {
         }
 
         for (const checkbox of checkboxes) {
-            const productId = checkbox.id.replace('inp-', '');
+
+            const productId = checkbox.id.replace('inp_', '');
+
             await FirebaseService.removeData(FirebaseService.getRef(`User/${this.userId}/Cart/${productId}`));
             delete this.user.cart[productId];
         }
@@ -121,6 +131,18 @@ class CartPaymentController {
         this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
         this.updateTotalPrice();
         this.view.showAlert('Xóa sản phẩm thành công', 'success');
+    }
+
+    extractNumber(inputString) {
+        // Sử dụng biểu thức chính quy để tìm tất cả các ký tự số
+        const numberString = inputString.match(/\d+/g).join('');
+        return numberString;
+    }
+    getVietnamDate() {
+        let now = new Date();
+        let vietnamTimeOffset = 7 * 60 * 60 * 1000; // Giờ Việt Nam là GMT+7
+        let vietnamDate = new Date(now.getTime() + vietnamTimeOffset);
+        return vietnamDate.toISOString().split('T')[0];
     }
 
     async handlePayment() {
@@ -131,34 +153,52 @@ class CartPaymentController {
             this.view.totalPriceElement.innerHTML = "CHỌN SẢN PHẨM THANH TOÁN";
             return;
         }
+        let TotalOrder = this.extractNumber(this.view.totalPriceElement.innerText)
+
+        const selectedProvinces = document.querySelector('#provinces').selectedOptions[0].innerText;
+        const selectedDistricts = document.querySelector('#districts').selectedOptions[0].innerText;
+        const selectedWards = document.querySelector('#wards').selectedOptions[0].innerText;
 
         const orderData = new Order(
             this.userId,
             document.getElementById('name_recipient').value,
             document.getElementById('phoneNumber_recipient').value,
             document.getElementById('email_recipient').value,
-            `${document.getElementById('street').value}, ${document.getElementById('wards').value}, ${document.getElementById('districts').value}, ${document.getElementById('provinces').value}`,
+            `${document.getElementById('street').value}, ${selectedWards}, ${selectedDistricts}, ${selectedProvinces}`,
             document.getElementById('note').value,
             document.querySelector('input[name="payments"]:checked').value,
-            new Date().toISOString().split('T')[0],
-            parseFloat(this.view.totalPriceElement.innerText.replace('TỔNG TIỀN: ', '').replace('đ', '').replace(',', '')),
+            this.getVietnamDate(),
+            TotalOrder,
             {}
         );
 
-        selectedItems.forEach(productId => {
-            const product = this.products.find(p => p.id === productId);
+        selectedItems.forEach(prdIDSize => {
+            let [idPrd, sizePrd] = prdIDSize.split('-')
+
+            const product = this.products[idPrd]
             if (product) {
-                orderData.items[productId] = {
+                orderData.items[prdIDSize] = {
                     item_name: product.name,
-                    quantity: this.user.cart[productId],
+                    quantity: this.user.cart[prdIDSize],
                     unit_price: product.price,
-                    total_price: product.price * this.user.cart[productId]
+                    size: sizePrd,
+                    total_price: product.price * this.user.cart[prdIDSize]
                 };
             }
         });
 
+        console.log(orderData)
+
         try {
+            // Tạo hóa đơn
             await FirebaseService.pushData(FirebaseService.getRef('orders'), orderData);
+
+            // Cập nhật số lượng theo size của sản phẩm
+            for (const prdIDSize of selectedItems) {
+                let [idPrd, sizePrd] = prdIDSize.split('-');
+                let newQuantity = this.products[idPrd].size[sizePrd] - this.user.cart[prdIDSize];
+                await FirebaseService.updateData(FirebaseService.getRef(`Product/${idPrd}/Size`), { [sizePrd]: newQuantity });
+            }
 
             // Xóa các sản phẩm đã thanh toán ra khỏi giỏ hàng
             for (const productId of selectedItems) {
@@ -177,17 +217,20 @@ class CartPaymentController {
 
     updateTotalPrice() {
         const selectedItems = this.view.getSelectedItems();
+
         let totalPrice = 0;
 
-        selectedItems.forEach(productId => {
-            const product = this.products.find(p => p.id === productId);
+        selectedItems.forEach(prdIDSize => {
+            let [prdID, size] = prdIDSize.split('-')
+
+            const product = this.products[prdID]
             if (product) {
-                totalPrice += product.price * this.user.cart[productId];
+                totalPrice += product.price * this.user.cart[prdIDSize];
             }
         });
 
         this.selectedItems = selectedItems;
-
+        console.log("totalPrice: ", totalPrice)
         if (totalPrice > 0) {
             this.view.updateTotalPrice(totalPrice);
         } else {

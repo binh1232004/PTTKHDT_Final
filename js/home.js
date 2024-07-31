@@ -13,23 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = localStorage.getItem('userID');
         return userId !== 'null';
     };
-
-    document.addEventListener('click', (event) => {
-        if (event.target.classList.contains('addCart')) {
-            const productId = event.target.parentElement.dataset.id;
-            if (isLoggedIn()) {
-                cartController.addToCart(productId);
-            } else {
-                signInDialog.showModal();
-                signInDialog.addEventListener('close', () => {
-                    if (isLoggedIn()) {
-                        cartController.addToCart(productId);
-                    }
-                }, { once: true });
-            }
-        }
-    });
-
+    
     const iconCart = document.querySelector('.icon-cart');
     iconCart.addEventListener('click', () => {
         if (isLoggedIn()) {

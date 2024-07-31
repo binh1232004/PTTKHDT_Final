@@ -7,8 +7,9 @@ class CartController {
     constructor() {
         this.view = new CartView();
         this.user = null;
-        this.products = [];
+        this.products = {}; // Sử dụng đối tượng thay vì mảng
         this.isUserFetched = false;
+        this.productSoldOut = [];
     }
 
     async init() {
@@ -17,10 +18,54 @@ class CartController {
             await this.fetchUser(userId); // Chờ fetchUser hoàn thành
             await this.fetchProducts();   // Chờ fetchProducts hoàn thành
             this.isUserFetched = true;
+            await this.preprocessSize();
             this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
             this.view.bindChangeQuantity(this.handleChangeQuantity.bind(this));
         } else {
             console.error('User ID is missing in localStorage');
+        }
+    }
+
+    async preprocessSize() {
+        if (!this.isUserFetched) {
+            console.error('User not fetched yet');
+            return;
+        }
+
+        console.log("preprocessSize");
+        let dataCart = Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity }));
+
+        for (let prd of dataCart) {
+            let [prdID, sizePrd] = prd.productID.split("-");
+            let currentQuantity = this.products[`${prdID}`][`size`][`${sizePrd}`]
+            if (currentQuantity <= 0) {
+                let soldOut = true;
+                for (let i in this.products[`${prdID}`]["size"]) {
+                    let newQuantity = this.products[`${prdID}`]["size"][i];
+                    if (newQuantity > 0) {
+                        delete this.user.cart[prd.productID];
+                        await FirebaseService.removeData(FirebaseService.getRef(`User/${this.user.id}/Cart/${prd.productID}`));
+                        if (prd.quantity > newQuantity)
+                            prd.quantity = newQuantity
+
+                        let newPrdID = `${prdID}-${i}`;
+                        this.user.cart[newPrdID] = prd.quantity;
+                        await FirebaseService.updateData(FirebaseService.getRef(`User/${this.user.id}/Cart`), this.user.cart);
+                        soldOut = false;
+                        break;
+                    }
+                }
+                if (soldOut) {
+                    await FirebaseService.removeData(FirebaseService.getRef(`User/${this.user.id}/Cart/${prd.productID}`));
+                    delete this.user.cart[prd.productID];
+                    this.productSoldOut.push(prdID)
+                }
+            } else {
+                if (prd.quantity > currentQuantity) {
+                    this.user.cart[prd.productID] = currentQuantity;
+                    await FirebaseService.updateData(FirebaseService.getRef(`User/${this.user.id}/Cart`), this.user.cart);
+                }
+            }
         }
     }
 
@@ -67,7 +112,7 @@ class CartController {
                 value.Size,
                 value.UpdateDate
             );
-            this.products.push(product);
+            this.products[childSnapshot.key] = product;
         });
     }
 
@@ -77,13 +122,9 @@ class CartController {
             return;
         }
 
-        console.log("this.user before adding to cart: ", this.user);
         this.user.addToCart(productId);
-        console.log("this.user after adding to cart: ", this.user);
 
         await FirebaseService.updateData(FirebaseService.getRef(`User/${this.user.id}/Cart`), this.user.cart);
-
-        console.log("this.user cart after update: ", this.user.cart);
 
         this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
 
@@ -93,17 +134,25 @@ class CartController {
     }
 
     async handleChangeQuantity(productId, type) {
-        console.log("handleChangeQuantity this.user.cart: ", this.user.cart)
         if (!this.isUserFetched) {
             console.error('User not fetched yet');
             return;
         }
         if (type === 'plus') {
+            let [prdID, sizePrd] = productId.split("-");
+            if (this.user.cart[productId] == this.products[`${prdID}`][`size`][`${sizePrd}`]) {
+                this.view.showAlert("Số lượng bạn yêu cầu hiện không có sẵn", "info")
+                return;
+            }
+
             this.user.addToCart(productId, 1);
         } else {
-            if (this.user.cart[productId] == 1)
+            if (this.user.cart[productId] == 1) {
                 await FirebaseService.removeData(FirebaseService.getRef(`User/${this.user.id}/Cart/${productId}`));
-            this.user.updateCart(productId, this.user.cart[productId] - 1);
+                delete this.user.cart[productId];
+            } else {
+                this.user.updateCart(productId, this.user.cart[productId] - 1);
+            }
         }
         await FirebaseService.updateData(FirebaseService.getRef(`User/${this.user.id}/Cart`), this.user.cart);
         this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);

@@ -2,45 +2,46 @@ class ProductDetailView {
     constructor() {
         this.productWrapper = document.getElementById('product-single-wrapper');
     }
-
-    renderProductDetails(productData) {
+    
+    renderProductDetails(product) {
         let imagesHtml = '';
-        if (productData.Images) {
-            const firstImageKey = Object.keys(productData.Images)[0];
-            if (firstImageKey) {
-                let imgURL = productData.Images[firstImageKey].ImgURL.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                imagesHtml = `<img class="card-img-top" src="${imgURL}" alt="${productData.Name}">`;
-            }
+        if (product.imgURL) {
+            imagesHtml = `<img class="card-img-top" src="${product.imgURL}" alt="${product.name}">`;
         }
 
         let sizesHtml = '';
-        if (productData.Size) {
-            for (let size in productData.Size) {
-                if (productData.Size[size]) {
-                    sizesHtml += `<li class="size-item">${size}</li>`;
+        if (product.size) {
+            for (let size in product.size) {
+                if (product.size[size]) {
+                    sizesHtml += `<li class="size-item" data-size="${size}">${size}</li>`;
+                }
+                else {
+                    sizesHtml += `<li class="size-item" data-size="${size}" style="pointer-events: none; color: white;">${size}</li>`;
                 }
             }
         }
-
         const productHTML = `
             <div class="product-image card">
                 ${imagesHtml}
             </div>
             <div class="card-body">
-                <h3 class="card-title">${productData.Name}</h3>
-                <div class="price">${productData.Price}đ</div>
+                <h3 class="card-title">${product.name}</h3>
+                <div class="price">${product.price}đ</div>
                 <div class="size-product d-flex flex-column">
                     <div class="size-top d-flex justify-content-between">
                         <p class="card-subtitle">Kích thước:</p>
-                        <a href="#">Hướng dẫn chọn size</a>
+                        <a href="#" id="showSizeGuide">Hướng dẫn chọn size</a>
                     </div>
                     <div class="size-option">
-                        <ul style="margin: 10px;padding: 0px;">
+                        <ul id="sizeList" style="margin: 10px; padding: 0px;">
                             ${sizesHtml}
                         </ul>
+                        <div style="color: red; display: none;" id="requestChoseSize">
+                            Vui lòng chọn kích thước
+                        </div>
                     </div>
                 </div>
-                <div class="addCart d-flex product-detail" data-id="${productData.ProductID}" style="cursor: pointer;">
+                <div class="addCart d-flex product-detail" data-id="${product.id}"  style="cursor: pointer;" id="addCart">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10V6a3 3 0 0 1 3-3v0a3 3 0 0 1 3 3v4m3-2 .917 11.923A1 1 0 0 1 17.92 21H6.08a1 1 0 0 1-.997-1.077L6 8h12Z"/>
                     </svg>                              
@@ -81,7 +82,7 @@ class ProductDetailView {
                     <div class="features">
                         <p class="features-heading">Đặc điểm nổi bật</p>
                         <div class="features-listing">
-                           ${productData.Description}
+                           ${product.description}
                         </div>
                     </div>
                 </div>
@@ -93,6 +94,3 @@ class ProductDetailView {
 }
 
 export default ProductDetailView;
-
-
-

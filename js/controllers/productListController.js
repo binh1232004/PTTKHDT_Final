@@ -6,15 +6,33 @@ import CartController from './cartController.js';
 class ProductListController {
     constructor() {
         this.view = new ProductListView();
-        this.products = [];
+        this.products = {}; // Sử dụng đối tượng thay vì mảng
 
         this.init();
     }
 
     async init() {
         await this.fetchProducts();
+        this.preprocessSize();
         this.view.renderProducts(this.products);
-        this.view.bindAddToCart(this.handleAddToCart.bind(this));
+    }
+
+    preprocessSize() {
+        console.log("preprocessSize productListController");
+        Object.values(this.products).forEach(prd => {
+            let soldOut = true;
+            if (prd.size) {
+                for (let amount of Object.values(prd.size)) {
+                    if (amount > 0) {
+                        soldOut = false;
+                        break;
+                    }
+                }
+            }
+            if (soldOut) {
+                delete this.products[prd.id];
+            }
+        });
     }
 
     async fetchProducts() {
@@ -37,13 +55,8 @@ class ProductListController {
                 value.Size,
                 value.UpdateDate
             );
-            this.products.push(product);
+            this.products[childSnapshot.key] = product;
         });
-    }
-
-    handleAddToCart(productId) {
-        const cartController = new CartController();
-        cartController.addToCart(productId);
     }
 }
 

@@ -24,13 +24,9 @@ class CartPaymentView {
         cartItems.forEach(cart => {
             totalQuantity += cart.quantity;
             let product = null;
-            for (let p of products) {
-                if (p.id === cart.productID) {
-                    product = p;
-                    break;
-                }
-            }
+            let [proID, size] = cart.productID.split("-")
 
+            product = products[proID]
             if (!product) return;
 
             const divProduct = document.createElement("div");
@@ -41,26 +37,35 @@ class CartPaymentView {
                     <div class="row g-0">
                         <div class="col-xl-4 col-lg-5 col-sm-4 d-flex align-items-center">
                             <div class="d-flex align-items-center p-3">
-                                <input class="form-check-input m-0 me-2" type="checkbox" name="shopping_cart_items" id="inp-${cart.productID}">
+                                <input class="form-check-input m-0 me-2" type="checkbox" name="shopping_cart_items" id="inp_${cart.productID}">
                                 <img src="${product.imgURL}" class="img-fluid img-thumbnail" alt="Hình ảnh thẻ">
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-7 col-sm-8">
                             <div class="card-body">
-                                <h5 class="card-title">${product.name}</h5>
+                                <h5 class="card-title">
+                                    <a href="detail.html?id=${proID}" style="color: black; text-decoration: none;">
+                                        ${product.name}
+                                    </a>
+                                </h5>
                                 <div class="row">
                                     <div class="col">
                                         <label class="form-label">Số Lượng</label>
                                         <div class="input-group small-input-group">
-                                            <button id="minus-${cart.productID}" class="btn btn-outline-secondary button-minus" type="button" style="background-color: whitesmoke; border-right: 0;">
+                                            <button id="minus_${cart.productID}" class="btn btn-outline-secondary button-minus" type="button" style="background-color: whitesmoke; border-right: 0;">
                                                 <i class="fa-solid fa-minus"></i>
                                             </button>
-                                            <input id="amount-${cart.productID}" type="text" class="form-control input-number" value="${cart.quantity}" readonly style="background-color: whitesmoke;">
-                                            <button id="plus-${cart.productID}" class="btn btn-outline-secondary button-plus" type="button" style="background-color: whitesmoke; border-left: 0;">
+                                            <input id="amount_${cart.productID}" type="text" class="form-control input-number" value="${cart.quantity}" readonly style="background-color: whitesmoke;">
+                                            <button id="plus_${cart.productID}" class="btn btn-outline-secondary button-plus" type="button" style="background-color: whitesmoke; border-left: 0;">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </div>
-                                    </div>
+                                </div>
+                                
+                                <div class="col">
+                                    <label for="sizeSelect" class="form-label">Kích thước: ${size}</label>
+                                </div>
+
                                 </div>
                                 <div class="row mt-4">
                                     <div>
@@ -86,8 +91,9 @@ class CartPaymentView {
         this.listCartHTML.addEventListener('click', (event) => {
             if (event.target.closest('.button-plus') || event.target.closest('.button-minus')) {
                 const target = event.target.closest('.button-plus') || event.target.closest('.button-minus');
-                const productId = target.id.split('-')[1];
+                const productId = target.id.split('_')[1];
                 const type = target.classList.contains('button-plus') ? 'plus' : 'minus';
+                console.log(`${productId} - ${type}`)
                 handler(productId, type);
             }
         });
@@ -121,7 +127,7 @@ class CartPaymentView {
         const selectedItems = [];
         const checkboxes = this.listCartHTML.querySelectorAll('input[type="checkbox"]:checked');
         checkboxes.forEach(checkbox => {
-            const productId = checkbox.id.replace('inp-', '');
+            const productId = checkbox.id.replace('inp_', '');
             selectedItems.push(productId);
         });
         return selectedItems;
@@ -137,7 +143,7 @@ class CartPaymentView {
 
     setCheckedItems(checkedItems) {
         checkedItems.forEach(productId => {
-            const checkbox = this.listCartHTML.querySelector(`#inp-${productId}`);
+            const checkbox = this.listCartHTML.querySelector(`#inp_${productId}`);
             if (checkbox) checkbox.checked = true;
         });
     }
@@ -149,12 +155,22 @@ class CartPaymentView {
 
     showAlert(message, type) {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible" role="alert">
+        wrapper.innerHTML = 
+        `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
-        this.alertPlaceholder.append(wrapper);
+        const alertElement = wrapper.firstElementChild;
+        this.alertPlaceholder.append(alertElement);
+
+        // Remove the alert after 3 seconds
+        setTimeout(() => {
+            alertElement.classList.remove('show');
+            alertElement.classList.add('fade');
+            setTimeout(() => alertElement.remove(), 150); // Wait for fade out transition
+        }, 3000);
     }
+
 
     validateFormPayment() {
         let isValid = true;
