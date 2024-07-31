@@ -38,12 +38,15 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
+            <!-- Statistic  -->
             <li class="nav-item">
                 <a class="nav-link" href="statistic.html">
                     <i class="bi bi-menu-button-wide"></i>
                     <span>Thống kê</span>
                 </a>
             </li>
+            <!-- Statistic  -->
+
             <li class="nav-item">
                 <a class="nav-link" href="category.html">
                     <i class="bi bi-menu-button-wide"></i>
@@ -83,57 +86,15 @@
 
     </aside><!-- End Sidebar-->
     <main id="main" class="main">
+
+  <canvas id="salesChart"></canvas>
+    </main>
+    <!-- <main id="main" class="main">
         <div class="pagetitle">
             <h1>Danh mục</h1>
-        </div><!-- End Page Title -->
+        </div>
         <section class="section dashboard">
             <div class="row">
-<<<<<<< HEAD
-                <div class="card">
-                    <div class="card-body">
-                    <h5 class="card-title">Chỉnh sửa</h5>
-                        <!-- <div class="row mb-3">
-                            <span class="col-sm-2 col-form-label">Mã danh mục </span>
-                            
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="CateIdInp" disabled>
-                        </div> -->
-                        
-                        <div class="row mb-3">
-                            <span class="col-sm-2 col-form-label">Tên </span>
-                            
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="CateIdInp" disabled hidden>
-                            <input type="text" class="form-control" id="CateNameInp">
-                        </div>
-
-                        </div>
-                        
-                        <div class="text-center">
-                        <button class="btn btn-success" id="AddBtn">Thêm</button>
-                        <button class="btn btn-danger" id="DeleteBtn">Xóa</button>
-                        <button class="btn btn-primary" id="UpdateBtn">Sửa</button>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Recent Sales -->
-                <div class="card recent-sales overflow-auto">
-                    <div class="card-body">
-                    <h5 class="card-title">Danh sách</h5>
-                    <table class="table table-borderless datatable" id="categoryList">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Danh mục sản phẩm</th>
-                        </tr>
-                        </thead>
-                    
-                    </table>
-    
-                    </div>
-=======
-                <!-- Left side columns -->
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="card">
@@ -155,7 +116,6 @@
                             </div>
                         </div>
 
-                        <!-- Recent Sales -->
                         <div class="card recent-sales overflow-auto">
                             <div class="card-body">
                                 <h5 class="card-title">Danh sách</h5>
@@ -171,21 +131,23 @@
 
                             </div>
 
-                        </div><!-- End Recent Sales -->
+                        </div>
 
 
                     </div>
-                </div><!-- End Left side columns -->
->>>>>>> 112f5d1b5ff7b037e7c0aeef85ce575b4838aee1
+                </div>
 
             </div>
         </section>
 
-    </main><!-- End #main -->
+    </main> -->
+
+    <!-- End #main -->
+
+    <div>
+</div>
     <!--Icon & jquery-->
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
-<<<<<<< HEAD
-=======
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- DataTable -->
@@ -198,11 +160,15 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
-    <script type="module" src="./model/category.js"></script>
->>>>>>> 112f5d1b5ff7b037e7c0aeef85ce575b4838aee1
-    <script type="module" src="./js/category.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script type="module" src="./model/statistic.js" ></script>
     <script type="module" src="./js/adminLogout.js" defer></script>
-    <script type="module" src="../../public/js/redirect.js" defer></script>
+
+
+
+
 </body>
 
 </html>
