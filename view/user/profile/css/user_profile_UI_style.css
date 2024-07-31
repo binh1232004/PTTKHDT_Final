@@ -725,7 +725,8 @@ a:active{
     color: black;
     right: 1px;
     width: 400px;
-    border-width: 0px;
+    border-width: 1.5px;
+    border-radius: 5px;
 }
 .updbtn{
     margin-left: 36px;

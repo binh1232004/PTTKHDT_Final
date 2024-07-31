@@ -10,10 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="public/css/indexPage/style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="shark.png">
 
 </head>
 
 <body class="">
+    <div class="row">
+        <div class="col"></div>
+    </div>
     <div id="site-wrapper" class="site-wrapper">
         <!-- Header and login -->
         <header id="app">
@@ -186,8 +190,10 @@
                         </div>
                     </div>
                     <div class="cartTab">
-                        <h1>Shopping Cart</h1>
-                        <div class="listCart">
+                        <h1 style="font-weight: bold;">Shopping Cart <br>
+                            <hr>
+                        </h1>
+                        <div class="listCart" style="margin-top: 30px;">
                             <!---->
                         </div>
                         <div class="btn">
@@ -631,12 +637,11 @@
         </div>
     </div>
 
-
-
+    <div id="alertPlaceholder" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
 </body>
 <!-- <script src="public/js/cart.js" type="module" defer></script> -->
 <!-- <script src="js/category.js" type="module" defer></script> -->
-<script type="module" src="js/main.js"></script>
+<script type="module" src="js/home.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <!-- login -->

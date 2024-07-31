@@ -1,3 +1,9 @@
-import { UserProfile } from './userProfile.js';
+// user_profile_UI_js.js
+import UserProfile from './UserProfile.js';
 
-document.addEventListener('DOMContentLoaded', () => new UserProfile());
+const userId = localStorage.getItem('userID');
+if (userId) {
+  const userProfile = new UserProfile(userId);
+} else {
+  console.error("User ID not found in localStorage");
+}
