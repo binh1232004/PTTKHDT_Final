@@ -16,20 +16,6 @@ import {
     validateEmail,
     forgotpassbtnSubmit
 } from '../public/js/validateForm.js';
-// import {
-//     getAuth,
-//     createUserWithEmailAndPassword,
-//     connectAuthEmulator,
-//     signInWithEmailAndPassword,
-//     onAuthStateChanged,
-//     sendEmailVerification,
-//     GoogleAuthProvider,
-//     signInWithPopup,
-//     FacebookAuthProvider,
-//     sendPasswordResetEmail,
-//     signOut,
-// } from 'firebase/auth';
-
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -71,8 +57,6 @@ var isLoggin = false;
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-//Testing local
-//connectAuthEmulator(auth, 'https://localhost:9099');
 const writeUserData = (
     userID,
     address,
@@ -170,35 +154,6 @@ const getRoleUser = async (userID) => {
         return snapshot.val().Role;
     }
 };
-//
-//create a button sign out in hiddenlogin
-// document.getElementById("p2").style.color = "blue";
-// const monitorAuthState = async () => {
-//     onAuthStateChanged(auth, user => {
-//         // if user login
-//         if (user) {
-//             signInDialog.close();
-//             strLoginUID = user.uid;
-//             getRoleUser(strLoginUID).then((role) => {
-//                 if (role === true) {
-//                     window.location.href = '../view/admin/category.html';
-//                     console.log('admin');
-//                 } else {
-//                     //redirect to main page
-//                     // window.location.href = '../user/main.html';
-//                 }
-//             });
-//             isLoggin = true;
-//             console.log(strLoginUID)
-//         } else {
-//             //for log out action
-//             //switch to main page
-//             //console.log(user);
-//             isLoggin = false;
-//             console.log('log out');
-//         }
-//     });
-// };
 const loginElement = document.getElementById('index__log-in');
 const monitorAuthState = async () => {
     onAuthStateChanged(auth, user => {
@@ -342,6 +297,5 @@ const sendEmailResetPass = () => {
     }
 };
 forgotpassbtnSubmit.addEventListener('click', sendEmailResetPass);
-//logout
 
 export {strLoginUID};

@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
+import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import Utils from "../model/utils.js";
+const utils = new Utils();
 const firebaseConfig = {
     apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
     authDomain: "demosoftwaretechnology.firebaseapp.com",
@@ -25,45 +26,38 @@ let Phone = document.getElementById('Phone');
 let getTotal = document.getElementById('total-full');
 
 const db = getDatabase();
-$(document).ready(function() {
+$(document).ready(function () {
     var dataSet = [];
+    let objData = [];
     const dbref = ref(db);
     let cusID;
-    get(child(dbref, 'Orders')).then(async function(snapshot) {
-        let promises = [];
-
-        snapshot.forEach(function(childSnapshot) {
-            var value = childSnapshot.val();
-            cusID = value.UserID;
-            // Fetch user name asynchronously and push to dataSet once complete
-            let userPromise = get(child(dbref, 'User/' + value.UserID)).then((userSnapshot) => {
-                let userName; // Default name
-                if(userSnapshot.exists()) {
-                    userName = userSnapshot.val().FullName;
-                }
-                let checkStatus;
-                if(value.Status == true) {
-                    checkStatus = "Đã thanh toán";
-                }
-                else {
-                    checkStatus = "Chưa thanh toán";
-                }
-                dataSet.push([
-                    value.OrderID,
-                    userName,
-                    value.OrderDate,
-                    value.Total,
-                    checkStatus
-                ]);
-            }).catch((error) => {
-                console.error("Error fetching user data:", error);
+    get(child(dbref, 'orders')).then(async function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            let value = childSnapshot.val();
+            objData.push({
+                orderID: childSnapshot.key,
+                address: value.address,
+                email: value.email,
+                items: value.items,
+                name: value.name,
+                note: value.note,
+                orderDate: value.orderDate,
+                paymentMethod: value.paymentMethod,
+                phone: value.phone,
+                totalAmount: value.totalAmount,
+                userID: value.userID,
             });
-
-            promises.push(userPromise);
+            dataSet.push([
+                childSnapshot.key,
+                value.name,
+                value.orderDate,
+                value.totalAmount,
+                value.status == true ? "Đã thanh toán" : "Chưa thanh toán"
+            ]);
         });
-
+        console.log(objData);
         // Wait for all promises to complete
-        await Promise.all(promises);
+        // await Promise.all(promises);
         $('#table-order').DataTable({
             // DataTable options
             data: dataSet,
@@ -72,81 +66,39 @@ $(document).ready(function() {
                 { title: "Khách hàng" },
                 { title: "Ngày xuất hóa đơn" },
                 { title: "Thành tiền" },
-                { title: "Trạng thái"}
+                { title: "Trạng thái" }
             ],
-            rowCallback: function(row, data) {
-                $(row).on('click', function() {
+            rowCallback: function (row, data) {
+                $(row).on('click', function () {
+                    let indexRow = row._DT_RowIndex;
                     $('#order-detail tbody').remove();
                     ODID.innerText = data[0];
-                    var totalFull = 0;
-                    get(child(dbref, 'Orders/' + data[0])).then((snapshotOrder)=>{
-                        
-                        if(snapshotOrder.exists()) {
-                            get(child(dbref, 'User/' + snapshotOrder.val().UserID)).then((snapshotUser)=>{
-                                if(snapshotUser.exists()) {
-                                    Customer.innerText = snapshotUser.val().FullName;
-                                    Address.innerText = snapshotUser.val().Address;
-                                    Phone.innerText = snapshotUser.val().Phone;
-                                }
-                                else {
-                                    alert("User does not exist");
-                                }
-                            })
-                        }
-                        else {
-                            alert("Order does not exist");
-                        }
-                    })
-                    .catch((error)=>{
-                        alert("Unsuccessful");
-                        console.log(error);
-                    });
-                    get(child(dbref, 'OrderDetail/' + data[0])).then((snapshot)=>{
-                        if(snapshot.exists()) {
-                            let details = snapshot.val();
-                            for (let product in details) {
-                                
-                                let id = document.createElement('th');
-                                let namePro = document.createElement('td');
-                                let quantity = document.createElement('td');
-                                let price = document.createElement('td');
-                                let total = document.createElement('td');
-                                id.innerHTML = product;
-                                quantity.innerHTML = details[product];
-                                get(child(dbref, 'Product/' + product)).then((snapshot)=>{
-                                    if(snapshot.exists()) {
-                                        namePro.innerHTML = snapshot.val().Name;
-                                        price.innerHTML = snapshot.val().Price;
-                                        total.innerHTML = snapshot.val().Price * details[product];
-                                        totalFull += snapshot.val().Price * details[product];
-                                        getTotal.innerHTML = totalFull;
-                                    }
-                                    else {
-                                        alert("Product does not exist");
-                                    }
-                                })
-                                .catch((error)=>{
-                                    alert("Unsuccessful");
-                                    console.log(error);
-                                })
+                    let totalFull = 0;
+                    Customer.innerText = objData[indexRow].name;
+                    Address.innerText = objData[indexRow].address;
+                    Phone.innerText = objData[indexRow].phone;
+                    const details = objData[indexRow].items;
+                    for (let product in details) {
+                        let id = document.createElement('th');
+                        let namePro = document.createElement('td');
+                        let quantity = document.createElement('td');
+                        let price = document.createElement('td');
+                        let total = document.createElement('td');
+                        id.innerHTML = product;
+                        quantity.innerHTML = details[product]['quantity'];
+                        namePro.innerHTML = details[product]['item_name'];
+                        price.innerHTML = utils.formatToVND( details[product]['unit_price'] );
+                        total.innerHTML = utils.formatToVND( details[product]['total_price'] );
+                        totalFull += details[product]['total_price'];
+                        getTotal.innerHTML = utils.formatToVND( totalFull );
 
-                                let tr = document.createElement('tr');
-                                tr.append(id, namePro, quantity, price, total);
-                                let tbody = document.createElement('tbody');
-                                tbody.appendChild(tr);
-                                OrderDetail.append(tbody);
-                                
-                            }
-                        }
-                        else {
-                            alert("Product does not exist");
-                        }
-                    })
-                    .catch((error)=>{
-                        alert("Unsuccessful");
-                        console.log(error);
-                    });
-                    
+                        let tr = document.createElement('tr');
+                        tr.append(id, namePro, quantity, price, total);
+                        let tbody = document.createElement('tbody');
+                        tbody.appendChild(tr);
+                        OrderDetail.append(tbody);
+
+                    }
                 });
             }
         });
