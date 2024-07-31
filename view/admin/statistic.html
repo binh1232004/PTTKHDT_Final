@@ -18,7 +18,13 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- CSS -->
     <link rel="stylesheet" href="./css/admin.css">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- sheetjs -->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
 </head>
+
 
 <body>
     <!-- ======= Header ======= -->
@@ -87,65 +93,15 @@
     </aside><!-- End Sidebar-->
     <main id="main" class="main">
 
-  <canvas id="salesChart"></canvas>
+        <canvas id="salesChart"></canvas>
+        <button id="exportExcel" class="btn btn-outline-info btn-lg m-3">Chi tiết</button>
+        <button id="exportGraph" class="btn btn-outline-primary btn-lg m-3">Tải đồ thị</button>
     </main>
-    <!-- <main id="main" class="main">
-        <div class="pagetitle">
-            <h1>Danh mục</h1>
-        </div>
-        <section class="section dashboard">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Chỉnh sửa</h5>
-                                <div class="row mb-3">
-                                    <span class="col-sm-2 col-form-label">Tên </span>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="CateIdInp" disabled hidden>
-                                        <input type="text" class="form-control" id="CateNameInp">
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <button class="btn btn-success" id="AddBtn">Thêm</button>
-                                    <button class="btn btn-danger" id="DeleteBtn">Xóa</button>
-                                    <button class="btn btn-primary" id="UpdateBtn">Sửa</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card recent-sales overflow-auto">
-                            <div class="card-body">
-                                <h5 class="card-title">Danh sách</h5>
-                                <table class="table table-borderless datatable" id="categoryList">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Danh mục sản phẩm</th>
-                                        </tr>
-                                    </thead>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main> -->
 
     <!-- End #main -->
 
     <div>
-</div>
+    </div>
     <!--Icon & jquery-->
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -161,11 +117,9 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <script type="module" src="./model/statistic.js" ></script>
-    <script type="module" src="./js/adminLogout.js" defer></script>
 
+    <script type="module" src="./model/statistic.js" defer></script>
+    <script type="module" src="./js/adminLogout.js" defer></script>
 
 
 

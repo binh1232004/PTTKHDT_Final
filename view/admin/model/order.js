@@ -2,7 +2,7 @@ import { getDatabase, ref, get, set, runTransaction, child, update, remove } fro
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import Utils from "./utils.js";
 class Order {
-    constructor(){
+    constructor() {
         this.firebaseConfig = {
             apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
             authDomain: "demosoftwaretechnology.firebaseapp.com",
@@ -26,11 +26,64 @@ class Order {
                 snapshot.forEach(childSnapshot => {
                     let value = childSnapshot.val();
                     const { day } = this.utils.getDayMonthYearInOrder(value.orderDate);
-                    if (day ) {
-                        arrSales[day - 1] += value.totalAmount;
+                    if (day) {
+                        arrSales[day - 1] += parseInt( value.totalAmount );
                     }
                 });
                 resolve(arrSales);
+            });
+        });
+    }
+    getArrProduct() {
+        const dbref = ref(this.db);
+        return new Promise((resolve, reject) => {
+            get(child(dbref, 'orders')).then(snapshot => {
+                // arrProduct[id]: [item_name, quantity, total_price]
+                let arrProduct = [];
+                let totalSales = 0;
+                snapshot.forEach(childSnapshot => {
+                    let valueSnapShot = childSnapshot.val();
+                    for(let item in valueSnapShot.items){
+                        const key = item;
+                        const value = valueSnapShot.items[item];
+                        totalSales += value.total_price;
+                        if(arrProduct[key]){
+                            arrProduct[key][1] += value.quantity;
+                            arrProduct[key][2] += value.total_price;
+                        }
+                        else
+                            arrProduct[key] = [value.item_name, value.quantity, value.total_price];
+                    }
+                });
+                let highestSaleOnProduct = {
+                    name: '',
+                    total_price: 0
+                };
+                let highestSaleQuantityOnProduct = {
+                    name: '',
+                    quantity: 0
+                };
+                for(let item in arrProduct){
+                    const key = item;
+                    const value = arrProduct[item];
+                    if(value[2] > highestSaleOnProduct.total_price){
+                        highestSaleOnProduct.name = value[0];
+                        highestSaleOnProduct.id = key;
+                        highestSaleOnProduct.total_price = value[2];
+                    }
+                    if(value[1] > highestSaleQuantityOnProduct.quantity){
+                        highestSaleQuantityOnProduct.name = value[0];
+                        highestSaleQuantityOnProduct.id = key;
+                        highestSaleQuantityOnProduct.quantity = value[1];
+                    }
+                }
+                const objResolve = {
+                    arrProduct,
+                    totalSales,
+                    highestSaleOnProduct,
+                    highestSaleQuantityOnProduct
+                }
+                resolve(objResolve);
             });
         });
     }
