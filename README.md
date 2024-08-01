@@ -12,7 +12,7 @@ or
 yarn build
 ```
 
-conflict
+bộnủ
 ihihkbkjbk
 
 hvftjvkhgiỳyuỵggl
