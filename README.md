@@ -12,7 +12,7 @@ or
 yarn build
 ```
 
-hello conflict
+hello_conflict
 ihihkbkjbk
 
 hvftjvkhgiỳyuỵggl
