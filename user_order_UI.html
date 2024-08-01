@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="../../../public/css/indexPage/style.css">
-    <link rel="stylesheet" href="./css/user_profile_UI_style.css">
+    <link rel="stylesheet" href="./public/css/indexPage/style.css">
+    <link rel="stylesheet" href="./view/user/profile/css/user_profile_UI_style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>    
     <link rel="stylesheet" href="../../../public/css/indexPage/style.css">
-    <script type="module" src="./js/order.js" defer></script>
+    <script type="module" src="./view/user/profile/js/order.js" defer></script>
     <script src="./js/all.js"></script>
 
     <!-- Google Fonts -->
@@ -29,21 +29,211 @@
     <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.css">
 
-    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./view/admin/css/admin.css">
 </head>
 
 <body>
+
+    <header id="app">
+        <div class="container-fluid d-flex justify-content-between align-items-center"
+            style="padding-left: 64px; padding-right: 64px;">
+            <div class="d-none d-sm-flex">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><img src="images/logo-cm24-own-new.svg" alt="logo-cm24"
+                                style="height: 14px;"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><img src="images/logo-84rising-own.svg" alt="logo-84spring"
+                                style="height: 14px;"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><img src="images/logo-coolxprint.svg" alt="logo-cool"
+                                style="height: 14px;"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-none d-sm-flex">
+                <ul class="nav">
+                    <li class="nav-item d-none d-lg-block"><a href="#" class="nav-link">Tham gia FishClub</a></li>
+                    <li class="nav-item d-none d-lg-block"><a href="#" class="nav-link">Blog</a></li>
+                    <li class="nav-item d-none d-lg-block"><a href="#" class="nav-link">Trung tâm CSKH</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" id="index__log-in">Đăng nhập</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center topbar-promotion" style="background-color: #797979; color: #fff;" style="height: 32px;">
+            <div>
+                <a href="#" class="nav-link text-white d-flex">Nhập FISHTOP1 giảm 50K đơn từ 500K <img
+                        src="images/mceclip3_26.png" alt="khampha" style="height: 20px; margin-left: 5px;"></a>
+            </div>
+        </div>
+        <div class="container-fluid" style="background-color: #25222c; color: #fff;"  style="padding: 0 64px;">
+            <div class="row align-items-center">
+                <div class="col-6 col-xl-2">
+                    <nav class="navbar navbar-expand-xl navbar-light">
+                        <a href="../../../index.html" class="navbar-brand text-white d-none d-xl-block">FishBig</a>
+                        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarToggler">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </nav>
+                </div>
+                <div class=" col-lg-6 d-none d-xl-flex ">
+                    <nav class="navbar navbar-expand-xl navbar-light" style="padding: 0;">
+                        <div class="collapse navbar-collapse" id="navbarToggler">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center" style="height: 56px;">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle active text-white" href="#"
+                                        id="navbardropdownSale" aria-current="page" data-bs-toggle="dropdown">SALE</a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbardropdownSale">
+                                        <li><a href="#" class="dropdown-item text-white">Chương trình sale</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#"
+                                        data-bs-toggle="dropdown">SẢN
+                                        PHẨM</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">ÁO NAM</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">QUẦN NAM</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">PHỤ KIỆN
+                                                NAM</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle text-white text-uppercase"
+                                        data-bs-toggle="dropdown">ĐỒ LÓT</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO NHU
+                                                CẦU</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">ĐỒ
+                                        THỂ
+                                        THAO</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
+                                                TẬP</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#"
+                                        data-bs-toggle="dropdown">MẶC
+                                        HẰNG NGÀY</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
+                                                TẬP</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#"
+                                        data-bs-toggle="dropdown">NƯỚC
+                                        HOA</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
+                                                TẬP</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown d-none d-xxl-flex">
+                                    <a class="nav-link dropdown-toggle text-white" href="#"
+                                        data-bs-toggle="dropdown">SẢN
+                                        XUẤT RIÊNG</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
+                                                PHẨM</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
+                                                TẬP</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-6 col-xl-4 d-flex align-items-center justify-content-end">
+                    <div class="header-actions-search d-none d-xl-block" style="width: 70%;">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                    <div class="header-actions-button">
+                        <!-- <a id="user__profile" href="./view/user/profile/user_profile_UI.html"><i class="fa-solid fa-user p-2 text-white"></i></a> -->
+                        <a id="user__profile" href="/user_profile_UI.html"><i class="fa-solid fa-user p-2 text-white"
+                                style="cursor: pointer;"></i></a>
+                    </div>
+                    <div class="icon-cart" style="cursor: pointer;">
+                        <i class="fa-solid fa-cart-shopping p-2 text-white"></i>
+                        <span>0</span>
+                    </div>
+                </div>
+                <div class="cartTab">
+                    <h1 style="font-weight: bold;">Shopping Cart <br>
+                        <hr>
+                    </h1>
+                    <div class="listCart" style="margin-top: 30px;">
+                        <!---->
+                    </div>
+                    <div class="btn">
+                        <button class="close">CLOSE</button>
+                        <button class="makePayment">MAKE PAYMENT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </header> 
    
     <div class="container_p">
         <div class="sidebar_user">
             <!--a href="\view\user\profile\user_profile_UI.html"-->
-            <a id="go_profile" href="../profile/user_profile_UI.html" style="text-decoration: none;color:black">
+            <a id="go_profile" href="/user_profile_UI.html" style="text-decoration: none;color:black">
                 <span  class="circle">
                     <img class="img" src="https://mcdn.coolmate.me/image/September2023/mceclip6_34.png">
                 </span>
                 Thông tin tài khoản
             </a>
-            <a href="../profile/user_profile_UI.html" style="text-decoration: none;color:black">
+            <a href="/user_order_UI.html" style="text-decoration: none;color:black">
                 <span>
                     <img class="img" src="https://mcdn.coolmate.me/image/September2023/mceclip5_85.png">
                 </span>
@@ -142,106 +332,95 @@
     </div>
 
     <!--footer-->
-    <div class="footer">
-        <section class="footer">
-            <div class="myfooter container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h5>Chúng tôi lắng nghe bạn</h5>
-                        <p>Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa </p>
-                        <button class="btn-footer btn" type="button" style="margin-top: 20px;">Đóng góp ý kiến</button>
+    <footer style="margin-top: 100px;">
+        <div class="container-fluid d-flex flex-column" style="background-color: #1f1d26; color: #fff;" style="padding-left: 64px;padding-right: 64px">
+            <div class="d-flex row " style="margin: 30px 0px;;">
+                <div class="d-flex row row-cols-lg-3">
+                    <div class="d-flex flex-column">
+                        <h5 class="fs-5 text-white">Chúng tôi lắng nghe bạn!</h5>
+                        <p style="font-size: 12px;color: #999999;">Chúng tôi luôn trân trọng và mong đợi nhận được
+                            mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt
+                            hơn nữa </p>
+                        <button class="btn-footer">Đóng góp ý kiến</button>
                     </div>
-                    <div class="col-md-4" style="margin-top: 20px;font-size: 15px;">
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-3" style="text-align: right;">
-                                        <div class="fs-2">
-                                        <i class="fa-solid fa-phone"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">Hotline <br>
-                                        <strong>0123456789</strong> <br>
-                                        <strong>&#40</strong><strong>6:00 - 18:00&#41</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-3" style="text-align: right;">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column row-cols-lg-2" style="margin-left: 10px;">
+                            <div class="row" style="width: 100%;">
+                                <div class="col-6" style="width: 75px;">
                                     <div class="fs-2">
-                                    <i class="fa-solid fa-envelope"></i>
+                                        <i class="fa-solid fa-phone text-white"></i>
                                     </div>
                                 </div>
-                                <div class="col-9">Email <br>
-                                    <strong>0123456789@gmail.com</strong>
+                                <div class="col-6 text-white" style="width: 50%;">
+                                    Hotline <br>
+                                    0123456789 <br>
+                                    <b>&#40</b>6:00 - 18:00 <b>&#41</b>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%;">
+                                <div class="col-6" style="width: 75px;">
+                                    <div class="fs-2">
+                                        <i class="fa-solid fa-envelope text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-white">
+                                    Email
+                                    0123456789@gmail.com
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-top: 60px;">
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="fs-2"><i class="fa-brands fa-facebook"></i></div>
-                            </div>
-                            <div class="col-3">
-                                <div class="fs-2"><i class="fa-brands fa-youtube"></i></div>
-                            </div>
-                            <div class="col-3">
-                                <div class="fs-2"><i class="fa-brands fa-square-instagram"></i></div>
-                            </div>
-                            <div class="col-3">
-                                <div class="fs-2"><i class="fa-brands fa-tiktok"></i></div>
-                            </div>
-                        </div>
+                    <div class="d-flex align-items-center flex-row justify-content-between"
+                        style="margin-top: 5px;">
+                        <div class=""><i class="fa-brands fa-facebook text-white fs-1"></i></div>
+                        <div class=""><i class="fa-brands fa-youtube text-white fs-1"></i></div>
+                        <div class=""><i class="fa-brands fa-square-instagram text-white fs-1"></i></div>
+                        <div class=""><i class="fa-brands fa-tiktok text-white fs-1"></i></div>
                     </div>
                 </div>
-
-                <hr>
-                <div class="row">
-                    <div class="col-3">
-                        <p>CHÍNH SÁCH</p>
-                        <ul class="list-menu">
+            </div>
+            <hr style="color: white;">
+            <div class="d-flex row align-items-center justify-content-between" style="margin: 0px;">
+                <div class="col-3 text-white">
+                    <p class="text-uppercase">CHÍNH SÁCH</p>
+                    <ul class="list-menu">
                         <li class="li-menu"><a href="#" title="">Chính sách đổi trả 16 ngày</a></li>
                         <li class="li-menu"><a href="#" title="">Chính sách khuyến mãi</a></li>
                         <li class="li-menu"><a href="#" title="">Chính sách bảo mật</a></li>
                         <li class="li-menu"><a href="#" title="">Chính sách giao hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <p>CHĂM SÓC KHÁCH HÀNG</p>
-                        <ul class="list-menu">
+                    </ul>
+                </div>
+                <div class="col-3 text-white" style="height:152px">
+                    <p class="text-uppercase">CHĂM SÓC KHÁCH HÀNG</p>
+                    <ul class="list-menu">
                         <li class="li-menu"><a href="#" title="">Trải nghiệm mua sắm 100% hài lòng</a></li>
                         <li class="li-menu"><a href="#" title="">Hỏi đáp - FAQs</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <p>TÀI LIỆU - TUYỂN DỤNG</p>
-                        <ul class="list-menu">
+                    </ul>
+                </div>
+                <div class="col-3 text-white" style="height:152px">
+                    <p class="text-uppercase">TÀI LIỆU - TUYỂN DỤNG</p>
+                    <ul class="list-menu">
                         <li class="li-menu"><a href="#" title="">Tuyển dụng</a></li>
                         <li class="li-menu"><a href="#" title="">Đăng ký bản quyền</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3">
-                        <p>ĐỊA CHỈ LIÊN HỆ</p>
-                        <ul class="list-menu">
+                    </ul>
+                </div>
+                <div class="col-3 text-white" style="height:152px">
+                    <p class="text-uppercase">ĐỊA CHỈ LIÊN HỆ</p>
+                    <ul class="list-menu">
                         <li class="li-menu"><a href="#" title="">Đoán xem</a></li>
-                        </ul>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col">
-                        <p>@CÔNG TY TNHH CNPM</p>
-                        <p>Mã số doanh nghiệp: 0108617038. Giấy chứng nhận đăng ký doanh nghiệp do Sở Kế hoạch và Đầu tư TP Hà Nội cấp lần đầu ngày 20/02/2019.</p>
-                        </div>
-                    </div>
+                    </ul>
                 </div>
             </div>
-        </section>
-    </div>
+            <hr style="color: white;">
+            <div class="row d-flex" style="margin: 0px;">
+                <div class="col end-footer">
+                    <p class="text-white">@CÔNG TY TNHH CNPM</p>
+                    <p class="text-white">Mã số doanh nghiệp: 0108617038. Giấy chứng nhận đăng ký doanh nghiệp do Sở
+                        Kế hoạch và Đầu tư TP Hà Nội cấp lần đầu ngày 20/02/2019.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Login -->
      <dialog id="dialog__sign-in" class="dialog__popup">
@@ -475,6 +654,6 @@
         // });
     </script>
 
-    
-    <script src="./js/tiny.js"></script>
+    <script type= "module" src="/js/header.js"> </script>
+    <script src="./view/user/profile/js/tiny.js"></script>
 </html>

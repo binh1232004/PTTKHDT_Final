@@ -726,7 +726,8 @@ a:active{
     right: 1px;
     width: 400px;
     border-width: 1.5px;
-    border-radius: 5px;
+    border-radius: 8px;
+    text-indent: 10px;
 }
 .updbtn{
     margin-left: 36px;

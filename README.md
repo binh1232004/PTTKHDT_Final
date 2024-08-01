@@ -13,10 +13,6 @@ yarn build
 ```
 
 to bundle your application
+ihihkbkjbk
 
-
-Hello i am Binh
-
-Hi, (ghi rat dai`)
-
-Le hong anh
+hvftjvkhgiỳyuỵggl
