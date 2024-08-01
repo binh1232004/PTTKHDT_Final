@@ -56,14 +56,12 @@ class OrderManager {
                 childSnapshot.key,
                 value.name,
                 value.orderDate,
-                value.totalAmount,
+                this.utils.formatToVND( value.totalAmount ),
                 value.status == true ? "Đã thanh toán" : "Chưa thanh toán"
             ]);
         });
-
         return { objData, dataSet };
     }
-
     initDataTable(dataSet, objData) {
         $('#table-order').DataTable({
             data: dataSet,

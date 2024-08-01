@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
 
-    <script type="module" src="./js/order.js" defer></script>
-    <script src="./js/all.js"></script>
+    <script type="module" src="./model/orderManager.js" defer></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -28,11 +30,11 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-        <a href="product.html" class="logo d-flex align-items-center">
-            <img src="" alt="">
-            <span class="d-none d-lg-block">FishBigAdmin</span>
-        </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
+            <a href="product.html" class="logo d-flex align-items-center">
+                <img src="" alt="">
+                <span class="d-none d-lg-block">FishBigAdmin</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
     </header><!-- End Header -->
@@ -42,40 +44,40 @@
 
         <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="category.html">
-                <i class="bi bi-menu-button-wide"></i>
-                <span>Danh mục</span>
-            </a>
-        </li><!-- Category Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="category.html">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Danh mục</span>
+                </a>
+            </li><!-- Category Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="product.html">
-                <i class="bi bi-basket2"></i>
-                <span>Sản phẩm</span>
-            </a>
-        </li><!-- Category Nav --> 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="product.html">
+                    <i class="bi bi-basket2"></i>
+                    <span>Sản phẩm</span>
+                </a>
+            </li><!-- Category Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link" href="order.html">
-                <i class="bi bi-receipt"></i>
-                <span>Hóa đơn</span>
-            </a>
-        </li><!-- Bill Nav -->
+            <li class="nav-item">
+                <a class="nav-link" href="order.html">
+                    <i class="bi bi-receipt"></i>
+                    <span>Hóa đơn</span>
+                </a>
+            </li><!-- Bill Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="user.html">
-                <i class="bi bi-people"></i>
-                <span>Quản lý người dùng</span>
-            </a>
-        </li><!-- User Management Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="user.html">
+                    <i class="bi bi-people"></i>
+                    <span>Quản lý người dùng</span>
+                </a>
+            </li><!-- User Management Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" id="admin__sign-out">
-            <i class="bi bi-box-arrow-in-right"></i>
-            <span>Sign Out</span>
-            </a>
-        </li><!-- End Login Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" id="admin__sign-out">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Sign Out</span>
+                </a>
+            </li><!-- End Login Page Nav -->
 
         </ul>
 
@@ -90,12 +92,12 @@
                             <h5 class="card-title">Danh sách hóa đơn</h5>
                             <table class="table table-borderless datatable" id="table-order">
                                 <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Khách hàng</th>
-                                    <th>Ngày xuất hóa đơn</th>
-                                    <th>Thành tiền</th>
-                                </tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Khách hàng</th>
+                                        <th>Ngày xuất hóa đơn</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
 
@@ -111,7 +113,7 @@
                                 <h5 class="card-title col-sm-6">Chi tiết hóa đơn</h5>
                                 <h5 class="card-title col-sm-6" id="ODID"></h5>
                             </div>
-                            
+
 
                             <div class="row">
                                 <p class="col-sm-4">Khách hàng</p>
@@ -129,13 +131,13 @@
 
                             <table class="table table-borderless datatable" id="order-detail">
                                 <thead>
-                                <tr>
-                                    <th scope="col">Mã</th>
-                                    <th scope="col">Sản phẩm</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Đơn giá</th>
-                                    <th scope="col">Thành tiền</th>
-                                </tr>
+                                    <tr>
+                                        <th scope="col">Mã</th>
+                                        <th scope="col">Sản phẩm</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Đơn giá</th>
+                                        <th scope="col">Thành tiền</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
 
@@ -152,9 +154,9 @@
                 </div>
             </div>
         </section><!-- End Recent Sales -->
-    
+
     </main><!-- End #main -->
-    
+
     <script src="vendor/apexcharts/apexcharts.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/chart.js/chart.umd.js"></script>
@@ -180,4 +182,5 @@
     <script src="./js/tiny.js"></script>
     <script src="./js/main.js"></script>
 </body>
+
 </html>
