@@ -12,7 +12,7 @@ or
 yarn build
 ```
 
-to bundle your application
+to bundle your (conflict) application
 ihihkbkjbk
 
 hvftjvkhgiỳyuỵggl

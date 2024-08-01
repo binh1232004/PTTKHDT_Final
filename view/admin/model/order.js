@@ -16,6 +16,7 @@ class Order {
         const app = initializeApp(this.firebaseConfig);
         this.db = getDatabase();
         this.utils = new Utils();
+        this.currentMonnth = new Date().getMonth() + 1;
     }
     getArrSalesOnEachDayInOneMonth(month, year) {
         const dbref = ref(this.db);
@@ -25,8 +26,8 @@ class Order {
             get(child(dbref, 'orders')).then(snapshot => {
                 snapshot.forEach(childSnapshot => {
                     let value = childSnapshot.val();
-                    const { day } = this.utils.getDayMonthYearInOrder(value.orderDate);
-                    if (day) {
+                    const { day, month } = this.utils.getDayMonthYearInOrder(value.orderDate);
+                    if (day && month == this.currentMonnth) {
                         arrSales[day - 1] += parseInt( value.totalAmount );
                     }
                 });
@@ -43,6 +44,7 @@ class Order {
                 let totalSales = 0;
                 snapshot.forEach(childSnapshot => {
                     let valueSnapShot = childSnapshot.val();
+if(value.totalAmount){ 
                     for(let item in valueSnapShot.items){
                         const key = item;
                         const value = valueSnapShot.items[item];
@@ -54,6 +56,7 @@ class Order {
                         else
                             arrProduct[key] = [value.item_name, value.quantity, value.total_price];
                     }
+ }
                 });
                 let highestSaleOnProduct = {
                     name: '',

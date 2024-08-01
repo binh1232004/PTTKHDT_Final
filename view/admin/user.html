@@ -38,6 +38,12 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="statistic.html">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Thống kê</span>
+                </a>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="category.html">
@@ -82,76 +88,76 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
-                    <h5 class="card-title">Tài khoản</h5>
-                    <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Email</span>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="UserID" hidden disabled>
-                            <input type="email" class="form-control" id="EmailInp">
+                        <h5 class="card-title">Tài khoản</h5>
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Email</span>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="UserID" hidden disabled>
+                                <input type="email" class="form-control" id="EmailInp">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Họ tên</span>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="UserInp">
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Họ tên</span>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="UserInp">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Địa chỉ</span>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="AddressInp">
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Địa chỉ</span>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="AddressInp">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
-                        <div class="col-sm-10">
-                            <!-- <p id="current-time" class="form-control"></p> -->     
-                            <input type="date" class="form-control" id="current-time">
+                        <div class="row mb-3">
+                            <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-10">
+                                <!-- <p id="current-time" class="form-control"></p> -->
+                                <input type="date" class="form-control" id="current-time">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Số điện thoại</span>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="PhoneInp">
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Số điện thoại</span>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="PhoneInp">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Loại tài khoản</span>
-                        <div class="col-sm-10">
-                            <select class="form-select" aria-label="Default select example" id="RoleInp">
-                                <option value="admin">admin</option>
-                                <option value="user">user</option>
-                            </select>
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Loại tài khoản</span>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Default select example" id="RoleInp">
+                                    <option value="admin">admin</option>
+                                    <option value="user">user</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                        
-                    <div class="text-center">
-                        <button class="btn btn-success" id="AddBtn">Thêm</button>
-                        <button class="btn btn-danger" id="DeleteBtn">Xóa</button>
-                        <button class="btn btn-primary" id="UpdateBtn">Sửa</button>
+
+                        <div class="text-center">
+                            <button class="btn btn-success" id="AddBtn">Thêm</button>
+                            <button class="btn btn-danger" id="DeleteBtn">Xóa</button>
+                            <button class="btn btn-primary" id="UpdateBtn">Sửa</button>
                         </div>
                     </div>
                 </div>
-    
+
                 <!-- Recent Sales -->
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
-                    <h5 class="card-title">Danh sách</h5>
-                    <table class="table table-borderless datatable" id="userList">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tên người dùng</th>
-                            <th scope="col">Phân quyền</th>
-                        </tr>
-                        </thead>
-                    
-                    </table>
-    
+                        <h5 class="card-title">Danh sách</h5>
+                        <table class="table table-borderless datatable" id="userList">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Tên người dùng</th>
+                                    <th scope="col">Phân quyền</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+
                     </div>
 
-            </div>
+                </div>
         </section>
 
     </main><!-- End #main -->
