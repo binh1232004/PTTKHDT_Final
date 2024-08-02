@@ -81,7 +81,7 @@ class CartPaymentController {
     async handleQuantityChange(productId, type) {
         const currentQuantity = this.user.cart[productId];
         let [proID, sizeCart] = productId.split('-')
-        if (currentQuantity == this.products[`${proID}`][`size`][`${sizeCart}`] && type == 'plus'){
+        if (currentQuantity == this.products[`${proID}`][`size`][`${sizeCart}`] && type == 'plus') {
             this.view.showAlert("Số lượng bạn yêu cầu hiện không có sẵn", "info")
             return;
         }
@@ -133,11 +133,6 @@ class CartPaymentController {
         this.view.showAlert('Xóa sản phẩm thành công', 'success');
     }
 
-    extractNumber(inputString) {
-        // Sử dụng biểu thức chính quy để tìm tất cả các ký tự số
-        const numberString = inputString.match(/\d+/g).join('');
-        return numberString;
-    }
     getVietnamDate() {
         let now = new Date();
         let vietnamTimeOffset = 7 * 60 * 60 * 1000; // Giờ Việt Nam là GMT+7
@@ -153,29 +148,31 @@ class CartPaymentController {
             this.view.totalPriceElement.innerHTML = "CHỌN SẢN PHẨM THANH TOÁN";
             return;
         }
-        let TotalOrder = this.extractNumber(this.view.totalPriceElement.innerText)
 
-        const selectedProvinces = document.querySelector('#provinces').selectedOptions[0].innerText;
-        const selectedDistricts = document.querySelector('#districts').selectedOptions[0].innerText;
-        const selectedWards = document.querySelector('#wards').selectedOptions[0].innerText;
+        // const TotalOrder = document.getElementById('totalPrice').dataset.vnd;
+        // const selectedProvinces = document.querySelector('#provinces').selectedOptions[0].innerText;
+        // const selectedDistricts = document.querySelector('#districts').selectedOptions[0].innerText;
+        // const selectedWards = document.querySelector('#wards').selectedOptions[0].innerText;
+        // const selectedStreets = document.getElementById('street').value;
+        const methodPay = 'PayPal';
 
         const orderData = new Order(
             this.userId,
             document.getElementById('name_recipient').value,
             document.getElementById('phoneNumber_recipient').value,
             document.getElementById('email_recipient').value,
-            `${document.getElementById('street').value}, ${selectedWards}, ${selectedDistricts}, ${selectedProvinces}`,
+            `${document.getElementById('street').value}, ${document.querySelector('#wards').selectedOptions[0].innerText}, ${document.querySelector('#districts').selectedOptions[0].innerText}, ${document.querySelector('#provinces').selectedOptions[0].innerText}`,
             document.getElementById('note').value,
-            document.querySelector('input[name="payments"]:checked').value,
+            methodPay,
             this.getVietnamDate(),
-            TotalOrder,
+            document.getElementById('totalPrice').dataset.vnd,
             {}
         );
 
         selectedItems.forEach(prdIDSize => {
-            let [idPrd, sizePrd] = prdIDSize.split('-')
+            let [idPrd, sizePrd] = prdIDSize.split('-');
 
-            const product = this.products[idPrd]
+            const product = this.products[idPrd];
             if (product) {
                 orderData.items[prdIDSize] = {
                     item_name: product.name,
@@ -187,31 +184,69 @@ class CartPaymentController {
             }
         });
 
-        console.log(orderData)
+        console.log(orderData);
 
         try {
-            // Tạo hóa đơn
-            await FirebaseService.pushData(FirebaseService.getRef('orders'), orderData);
+            document.getElementById("btnMakePayment").style.display = "none"
 
-            // Cập nhật số lượng theo size của sản phẩm
-            for (const prdIDSize of selectedItems) {
-                let [idPrd, sizePrd] = prdIDSize.split('-');
-                let newQuantity = this.products[idPrd].size[sizePrd] - this.user.cart[prdIDSize];
-                await FirebaseService.updateData(FirebaseService.getRef(`Product/${idPrd}/Size`), { [sizePrd]: newQuantity });
-            }
+            // Tạo hóa đơn trên PayPal
+            // let usdAmount = document.getElementById('totalPrice').dataset.usd;
 
-            // Xóa các sản phẩm đã thanh toán ra khỏi giỏ hàng
-            for (const productId of selectedItems) {
-                await FirebaseService.removeData(FirebaseService.getRef(`User/${this.userId}/Cart/${productId}`));
-                delete this.user.cart[productId];
-            }
+            paypal.Buttons({
+                createOrder: (data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: document.getElementById('totalPrice').dataset.usd
+                            },
+                            shipping: {
+                                address: {
+                                    address_line_1: document.getElementById('street').value,
+                                    address_line_2: document.querySelector('#wards').selectedOptions[0].innerText,
+                                    admin_area_2: document.querySelector('#districts').selectedOptions[0].innerText,
+                                    admin_area_1: document.querySelector('#provinces').selectedOptions[0].innerText,
+                                    postal_code: '000000', // PayPal yêu cầu mã bưu điện, bạn có thể đặt một giá trị giả định
+                                    country_code: 'VN' // Mã quốc gia Việt Nam
+                                }
+                            }
+                        }]
+                    });
+                },
+                onApprove: (data, actions) => {
+                    return actions.order.capture().then(async (details) => {
+                        try {
+                            // Lưu đơn hàng vào Firebase
+                            await FirebaseService.pushData(FirebaseService.getRef('orders'), orderData);
 
-            // Gọi hàm cập nhật giỏ hàng và hiển thị thông báo
-            this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
-            this.updateTotalPrice();
-            this.view.showAlert('Đặt hàng thành công', 'success');
+                            // Cập nhật số lượng theo size của sản phẩm
+                            for (const prdIDSize of selectedItems) {
+                                let [idPrd, sizePrd] = prdIDSize.split('-');
+                                let newQuantity = this.products[idPrd].size[sizePrd] - this.user.cart[prdIDSize];
+                                await FirebaseService.updateData(FirebaseService.getRef(`Product/${idPrd}/Size`), { [sizePrd]: newQuantity });
+                            }
+
+                            // Xóa các sản phẩm đã thanh toán ra khỏi giỏ hàng
+                            for (const productId of selectedItems) {
+                                await FirebaseService.removeData(FirebaseService.getRef(`User/${this.userId}/Cart/${productId}`));
+                                delete this.user.cart[productId];
+                            }
+
+                            // Gọi hàm cập nhật giỏ hàng và hiển thị thông báo
+                            this.view.renderCart(Object.entries(this.user.cart).map(([productID, quantity]) => ({ productID, quantity })), this.products);
+                            this.updateTotalPrice();
+                            this.view.showAlert('Thanh toán thành công', 'success');
+
+                            // Ẩn nút PayPal
+                            document.getElementById('paypal-button-container').innerHTML = '';
+                            document.getElementById("btnMakePayment").style.display = "block";
+                        } catch (error) {
+                            this.view.showAlert('Thanh toán thất bại', 'danger');
+                        }
+                    });
+                }
+            }).render('#paypal-button-container');
         } catch (error) {
-            this.view.showAlert('Đặt hàng thất bại', 'danger');
+            this.view.showAlert('Thanh toán thất bại', 'danger');
         }
     }
 

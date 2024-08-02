@@ -29,23 +29,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
 
-    let userProfile = document.getElementById('user__profile');
-    let path = '';
+    // let userProfile = document.getElementById('user__profile');
+    // let path = '';
 
-    userProfile.addEventListener('click', () => {
-        if (isLoggedIn()) {
-            console.log('user');
-            path = "./view/user/profile/user_profile_UI.html";
-            window.location.href = path;
+    // userProfile.addEventListener('click', () => {
+    //     if (isLoggedIn()) {
+    //         console.log('user');
+    //         path = "./view/user/profile/user_profile_UI.html";
+    //         window.location.href = path;
 
-        }
-        else {
-            signInDialog.showModal();
-            signInDialog.addEventListener('close', () => {
-                if (isLoggedIn()) {
-                    cartController.view.toggleCart();
-                }
-            }, { once: true });
-        }
-    })
+    //     }
+    //     else {
+    //         // signInDialog.showModal();
+    //         return;
+    //         for (let i = 0; i < 10000000; i++)
+    //             console.log(i)
+    //         // signInDialog.addEventListener('close', () => {
+    //         //     if (isLoggedIn()) {
+    //         //         cartController.view.toggleCart();
+    //         //     }
+    //         // }, { once: true });
+    //     }
+    // })
 });

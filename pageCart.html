@@ -471,62 +471,64 @@
                     <label for="note" class="form-label">Ghi chú</label>
                     <input type="text" class="form-control" id="note" placeholder="Ví dụ: Giao hàng giờ hành chính">
                 </div>
+                <div style="display: none;">
+                    <div class="mb-3 mt-4">
+                        <h2 id="paymentMethod">Hình thức thanh toán</h2>
+                    </div>
 
-                <div class="mb-3 mt-4">
-                    <h2 id="paymentMethod">Hình thức thanh toán</h2>
-                </div>
-
-                <div class="row mb-3 mx-1 custom-color">
-                    <div class="col">
-                        <div class="form-check d-flex align-items-center">
-                            <input class="form-check-input" type="radio" name="payments" id="cod" value="cod">
-                            <label class="form-check-label ms-2" for="cod">
-                                <img src="images/logo/LogoCOD.png" alt="COD"> COD thanh toán khi nhận hàng
-                            </label>
+                    <div class="row mb-3 mx-1 custom-color">
+                        <div class="col">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="payments" id="cod" value="cod">
+                                <label class="form-check-label ms-2" for="cod">
+                                    <img src="images/logo/LogoCOD.png" alt="COD"> COD thanh toán khi nhận hàng
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mb-3 mx-1 custom-color">
-                    <div class="col">
-                        <div class="form-check d-flex align-items-center">
-                            <input class="form-check-input" type="radio" name="payments" id="momo" value="momo">
-                            <label class="form-check-label ms-2" for="momo">
-                                <img src="images/logo/logoMoMo.png" alt="MoMo"> Thanh Toán MoMo
-                            </label>
+                    <div class="row mb-3 mx-1 custom-color">
+                        <div class="col">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="payments" id="momo" value="momo">
+                                <label class="form-check-label ms-2" for="momo">
+                                    <img src="images/logo/logoMoMo.png" alt="MoMo"> Thanh Toán MoMo
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mb-3 mx-1 custom-color">
-                    <div class="col">
-                        <div class="form-check d-flex align-items-center">
-                            <input class="form-check-input" type="radio" name="payments" id="zalopay" value="zalopay">
-                            <label class="form-check-label ms-2" for="zalopay">
-                                <img src="images/logo/logoZaloPay.png" alt="ZaloPay"> Ví điện tử ZaloPay
-                            </label>
+                    <div class="row mb-3 mx-1 custom-color">
+                        <div class="col">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="payments" id="zalopay"
+                                    value="zalopay">
+                                <label class="form-check-label ms-2" for="zalopay">
+                                    <img src="images/logo/logoZaloPay.png" alt="ZaloPay"> Ví điện tử ZaloPay
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mb-3 mx-1 custom-color">
-                    <div class="col">
-                        <div class="form-check d-flex align-items-center">
-                            <input class="form-check-input" type="radio" name="payments" id="vnpay" value="vnpay">
-                            <label class="form-check-label ms-2" for="vnpay">
-                                <img src="images/logo/logoVNPay.png" alt="VNPAY"> Ví điện tử VNPAY
-                            </label>
+                    <div class="row mb-3 mx-1 custom-color">
+                        <div class="col">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="payments" id="vnpay" value="vnpay">
+                                <label class="form-check-label ms-2" for="vnpay">
+                                    <img src="images/logo/logoVNPay.png" alt="VNPAY"> Ví điện tử VNPAY
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mb-3 mx-1 custom-color">
-                    <div class="col">
-                        <div class="form-check d-flex align-items-center">
-                            <input class="form-check-input" type="radio" name="payments" id="qrbank" value="qrbank">
-                            <label class="form-check-label ms-2" for="qrbank">
-                                <img src="images/logo/QR.png" alt="QR"> Quét QR & Thanh toán bằng ứng dụng ngân hàng
-                            </label>
+                    <div class="row mb-3 mx-1 custom-color">
+                        <div class="col">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="payments" id="qrbank" value="qrbank">
+                                <label class="form-check-label ms-2" for="qrbank">
+                                    <img src="images/logo/QR.png" alt="QR"> Quét QR & Thanh toán bằng ứng dụng ngân hàng
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -567,8 +569,9 @@
                     <div class="d-flex align-items-center">
                         <div class="p-2">
                             <button type="button" class="btn btn-dark" id="btnMakePayment"><b>THANH TOÁN</b></button>
+                            <div id="paypal-button-container"></div>
                         </div>
-                        <div class="p-2" style="font-size: larger; font-weight: bold;" id="totalPrice">CHỌN SẢN PHẨM
+                        <div class="p-2" style="font-size: larger; font-weight: bold;" id="totalPrice"  data-vnd="" data-usd="">CHỌN SẢN PHẨM
                             THANH TOÁN</div>
                     </div>
                 </div>
@@ -667,7 +670,10 @@
         </footer>
     </div>
     <div id="alertPlaceholder" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+    <div id="paypal-button-container"></div>
 
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AVBZsjY9BqVb42r_GX3u-f9bwXq-ALyiPdCXZdcGXXuRQFAPpvaXBapjIUCi63Y2BJ26bfJQxXsLfOY9&currency=USD&disable-funding=card"></script>
 
     <!-- <script src="public/js/pageCart.js"></script> -->
     <script type="module" src="js/payment.js"></script>

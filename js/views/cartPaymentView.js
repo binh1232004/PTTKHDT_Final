@@ -134,10 +134,17 @@ class CartPaymentView {
     }
 
     updateTotalPrice(totalPrice) {
-        this.totalPriceElement.innerHTML = `TỔNG TIỀN: ${this.formatPrice(totalPrice)}`;
+        this.totalPriceElement.dataset.vnd = totalPrice;
+        let usdAmount = (totalPrice * 0.000040).toFixed(2);
+        this.totalPriceElement.dataset.usd = usdAmount;
+        
+        usdAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usdAmount);
+        this.totalPriceElement.innerHTML = `TỔNG TIỀN: ${this.formatPrice(totalPrice)} <br> ~ ${usdAmount} USD`;
     }
 
     showSelectItemsMessage() {
+        this.totalPriceElement.dataset.vnd = 0;
+        this.totalPriceElement.dataset.usd = 0;
         this.totalPriceElement.innerHTML = "CHỌN SẢN PHẨM THANH TOÁN";
     }
 
@@ -150,13 +157,13 @@ class CartPaymentView {
 
     formatPrice(number) {
         let formattedNumber = number.toLocaleString('vi-VN');
-        return formattedNumber + "đ";
+        return formattedNumber + " VNĐ";
     }
 
     showAlert(message, type) {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = 
-        `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        wrapper.innerHTML =
+            `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>`;
@@ -202,33 +209,41 @@ class CartPaymentView {
             }
         });
 
-        const paymentMethodHeader = document.getElementById('paymentMethod');
-        let paymentSelected = document.querySelector('input[name="payments"]:checked');
-        let paymentErrorMessage = document.querySelector('#paymentMethod + .error-message');
+        // const paymentMethodHeader = document.getElementById('paymentMethod');
+        // let paymentSelected = document.querySelector('input[name="payments"]:checked');
+        // let paymentErrorMessage = document.querySelector('#paymentMethod + .error-message');
 
-        if (paymentSelected) {
-            if (paymentErrorMessage) {
-                paymentErrorMessage.remove();
-            }
-        } else {
-            if (!paymentErrorMessage) {
-                paymentErrorMessage = document.createElement('div');
-                paymentErrorMessage.className = 'error-message';
-                paymentErrorMessage.textContent = 'Chưa chọn hình thức thanh toán';
-                paymentErrorMessage.style.color = "red";
-                paymentErrorMessage.style.fontSize = "15px";
-                paymentMethodHeader.parentNode.appendChild(paymentErrorMessage);
-            }
-            if (!firstInvalidElement) firstInvalidElement = paymentMethodHeader;
-        }
+        // if (paymentSelected) {
+        //     if (paymentErrorMessage) {
+        //         paymentErrorMessage.remove();
+        //     }
+        // } else {
+        //     if (!paymentErrorMessage) {
+        //         paymentErrorMessage = document.createElement('div');
+        //         paymentErrorMessage.className = 'error-message';
+        //         paymentErrorMessage.textContent = 'Chưa chọn hình thức thanh toán';
+        //         paymentErrorMessage.style.color = "red";
+        //         paymentErrorMessage.style.fontSize = "15px";
+        //         paymentMethodHeader.parentNode.appendChild(paymentErrorMessage);
+        //     }
+        //     if (!firstInvalidElement) firstInvalidElement = paymentMethodHeader;
+        // }
 
-        if (!isValid || !paymentSelected) {
+        // if (!isValid || !paymentSelected) {
+        //     if (firstInvalidElement) {
+        //         this.scrollToElement(firstInvalidElement);
+        //     }
+        // }
+
+        // return isValid && paymentSelected;
+
+        if (!isValid) {
             if (firstInvalidElement) {
                 this.scrollToElement(firstInvalidElement);
             }
         }
 
-        return isValid && paymentSelected;
+        return isValid;
     }
 
     addErrorMessage(element, message) {
