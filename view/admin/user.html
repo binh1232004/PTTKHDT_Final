@@ -22,12 +22,12 @@
 
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex align-items-center bg-success ">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="product.html" class="logo d-flex align-items-center">
                 <img src="" alt="">
-                <span class="d-none d-lg-block">FishBigAdmin</span>
+                <span class="d-none d-lg-block text-light">FishBigAdmin</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -38,12 +38,7 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="statistic.html">
-                    <i class="bi bi-menu-button-wide"></i>
-                    <span>Thống kê</span>
-                </a>
-            </li>
+            
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="category.html">
@@ -59,12 +54,6 @@
                 </a>
             </li><!-- Category Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="order.html">
-                    <i class="bi bi-receipt"></i>
-                    <span>Hóa đơn</span>
-                </a>
-            </li><!-- Bill Nav -->
 
             <li class="nav-item">
                 <a class="nav-link" href="user.html">
@@ -89,10 +78,15 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Tài khoản</h5>
+                        <div class="row mb-3" hidden>
+                            <span class="col-sm-2 col-form-label">ID</span>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="IDInp" disabled>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <span class="col-sm-2 col-form-label">Email</span>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="UserID" hidden disabled>
                                 <input type="email" class="form-control" id="EmailInp">
                             </div>
                         </div>
@@ -125,8 +119,6 @@
                             <span class="col-sm-2 col-form-label">Loại tài khoản</span>
                             <div class="col-sm-10">
                                 <select class="form-select" aria-label="Default select example" id="RoleInp">
-                                    <option value="admin">admin</option>
-                                    <option value="user">user</option>
                                 </select>
                             </div>
                         </div>
@@ -178,7 +170,7 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
     <!-- <script type="module" src="./js/user.js" defer></script> -->
-    <script type="module" src="./model/user.js" defer></script>
+    <script type="module" src="./model/userManager.js" defer></script>
     <script type="module" src="./js/adminLogout.js" defer></script>
     <script type="module" src="../../public/js/redirect.js" defer></script>
 </body>

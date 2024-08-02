@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Cashier</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -28,12 +28,12 @@
 
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
+    <header id="header" class="header fixed-top d-flex align-items-center bg-info">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="product.html" class="logo d-flex align-items-center">
                 <img src="" alt="">
-                <span class="d-none d-lg-block">FishBigAdmin</span>
+                <span class="d-none d-lg-block text-light">FishBigCashier</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -47,25 +47,14 @@
             <!-- Statistic  -->
             <li class="nav-item">
                 <a class="nav-link" href="statistic.html">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-bar-chart-line"></i>
                     <span>Thống kê</span>
                 </a>
             </li>
             <!-- Statistic  -->
 
-            <li class="nav-item">
-                <a class="nav-link" href="category.html">
-                    <i class="bi bi-menu-button-wide"></i>
-                    <span>Danh mục</span>
-                </a>
-            </li><!-- Category Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="product.html">
-                    <i class="bi bi-basket2"></i>
-                    <span>Sản phẩm</span>
-                </a>
-            </li><!-- Category Nav -->
+            
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="order.html">
@@ -74,12 +63,6 @@
                 </a>
             </li><!-- Bill Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="user.html">
-                    <i class="bi bi-people"></i>
-                    <span>Quản lý người dùng</span>
-                </a>
-            </li><!-- User Management Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" id="admin__sign-out">
@@ -91,11 +74,21 @@
         </ul>
 
     </aside><!-- End Sidebar-->
-    <main id="main" class="main">
-
-        <canvas id="salesChart"></canvas>
-        <button id="exportExcel" class="btn btn-outline-info btn-lg m-3">Chi tiết</button>
-        <button id="exportGraph" class="btn btn-outline-primary btn-lg m-3">Tải đồ thị</button>
+    <main id="main" class="main ">
+        <div class="pagetitle">
+            <h1>Thống kê</h1>
+        </div>
+        <div class="section dashboard">
+            <div class="card p-5">
+                <canvas id="salesChart"></canvas>
+                <div style="margin-top: 10px;">
+                    <button id="exportExcel" class="btn btn-outline-info btn-lg " style="margin-left: 65px;">Chi
+                        tiết</button>
+                    <button id="exportGraph" class="btn btn-outline-primary btn-lg " style="margin-left: 10px">Tải đồ
+                        thị</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- End #main -->

@@ -321,10 +321,10 @@ $(document).ready(function() {
             data: dataSet,
             columns: [
                 { title: "ID" },
-                { title: "Name" },
-                { title: "Price" },
-                { title: "Create Date" },
-                { title: "Update Date" }
+                { title: "Sản phẩm" },
+                { title: "Đơn giá" },
+                { title: "Ngày tạo" },
+                { title: "Ngày cập nhật" }
             ],
             rowCallback: function(row, data) {
                 $(row).on('click', function() {

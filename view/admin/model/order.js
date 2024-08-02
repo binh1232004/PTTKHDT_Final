@@ -28,7 +28,7 @@ class Order {
                     let value = childSnapshot.val();
                     const { day, month } = this.utils.getDayMonthYearInOrder(value.orderDate);
                     if (day && month == this.currentMonnth) {
-                        arrSales[day - 1] += parseInt( value.totalAmount );
+                        arrSales[day - 1] += parseInt(value.totalAmount);
                     }
                 });
                 resolve(arrSales);
@@ -44,19 +44,20 @@ class Order {
                 let totalSales = 0;
                 snapshot.forEach(childSnapshot => {
                     let valueSnapShot = childSnapshot.val();
-if(value.totalAmount){ 
-                    for(let item in valueSnapShot.items){
-                        const key = item;
-                        const value = valueSnapShot.items[item];
-                        totalSales += value.total_price;
-                        if(arrProduct[key]){
-                            arrProduct[key][1] += value.quantity;
-                            arrProduct[key][2] += value.total_price;
+                    const { month } = this.utils.getDayMonthYearInOrder(valueSnapShot.orderDate);
+                    if (month == this.currentMonnth) {
+                        for (let item in valueSnapShot.items) {
+                            const key = item;
+                            const value = valueSnapShot.items[item];
+                            totalSales += value.total_price;
+                            if (arrProduct[key]) {
+                                arrProduct[key][1] += value.quantity;
+                                arrProduct[key][2] += value.total_price;
+                            }
+                            else
+                                arrProduct[key] = [value.item_name, value.quantity, value.total_price];
                         }
-                        else
-                            arrProduct[key] = [value.item_name, value.quantity, value.total_price];
                     }
- }
                 });
                 let highestSaleOnProduct = {
                     name: '',
@@ -66,15 +67,15 @@ if(value.totalAmount){
                     name: '',
                     quantity: 0
                 };
-                for(let item in arrProduct){
+                for (let item in arrProduct) {
                     const key = item;
                     const value = arrProduct[item];
-                    if(value[2] > highestSaleOnProduct.total_price){
+                    if (value[2] > highestSaleOnProduct.total_price) {
                         highestSaleOnProduct.name = value[0];
                         highestSaleOnProduct.id = key;
                         highestSaleOnProduct.total_price = value[2];
                     }
-                    if(value[1] > highestSaleQuantityOnProduct.quantity){
+                    if (value[1] > highestSaleQuantityOnProduct.quantity) {
                         highestSaleQuantityOnProduct.name = value[0];
                         highestSaleQuantityOnProduct.id = key;
                         highestSaleQuantityOnProduct.quantity = value[1];
