@@ -11,7 +11,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="public/css/indexPage/style.css">
     <link rel="icon" type="image/png" sizes="32x32" href="shark.png">
-
 </head>
 
 <body class="">
@@ -172,23 +171,30 @@
                             </div>
                         </nav>
                     </div>
+
+                    <!--Thanh tìm kiếm-->
                     <div class="col-6 col-xl-4 d-flex align-items-center justify-content-end">
                         <div class="header-actions-search d-none d-xl-block" style="width: 70%;">
                             <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <input class="form-control me-2" type="text" id="cloth-input" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
                         </div>
                         <div class="header-actions-button">
                             <!-- <a id="user__profile" href="./view/user/profile/user_profile_UI.html"><i class="fa-solid fa-user p-2 text-white"></i></a> -->
-                            <a id="user__profile" href="/user_profile_UI.html"><i class="fa-solid fa-user p-2 text-white"
-                                    style="cursor: pointer;"></i></a>
+                            <a id="user__profile" href="/user_profile_UI.html"><i class="fa-solid fa-user p-2 text-white" style="cursor: pointer;"></i></a>
                         </div>
                         <div class="icon-cart" style="cursor: pointer;">
                             <i class="fa-solid fa-cart-shopping p-2 text-white"></i>
                             <span>0</span>
                         </div>
                     </div>
+                    <div id="search-results"></div>
+
+                    <!-- Popup và modal cho thanh tìm kiếm -->
+                    
+
+                                    
                     <div class="cartTab">
                         <h1 style="font-weight: bold;">Shopping Cart <br>
                             <hr>
@@ -638,6 +644,21 @@
     </div>
 
     <div id="alertPlaceholder" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66acb41d1601a2195b9fee0c/1i499v4ra';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
 </body>
 <!-- <script src="public/js/cart.js" type="module" defer></script> -->
 <!-- <script src="js/category.js" type="module" defer></script> -->
@@ -651,4 +672,5 @@
 <script src="./public/js/validateForm.js" type="module"></script>
 <!-- <script src="./public/js/hrefProfile.js" type="module"></script> -->
 
+<script src="./public/js/search.js" type="module" defer></script>
 </html>

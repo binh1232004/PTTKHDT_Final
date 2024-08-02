@@ -42,12 +42,30 @@ header .icon-cart span {
     right: -7px;
 }
 
+
 .nav-link {
     color: black;
     font-weight: 400px;
     font-size: 14px;
 }
 
+.header-actions-search {
+    position: relative;
+    width: 100%;
+}
+
+.header-actions-search form {
+    display: flex;
+    margin: 0; /* Ensure no extra margin is added */
+}
+
+.header-actions-search .form-control {
+    width: 100%; /* Make sure the input takes up the full width */
+}
+
+.header-actions-search .btn {
+    margin-left: 10px; /* Space between input and button */
+}
 
 
 
@@ -424,4 +442,6 @@ span#cart-notification-message {
         margin-top: -50px;
     }   
 }
+
+
 
