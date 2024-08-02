@@ -1,16 +1,16 @@
 class Utils {
-    constructor(){
+    constructor() {
         this.ROLE = {
             USER: 1,
             ADMIN: 2,
             WAREHOUSE: 3
         }
     }
-    formatToVND(money){
+    formatToVND(money) {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(money);
     }
-    getRoleName(role){
-        switch(role){
+    getRoleName(role) {
+        switch (role) {
             case this.ROLE.USER:
                 return 'User';
             case this.ROLE.ADMIN:
@@ -19,11 +19,11 @@ class Utils {
                 return 'Warehouse';
         }
     }
-    getArrAllDaysInMonth(month, year){
+    getArrAllDaysInMonth(month, year) {
         const daysInMonth = new Date(year, month, 0).getDate();
         return Array.from({ length: daysInMonth }, (_, i) => i + 1);
     }
-    getDayMonthYearInOrder(orderDate){
+    getDayMonthYearInOrder(orderDate) {
         //2024-07-24
         const [year, month, day] = orderDate.split('-');
         const actualMonth = parseInt(month, 10);
@@ -34,6 +34,9 @@ class Utils {
             month: actualMonth,
             day: actualDay
         }
+    }
+    formatCounter(counter) {
+        return counter.toString().padStart(5, '0');
     }
 }
 export default Utils;
