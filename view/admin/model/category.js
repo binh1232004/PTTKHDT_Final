@@ -139,7 +139,6 @@ export default class CategoryManager {
                     $(row).on('click', () => {
                         get(child(dbref, 'Category/' + data[0])).then((snapshot) => {
                             if (snapshot.exists()) {
-                                // Handle row click event if needed
                                 this.cateName.value = snapshot.val().CateName;
                                 this.cateID.value = data[0];
                             } else {

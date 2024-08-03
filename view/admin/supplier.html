@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Cashier</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -18,16 +18,22 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- CSS -->
     <link rel="stylesheet" href="./css/admin.css">
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- sheetjs -->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
 </head>
+
 
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center bg-success ">
+    <header id="header" class="header fixed-top d-flex align-items-center bg-warning">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="product.html" class="logo d-flex align-items-center">
                 <img src="" alt="">
-                <span class="d-none d-lg-block text-light">FishBigAdmin</span>
+                <span class="d-none d-lg-block text-light">FishBigWareHouse</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -38,30 +44,37 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-            
-
+            <!-- Statistic  -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="category.html">
-                    <i class="bi bi-menu-button-wide"></i>
-                    <span>Danh mục</span>
+                <a class="nav-link " href="statisticWarehouse.html" id="statisticWarehouseHref">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <span>Thống kê</span>
                 </a>
-            </li><!-- Category Nav -->
+            </li>
+            <!-- Statistic  -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="product.html">
-                    <i class="bi bi-basket2"></i>
-                    <span>Sản phẩm</span>
-                </a>
-            </li><!-- Category Nav -->
+
 
 
             <li class="nav-item">
-                <a class="nav-link" href="user.html">
-                    <i class="bi bi-people"></i>
-                    <span>Quản lý người dùng</span>
+                <a class="nav-link " href="supplier.html" id="supplierHref">
+                    <i class="bi bi-person"></i>
+                    <span>Nhà cung cấp</span>
                 </a>
-            </li><!-- User Management Nav -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="warehouse.html" id="warehouseHref">
+                    <i class="bi bi-box2"></i>
+                    <span>Kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="issue.html" id="issueHref">
 
+                    <i class="bi bi-truck"></i>
+                    <span>Xuất kho</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" id="admin__sign-out">
                     <i class="bi bi-box-arrow-in-right"></i>
@@ -77,7 +90,7 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Tài khoản</h5>
+                        <h5 class="card-title">Nhà cung cấp</h5>
                         <div class="row mb-3" hidden>
                             <span class="col-sm-2 col-form-label">ID</span>
                             <div class="col-sm-10">
@@ -85,15 +98,9 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <span class="col-sm-2 col-form-label">Email</span>
+                            <span class="col-sm-2 col-form-label">Tên công ty</span>
                             <div class="col-sm-10">
-                                <input type="email" class="form-control" id="EmailInp">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <span class="col-sm-2 col-form-label">Họ tên</span>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="UserInp">
+                                <input type="email" class="form-control" id="NameInp">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -103,10 +110,9 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                            <label for="inputDate" class="col-sm-2 col-form-label">Mã ZIP</label>
                             <div class="col-sm-10">
-                                <!-- <p id="current-time" class="form-control"></p> -->
-                                <input type="date" class="form-control" id="current-time">
+                                <input type="text" class="form-control" id="ZIPInp">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -116,10 +122,9 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <span class="col-sm-2 col-form-label">Loại tài khoản</span>
+                            <span class="col-sm-2 col-form-label">Email</span>
                             <div class="col-sm-10">
-                                <select class="form-select" aria-label="Default select example" id="RoleInp">
-                                </select>
+                                <input type="text" class="form-control" id="EmailInp">
                             </div>
                         </div>
 
@@ -135,16 +140,7 @@
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
                         <h5 class="card-title">Danh sách</h5>
-                        <table class="table table-borderless datatable" id="userList">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Tên người dùng</th>
-                                    <th scope="col">Phân quyền</th>
-                                </tr>
-                            </thead>
-
+                        <table class="table table-borderless datatable" id="SupplierList">
                         </table>
 
                     </div>
@@ -152,8 +148,12 @@
                 </div>
         </section>
 
-    </main><!-- End #main -->
+    </main>
 
+    <!-- End #main -->
+
+    <div>
+    </div>
     <!--Icon & jquery-->
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -164,15 +164,18 @@
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
-    <!-- <script type="module" src="./js/user.js" defer></script> -->
-    <script type="module" src="./model/userManager.js" defer></script>
+
     <script type="module" src="./js/adminLogout.js" defer></script>
-    <script type="module" src="../../public/js/redirect.js" defer></script>
+    <script type="module" src="./model/supplierManager.js" defer></script>
+    <script type="module" src="./js/checkCollapsedWarehouse.js" defer></script>
+
+
+
+
 </body>
 
 </html>
