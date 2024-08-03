@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, query, orderByChild, startAt, endAt } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Firebase configuration
+// Cấu hình Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
     authDomain: "demosoftwaretechnology.firebaseapp.com",
@@ -13,20 +13,25 @@ const firebaseConfig = {
     measurementId: "G-120GXQ1F6L"
 };
 
-// Initialize Firebase
+// Khởi tạo Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Function to search products
+function formatPrice(number) {
+    let formattedNumber = number.toLocaleString('vi-VN');
+    return formattedNumber + "đ";
+}
+
+// Hàm tìm kiếm sản phẩm
 async function searchProducts(event) {
-    event.preventDefault(); // Prevent the form from submitting the default way
+    event.preventDefault(); // Ngăn chặn form submit theo cách mặc định
 
     const input = document.getElementById('cloth-input').value.trim().toLowerCase();
-    const resultsContainer = document.getElementById('search-results');
+    const listProductHTML = document.getElementById('search-results');
 
     if (input === '') {
-        alert('Please enter a search term.');
-        resultsContainer.innerHTML = ''; // Clear previous results
+        alert('Vui lòng nhập từ khóa tìm kiếm.');
+        listProductHTML.innerHTML = ''; // Xóa kết quả trước đó
         return;
     }
 
@@ -39,117 +44,66 @@ async function searchProducts(event) {
     try {
         const snapshot = await get(q);
         if (!snapshot.exists()) {
-            resultsContainer.innerHTML = '<p>No products found.</p>';
+            listProductHTML.innerHTML = '<p>Không tìm thấy sản phẩm nào.</p>';
+            showSearchResults();
             return;
         }
 
-        let resultsHTML = '<ul>';
+        listProductHTML.innerHTML = '';
+
         snapshot.forEach(childSnapshot => {
             const value = childSnapshot.val();
-            const productName = value.Name.toLowerCase();
+            if (value.Name && value.Name.toLowerCase().includes(input)) {
+                const newProduct = document.createElement('div');
+                newProduct.classList.add('item');
+                newProduct.dataset.id = value.ProductID;
 
-            if (productName.includes(input)) {
-                let imagesHtml = '';
-                if (value.Images) {
-                    const firstImageKey = Object.keys(value.Images)[0];
-                    if (firstImageKey) {
-                        let imgURL = value.Images[firstImageKey].ImgURL.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                        imagesHtml = `<img class="card-img-top" src="${imgURL}" alt="${value.Name}" style="width: 100px; height: auto;">`;
-                    }
-                }
-
-                let sizesHtml = '';
-                if (value.Size) {
-                    for (let size in value.Size) {
-                        if (value.Size[size]) {
-                            sizesHtml += `<li class="size-item">${size}</li>`;
-                        }
-                    }
-                }
-
-                resultsHTML += `
-                    <li class="card" style="margin: 10px; padding: 10px; border: 1px solid #ccc;">
-                        <div class="product-image">
-                            ${imagesHtml}
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${value.Name}</h3>
-                            <div class="price">${value.Price}đ</div>
-                            <div class="size-product d-flex flex-column">
-                                <div class="size-top d-flex justify-content-between">
-                                    <p class="card-subtitle">Kích thước:</p>
-                                    <a href="#">Hướng dẫn chọn size</a>
-                                </div>
-                                <div class="size-option">
-                                    <ul style="margin: 10px; padding: 0;">
-                                        ${sizesHtml}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="addCart d-flex">
-                                <a href="detail.html?id=${value.ProductID}">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10V6a3 3 0 0 1 3-3v0a3 3 0 0 1 3 3v4m3-2 .917 11.923A1 1 0 0 1 17.92 21H6.08a1 1 0 0 1-.997-1.077L6 8h12Z"/>
-                                    </svg>
-                                    <p class="card-text">Thêm vào giỏ hàng</p>
-                                </a>
-                            </div>
-                            <div class="d-flex aftee">
-                                <div class="col-2 align-self-center">Trả sau với</div>
-                                <div class="col-6"><a href="#" class="af-logo"><img src="images/AFTEE_logo_no_space.png" alt=""></a></div>
-                            </div>
-                            <hr>
-                            <div class="product-chat">
-                                <a href="#"><img src="images/Logo-zalo.svg" alt="" style="width: 40px; height: 40px; margin-right: 5px;"><b>Chat để được FishBig tư vấn <b>&#40</b>8:30 - 22:00 <b>&#41</b></b></a>
-                            </div>
-                            <div class="d-flex product-policy">
-                                <div class="d-flex row">
-                                    <div class="row">
-                                        <div class="col-3 policy-icon"><img src="images/Policy/return.svg" alt="Đổi trả với số điện thoại"></div>
-                                        <div class="col-9 policy-title">Đổi trả cực dễ chỉ cần <br> số điện thoại</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 policy-icon"><img src="images/Policy/return-60.svg" alt="Đổi hàng trong 60 ngày"></div>
-                                        <div class="col-9 policy-title">60 ngày đổi trả vì bất kỳ lý do gì</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex row">
-                                    <div class="row">
-                                        <div class="col-3 policy-icon"><img src="images/Policy/phone.svg" alt="Hotline: 0123456789"></div>
-                                        <div class="col-9 policy-title">Hotline 0123456789 hỗ <br>trợ từ 8h30 - 22h mỗi ngày</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 policy-icon"><img src="images/Policy/location.svg" alt="Trả hàng tận nơi"></div>
-                                        <div class="col-9 policy-title">Đến tận nơi nhận hàng trả, <br> hoàn tiền trong 24h</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="product-features">
-                                <div class="features">
-                                    <p class="features-heading">Đặc điểm nổi bật</p>
-                                    <div class="features-listing">
-                                        ${value.Description}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                newProduct.innerHTML = `
+                    <a href="detail.html?id=${value.ProductID}">
+                        <img class="card-img-top" src="${value.Images ? Object.values(value.Images)[0].ImgURL : ''}" alt="${value.Name}">
+                    </a>
+                    <h2>${value.Name}</h2>
+                    <div class="price" style="font-weight: bold;">${formatPrice(value.Price)}</div>
                 `;
+
+                listProductHTML.appendChild(newProduct);
             }
         });
-        resultsHTML += '</ul>';
-        resultsContainer.innerHTML = resultsHTML;
+
+        if (listProductHTML.innerHTML === '') {
+            listProductHTML.innerHTML = '<p>Không tìm thấy sản phẩm nào.</p>';
+        }
+        showSearchResults();
     } catch (error) {
-        console.error('Error searching products:', error);
-        alert('Error searching products. Please try again later.');
+        console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+        alert('Lỗi khi tìm kiếm sản phẩm. Vui lòng thử lại sau.');
     }
 }
 
-// Attach event listener to form on page load
+function showSearchResults() {
+    document.getElementById('showSearch').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closeSearchResults() {
+    document.getElementById('showSearch').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+// Gắn sự kiện lắng nghe vào form khi trang tải
 window.addEventListener('DOMContentLoaded', (event) => {
-    const form = document.querySelector('.header-actions-search form');
+    const form = document.getElementById('search-form');
     if (form) {
         form.addEventListener('submit', searchProducts);
+    }
+
+    const closeSearch = document.getElementById('closeSearch');
+    if (closeSearch) {
+        closeSearch.addEventListener('click', closeSearchResults);
+    }
+
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeSearchResults);
     }
 });
