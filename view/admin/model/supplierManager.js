@@ -17,7 +17,7 @@ class SupplierManager {
             this.cleanInpValue();
         });
     }
-getFirebaseStuff() {
+    getFirebaseStuff() {
         const firebaseConfig = {
             apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
             authDomain: "demosoftwaretechnology.firebaseapp.com",
