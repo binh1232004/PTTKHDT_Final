@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="public/css/indexPage/pageCart.css">
     <link rel="stylesheet" href="public/css/indexPage/style.css">
     <link rel="icon" type="image/png" sizes="32x32" href="shark.png">
+    <link rel="stylesheet" href="search.css">
 
 </head>
 
@@ -177,9 +178,10 @@
                 </div>
                 <div class="col-6 col-xl-4 d-flex align-items-center justify-content-end">
                     <div class="header-actions-search d-none d-xl-block" style="width: 70%;">
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        <form class="d-flex" id="search-form">
+                            <input class="form-control me-2" type="text" id="cloth-input" placeholder="Search"
+                                aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit" id="btnSearch">Search</button>
                         </form>
                     </div>
                     <div class="header-actions-button">
@@ -571,7 +573,8 @@
                             <button type="button" class="btn btn-dark" id="btnMakePayment"><b>THANH TOÁN</b></button>
                             <div id="paypal-button-container"></div>
                         </div>
-                        <div class="p-2" style="font-size: larger; font-weight: bold;" id="totalPrice"  data-vnd="" data-usd="">CHỌN SẢN PHẨM
+                        <div class="p-2" style="font-size: larger; font-weight: bold;" id="totalPrice" data-vnd=""
+                            data-usd="">CHỌN SẢN PHẨM
                             THANH TOÁN</div>
                     </div>
                 </div>
@@ -670,7 +673,13 @@
         </footer>
     </div>
     <div id="alertPlaceholder" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
-    <div id="paypal-button-container"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="size-chart-container" id="showSearch">
+        <div style="margin: 20px;">
+            <i class="fa-solid fa-xmark close-icon" id="closeSearch"></i>
+        </div>
+        <div id="search-results" class="listProduct container"></div>
+    </div>
 
     <script
         src="https://www.paypal.com/sdk/js?client-id=AVBZsjY9BqVb42r_GX3u-f9bwXq-ALyiPdCXZdcGXXuRQFAPpvaXBapjIUCi63Y2BJ26bfJQxXsLfOY9&currency=USD&disable-funding=card"></script>
@@ -679,6 +688,8 @@
     <script type="module" src="js/payment.js"></script>
     <!-- <script type="module" src="js/main.js"></script> -->
     <script type="module" src="js/header.js"></script>
+
+    <script src="./public/js/search.js" type="module" defer></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>

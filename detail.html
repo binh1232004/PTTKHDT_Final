@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="public/css/indexPage/detail.css">
     <link rel="stylesheet" href="public/css/indexPage/style.css">
     <link rel="icon" type="image/png" sizes="32x32" href="shark.png">
+    <link rel="stylesheet" href="search.css">
 
 </head>
- 
+
 <body>
     <!-- Header and login -->
     <header id="app">
@@ -157,9 +158,10 @@
             </div>
             <div class="d-flex col-xl-4 align-items-center justify-content-end">
                 <div class="header-actions-search d-none d-xl-block" style="width: 70%;">
-                    <form class="d-flex align-self-center">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    <form class="d-flex" id="search-form">
+                        <input class="form-control me-2" type="text" id="cloth-input" placeholder="Search"
+                            aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" id="btnSearch">Search</button>
                     </form>
                 </div>
                 <div class="header-actions-button align-self-center" id="user__profile"><a href="#"><i
@@ -607,6 +609,13 @@
     </div>
 
     <div id="alertPlaceholder" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="size-chart-container" id="showSearch">
+        <div style="margin: 20px;">
+            <i class="fa-solid fa-xmark close-icon" id="closeSearch"></i>
+        </div>
+        <div id="search-results" class="listProduct container"></div>
+    </div>
 
     <script type="module" src="js/detail.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -616,20 +625,21 @@
     <script src="./bundle/css.bundle.js"></script>
     <script src="./firebase/firebaseLoginSignupForgetpass.js" type="module"></script>
     <script src="./public/js/validateForm.js" type="module"></script>
+    <script src="./public/js/search.js" type="module" defer></script>
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/66acb41d1601a2195b9fee0c/1i499v4ra';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/66acb41d1601a2195b9fee0c/1i499v4ra';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
         })();
-        </script>
-        <!--End of Tawk.to Script-->
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 
 </html>
