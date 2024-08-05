@@ -46,8 +46,10 @@ header .icon-cart span {
 .nav-link {
     color: black;
     font-weight: 400px;
-    font-size: 14px;
+    font-size: 15px;
 }
+
+
 
 .header-actions-search {
     position: relative;
@@ -142,7 +144,7 @@ ul.navbar-nav li.nav-item:hover {
 
 .listProduct .item h2 {
     font-weight: 700;
-    font-size: 16.3px;
+    font-size: 20px;
     margin-top: 20px;
 }
 
@@ -151,8 +153,8 @@ ul.navbar-nav li.nav-item:hover {
 }
 
 .listProduct .item .price {
-    letter-spacing: 3px;
-    font-size: 15px;
+    /* letter-spacing: 1px; */
+    font-size: 20px;
     font-weight: 400;
 }
 
@@ -427,7 +429,21 @@ span#cart-notification-message {
     display: block;
 }
 
+.dropdown-item.text-white.text-uppercase {
+    color: black !important; /* Đổi màu chữ thành màu đen */
+}
 
+.dropdown-item.text-white.text-uppercase:hover {
+    color: black !important; /* Đổi màu chữ thành màu đen khi hover */
+}
+
+.dropdown-menu .dropdown-item {
+    color: black !important; /* Đổi màu chữ thành màu đen */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    color: black !important; /* Đổi màu chữ thành màu đen khi hover */
+}
 
 
 @media screen and (max-width:990px) {
