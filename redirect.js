@@ -1,0 +1,1 @@
+//Add component to redirect to another page

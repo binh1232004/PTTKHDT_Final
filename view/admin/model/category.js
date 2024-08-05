@@ -212,3 +212,4 @@ export default class CategoryManager {
 document.addEventListener('DOMContentLoaded', () => {
     const categoryManager = new CategoryManager();
 });
+
