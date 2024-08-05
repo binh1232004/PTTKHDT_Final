@@ -2,6 +2,7 @@
 <html lang="vi">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>pageCart</title>
@@ -65,117 +66,34 @@
                         </button>
                     </nav>
                 </div>
+
+                <!-- category -->
                 <div class=" col-lg-6 d-none d-xl-flex ">
-                    <nav class="navbar navbar-expand-xl navbar-light" style="padding: 0;">
+                    <nav class="navbar navbar-expand-sm navbar-light" style="padding: 0;">
                         <div class="collapse navbar-collapse" id="navbarToggler">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center" style="height: 56px;">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle active text-white" href="#"
-                                        id="navbardropdownSale" aria-current="page" data-bs-toggle="dropdown">SALE</a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbardropdownSale">
-                                        <li><a href="#" class="dropdown-item text-white">Chương trình sale</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
+                                        id="navbardropdownAoNam" aria-current="page" data-bs-toggle="dropdown">ÁO
+                                        NAM</a>
+                                    <ul class="dropdown-menu" id="dropdownAoNamMenu"
+                                        aria-labelledby="navbardropdownAoNam">
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#"
-                                        data-bs-toggle="dropdown">SẢN
-                                        PHẨM</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">ÁO NAM</a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">QUẦN NAM</a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">PHỤ KIỆN
-                                                NAM</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle text-white text-uppercase"
-                                        data-bs-toggle="dropdown">ĐỒ LÓT</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO NHU
-                                                CẦU</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">ĐỒ
-                                        THỂ
-                                        THAO</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
-                                                TẬP</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#"
-                                        data-bs-toggle="dropdown">MẶC
-                                        HẰNG NGÀY</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
-                                                TẬP</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#"
-                                        data-bs-toggle="dropdown">NƯỚC
-                                        HOA</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
-                                                TẬP</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown d-none d-xxl-flex">
-                                    <a class="nav-link dropdown-toggle text-white" href="#"
-                                        data-bs-toggle="dropdown">SẢN
-                                        XUẤT RIÊNG</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">THEO SẢN
-                                                PHẨM</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a href="#" class="dropdown-item text-white text-uppercase">BỘ SƯU
-                                                TẬP</a></li>
-                                    </ul>
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbardropdownQuanNam"
+                                        data-bs-toggle="dropdown">QUẦN NAM</a>
+                                    <ul class="dropdown-menu" id="dropdownQuanNamMenu"
+                                        aria-labelledby="navbardropdownQuanNam"></ul>
                                 </li>
                             </ul>
                         </div>
                     </nav>
                 </div>
+
+                <!-- Hết danh mục -->
+
+                <!--Thanh tìm kiếm-->
                 <div class="col-6 col-xl-4 d-flex align-items-center justify-content-end">
                     <div class="header-actions-search d-none d-xl-block" style="width: 70%;">
                         <form class="d-flex" id="search-form">
@@ -194,6 +112,11 @@
                         <span>0</span>
                     </div>
                 </div>
+
+                <!-- Popup và modal cho thanh tìm kiếm -->
+
+
+
                 <div class="cartTab">
                     <h1 style="font-weight: bold;">Shopping Cart <br>
                         <hr>
@@ -209,8 +132,6 @@
             </div>
         </div>
     </header>
-
-
 
     <!-- Login -->
     <dialog id="dialog__sign-in" class="dialog__popup">
@@ -680,24 +601,25 @@
         </div>
         <div id="search-results" class="listProduct container"></div>
     </div>
+</body>
 
-    <script
-        src="https://www.paypal.com/sdk/js?client-id=AVBZsjY9BqVb42r_GX3u-f9bwXq-ALyiPdCXZdcGXXuRQFAPpvaXBapjIUCi63Y2BJ26bfJQxXsLfOY9&currency=USD&disable-funding=card"></script>
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AVBZsjY9BqVb42r_GX3u-f9bwXq-ALyiPdCXZdcGXXuRQFAPpvaXBapjIUCi63Y2BJ26bfJQxXsLfOY9&currency=USD&disable-funding=card"></script>
 
-    <!-- <script src="public/js/pageCart.js"></script> -->
-    <script type="module" src="js/payment.js"></script>
-    <!-- <script type="module" src="js/main.js"></script> -->
-    <script type="module" src="js/header.js"></script>
-
-    <script src="./public/js/search.js" type="module" defer></script>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-    <script src="./public/js/popUpAction.js" type="module"></script>
-    <script src="./bundle/css.bundle.js"></script>
-    <script src="./firebase/firebaseLoginSignupForgetpass.js" type="module"></script>
-    <script src="./public/js/validateForm.js" type="module"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<!-- <script src="public/js/pageCart.js"></script> -->
+<script type="module" src="js/payment.js"></script>
+<!-- <script type="module" src="js/main.js"></script> -->
+<script type="module" src="js/header.js"></script>
+<script src="pageCart_Category.js"></script>
+<script src="./public/js/search.js" type="module" defer></script>
+<script type="module" src="js/ProductManager.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script src="./public/js/popUpAction.js" type="module"></script>
+<script src="./bundle/css.bundle.js"></script>
+<script src="./firebase/firebaseLoginSignupForgetpass.js" type="module"></script>
+<script src="./public/js/validateForm.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 
 </body>
 

@@ -22,11 +22,15 @@ function formatPrice(number) {
     return formattedNumber + "đ";
 }
 
+function normalizeText(text) {
+    return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 // Hàm tìm kiếm sản phẩm
 async function searchProducts(event) {
     event.preventDefault(); // Ngăn chặn form submit theo cách mặc định
 
-    const input = document.getElementById('cloth-input').value.trim().toLowerCase();
+    const input = normalizeText(document.getElementById('cloth-input').value.trim());
     const listProductHTML = document.getElementById('search-results');
 
     if (input === '') {
@@ -51,24 +55,41 @@ async function searchProducts(event) {
 
         listProductHTML.innerHTML = '';
 
+        const products = [];
         snapshot.forEach(childSnapshot => {
-            const value = childSnapshot.val();
-            if (value.Name && value.Name.toLowerCase().includes(input)) {
-                const newProduct = document.createElement('div');
-                newProduct.classList.add('item');
-                newProduct.dataset.id = value.ProductID;
-
-                newProduct.innerHTML = `
-                    <a href="detail.html?id=${value.ProductID}">
-                        <img class="card-img-top" src="${value.Images ? Object.values(value.Images)[0].ImgURL : ''}" alt="${value.Name}">
-                    </a>
-                    <h2>${value.Name}</h2>
-                    <div class="price" style="font-weight: bold;">${formatPrice(value.Price)}</div>
-                `;
-
-                listProductHTML.appendChild(newProduct);
-            }
+            products.push(childSnapshot.val());
         });
+
+        for (let value of products) {
+            const normalizedProductName = normalizeText(value.Name || '');
+
+            if (!normalizedProductName.includes(input)) {
+                continue;
+            }
+
+            let amount = 0;
+            for (let amountSize of Object.values(value.Size)) {
+                amount += amountSize;
+            }
+            if (amount === 0) {
+                continue;
+            }
+
+            console.log(value.Size);
+            const newProduct = document.createElement('div');
+            newProduct.classList.add('item');
+            newProduct.dataset.id = value.ProductID;
+
+            newProduct.innerHTML = `
+                <a href="detail.html?id=${value.ProductID}">
+                    <img class="card-img-top" src="${value.Images ? Object.values(value.Images)[0].ImgURL : ''}" alt="${value.Name}">
+                </a>
+                <h2>${value.Name}</h2>
+                <div class="price" style="font-weight: bold;">${formatPrice(value.Price)}</div>
+            `;
+
+            listProductHTML.appendChild(newProduct);
+        }
 
         if (listProductHTML.innerHTML === '') {
             listProductHTML.innerHTML = '<p>Không tìm thấy sản phẩm nào.</p>';
