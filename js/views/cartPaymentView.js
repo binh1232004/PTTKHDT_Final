@@ -175,7 +175,7 @@ class CartPaymentView {
             alertElement.classList.remove('show');
             alertElement.classList.add('fade');
             setTimeout(() => alertElement.remove(), 150); // Wait for fade out transition
-        }, 3000);
+        }, 4000);
     }
 
 
