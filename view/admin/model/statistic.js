@@ -1,4 +1,4 @@
-import Order from "./order.js";
+import Order from "../DAO/order.js"
 import Utils from "./utils.js";
 class Statistic {
   constructor() {

@@ -92,104 +92,100 @@
     <!-- End Sidebar-->
     <main id="main" class="main">
         <section class="section">
-            <div class="card" id="FormOrder">
+            <div class="card" id="FormOrderDetail">
                 <div class="card-body">
-                    <h5 class="card-title">Hóa đơn</h5>
+                    <h5 class="card-title">Chi tiết hóa đơn</h5>
                     <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">ID</span>
+                        <span class="col-sm-2 col-form-label">Hóa đơn</span>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="IDInp" disabled />
+                            <select type="text" class="form-control" id="OrderDetailIDInvoiceImportInp">
+                                <option></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Ngày mua</span>
+                        <span class="col-sm-2 col-form-label">ID sản phẩm </span>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="DateInp" />
+                            <input type="text" class="form-control" id="OrderDetailIDProductInp" disabled />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Phương thức TT</span>
+                        <span class="col-sm-2 col-form-label">Tên Sản phẩm mới</span>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="PaymentMethodInp" />
+                            <input type="text" class="form-control" id="OrderDetailNewNameInp" />
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputDate" class="col-sm-2 col-form-label">Ghi chú</label>
+                        <span class="col-sm-2 col-form-label">Tên Sản phẩm còn</span>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="NoteInp" />
+                            <select type="select" class="form-control" id="OrderDetailAvailableNameInp">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <span class="col-sm-2 col-form-label">Kích cỡ</span>
+                            <div class="col-sm-10">
+                                <select type="select" class="form-control" id="OrderDetailSizeInp">
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <span class="col-sm-2 col-form-label">Nhà cung cấp</span>
+                        <span class="col-sm-2 col-form-label">Số lượng</span>
                         <div class="col-sm-10">
-                            <select class="form-select" id="SupplierInp"></select>
+                            <input type="number" class="form-control" id="OrderDetailQuantityInp" />
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label for="inputDate" class="col-sm-2 col-form-label">Đơn giá</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="OrderDetailUnitPriceInp" />
+                        </div>
+                    </div>
+
 
 
                     <div class="text-center">
-                        <button class="btn btn-success" id="AddBtn">
+                        <button class="btn btn-success" id="OrderDetailAddBtn">
                             Thêm
                         </button>
-                        <button class="btn btn-danger" id="DeleteBtn">
+                        <button class="btn btn-danger" id="OrderDetailDeleteBtn">
                             Xóa
                         </button>
-                        <button class="btn btn-primary" id="UpdateBtn">
+                        <button class="btn btn-primary" id="OrderDetailUpdateBtn">
                             Sửa
                         </button>
                     </div>
                 </div>
             </div>
+            <div>
+                <div class="card recent-sales overflow-auto p-sm-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <p class="col-sm-4">Nhà cung cấp</p>
+                            <p id="Supplier" class="col-sm-8 text-start"></p>
+                        </div>
+                        <div class="row">
+                            <p class="col-sm-4">Địa chỉ</p>
+                            <p id="Address" class="col-sm-8 text-start"></p>
+                        </div>
+                        <div class="row">
+                            <p class="col-sm-4">Số điện thoại</p>
+                            <p id="Phone" class="col-sm-8"></p>
+                        </div>
 
-
-
-            
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card recent-sales overflow-auto">
-                        <div class="card-body">
-                            <h5 class="card-title">Danh sách hóa đơn</h5>
-                            <table class="table table-borderless datatable" id="table-order">
-                                <tbody></tbody>
-                            </table>
+                        <table class="table table-borderless datatable" id="table-order-detail">
+                        </table>
+                        <hr />
+                        <div class="row justify-content-between">
+                            <p class="col-sm-4">Tổng cộng</p>
+                            <p class="col-sm-3" id="total-full"></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="card recent-sales overflow-auto">
-                        <div class="card-body">
-                            <div class="row">
-                                <h5 class="card-title col-sm-6">
-                                    Chi tiết hóa đơn
-                                </h5>
-                                <h5 class="card-title col-sm-6" id="ODID"></h5>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-sm-4">Nhà cung cấp</p>
-                                <p id="Supplier" class="col-sm-8"></p>
-                            </div>
-                            <div class="row">
-                                <p class="col-sm-4">Địa chỉ</p>
-                                <p id="Address" class="col-sm-8"></p>
-                            </div>
-                            <div class="row">
-                                <p class="col-sm-4">Số điện thoại</p>
-                                <p id="Phone" class="col-sm-8"></p>
-                            </div>
-
-                            <table class="table table-borderless datatable" id="table-order-detail">
-                            </table>
-                            <hr />
-                            <div class="row justify-content-between">
-                                <p class="col-sm-4">Tổng cộng</p>
-                                <p class="col-sm-3" id="total-full"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <input type="text" class="form-control" id="ProductID" disabled> -->
-                </div>
+                <!-- <input type="text" class="form-control" id="ProductID" disabled> -->
             </div>
+
         </section>
         <!-- End Recent Sales -->
     </main>
@@ -213,7 +209,7 @@
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
 
     <script type="module" src="./js/adminLogout.js" defer></script>
-    <script type="module" src="./model/invoiceImportManager.js" defer></script>
+    <script type="module" src="./model/detailInvoiceImport.js" defer></script>
     <script type="module" src="./js/checkCollapsedWarehouse.js" defer></script>
 </body>
 

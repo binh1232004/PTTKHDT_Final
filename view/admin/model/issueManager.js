@@ -1,29 +1,23 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import Utils from "./utils.js";
-import { getDatabase, ref, get, set, runTransaction, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import InvoiceImport from "../DAO/invoiceImport.js";
 import Supplier from "../DAO/supplier.js";
 import Product from "../DAO/product.js";
 import Order from "../DAO/order.js";
-class OrderManager {
+import InvoiceExport from "../DAO/invoiceExport.js";
+class IssueManager {
     constructor() {
         this.utils = new Utils();
-        this.firebaseConfig = {
-            apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
-            authDomain: "demosoftwaretechnology.firebaseapp.com",
-            databaseURL: "https://demosoftwaretechnology-default-rtdb.firebaseio.com",
-            projectId: "demosoftwaretechnology",
-            storageBucket: "demosoftwaretechnology.appspot.com",
-            messagingSenderId: "375046175781",
-            appId: "1:375046175781:web:0d1bfac1b8ca71234293cc",
-            measurementId: "G-120GXQ1F6L"
-        };
+        this.invoiceImportDB = new InvoiceImport();
+        this.supplierDB = new Supplier();
+        this.productDB = new Product();
+        this.orderDB = new Order();
+        this.invoiceExportDB = new InvoiceExport();
+        this.getInp();
+        this.createTable();
+        this.issueBtn = document.getElementById('issue-btn');
 
-        this.app = initializeApp(this.firebaseConfig);
-        this.db = getDatabase();
-
+    }
+    getInp() {
         this.OrderDetail = document.getElementById('order-detail');
         this.ODID = document.getElementById('ODID');
         this.Customer = document.getElementById('Customer');
@@ -31,30 +25,24 @@ class OrderManager {
         this.Phone = document.getElementById('Phone');
         this.getTotal = document.getElementById('total-full');
 
-        this.utils = new Utils();
-        this.invoiceImportDB = new InvoiceImport();
-        this.supplierDB = new Supplier();
-        this.productDB = new Product();
-        this.orderDB = new Order();
-        
-        this.createDataTable();
-        this.invoiceExport = document.getElementById('invoice-export');
 
-        // this.invoiceExport.addEventListener('click', )
+        this.ZIPInp = document.getElementById('ZIPInp');
+        this.NoteInp = document.getElementById('NoteInp');
     }
-    async createDataTable() {
+    async createTable() {
         const orderList = await this.orderDB.getOrderList();
         let objData = [];
         let dataSet = [];
         orderList.forEach(order => {
-            objData.push(order.item) 
+            objData.push(order.item)
         })
         orderList.forEach(order => {
             dataSet.push([
                 order.key,
                 order.item.name,
-                order.item.orderDate,
+                this.utils.formatDateToDDMMYYYY(order.item.orderDate),
                 this.utils.formatToVND(order.item.totalAmount),
+                order.item.isIssue ? 'Đã xuất' : 'Chưa xuất'
             ]);
         });
         $('#table-order').DataTable({
@@ -64,16 +52,36 @@ class OrderManager {
                 { title: "Khách hàng" },
                 { title: "Ngày xuất hóa đơn" },
                 { title: "Thành tiền" },
+                { title: "Xuất kho" }
             ],
             rowCallback: (row, data) => {
+                if(data[4] == 'Đã xuất'){
+                    $(row).addClass('bg-success text-white');
+                }
                 $(row).on('click', () => {
                     this.handleRowClick(row, data, objData);
                 });
             }
         });
     }
-
     handleRowClick(row, data, objData) {
+        this.issueBtn.addEventListener('click', () => {
+            if (this.ZIPInp.value !== '') {
+                this.invoiceExportDB.addInvoiceExport({
+                    ...objData[row._DT_RowIndex],
+                    dateIssue: this.utils.getCurrentDayBinh(),
+                    noteIssue: this.NoteInp.value,
+                    ZIPIssue: this.ZIPInp.value
+                })
+                this.orderDB.updateOrder(data[0], {
+                    isIssue: true
+                })
+            }
+            else{
+                alert('Nhập Mã bưu điện')
+            }
+        })
+        this.issueBtn.hidden = false;
         let indexRow = row._DT_RowIndex;
         $('#order-detail tbody').remove();
         this.ODID.innerText = data[0];
@@ -104,4 +112,5 @@ class OrderManager {
         }
     }
 }
-const orderManager = new OrderManager();
+
+const invoiceImportManager = new IssueManager();

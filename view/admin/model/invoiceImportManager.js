@@ -7,29 +7,19 @@ class InvoiceImportManager {
     this.getInp();
     this.getFirebaseStuff();
     this.getOptionSupplier();
-    this.getOptionProduct();
-    this.addOptionSize();
     this.getButton();
     this.creatTableData();
     this.getForm();
     this.addBtn.addEventListener('click', this.addEventAddInvoice.bind(this));
-    this.orderDetailAddBtn.addEventListener('click', this.addEventAddProduct.bind(this));
-    // this.applyConditionInputName();
   }
   getForm() {
     this.formOrder = document.getElementById('FormOrder');
-    this.formOrderDetail = document.getElementById('FormOrderDetail');
-    console.log(this.formOrderDetail);
   }
   getButton() {
     //order
     this.addBtn = document.getElementById('AddBtn');
     this.deleteBtn = document.getElementById('DeleteBtn');
     this.updateBtn = document.getElementById('UpdateBtn');
-    //order detail
-    this.orderDetailAddBtn = document.getElementById('OrderDetailAddBtn');
-    this.orderDetailDeleteBtn = document.getElementById('OrderDetailDeleteBtn');
-    this.orderDetailUpdateBtn = document.getElementById('OrderDetailUpdateBtn');
   }
   getFirebaseStuff() {
     const firebaseConfig = {
@@ -61,29 +51,6 @@ class InvoiceImportManager {
       }
     })
   }
-  getOptionProduct() {
-    const productRef = ref(this.db, 'Product');
-    get(productRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        for (const key in data) {
-          let option = document.createElement('option');
-          option.innerHTML = data[key].Name;
-          option.value = key;
-          this.orderDetailAvailableNameInp.appendChild(option);
-        }
-      }
-    })
-  }
-  addOptionSize() {
-    const SIZE = ['S', 'M', 'L', 'XL', 'XXL'];
-    SIZE.forEach((size) => {
-      let option = document.createElement('option');
-      option.innerHTML = size;
-      option.value = size;
-      this.orderDetailSizeInp.appendChild(option);
-    })
-  }
 
   getInp() {
     //order
@@ -92,15 +59,6 @@ class InvoiceImportManager {
     this.supplierInp = document.getElementById('SupplierInp');
     this.noteInp = document.getElementById('NoteInp');
     this.paymentMethodInp = document.getElementById('PaymentMethodInp');
-    //order detail
-    this.orderDetailSizeInp = document.getElementById('OrderDetailSizeInp');
-    this.orderDetailIDInvoiceInp = document.getElementById('OrderDetailIDInvoiceInp');
-    this.orderDetailIDProductInp = document.getElementById('OrderDetailIDProductInp');
-    this.orderDetailNewNameInp = document.getElementById('OrderDetailNewNameInp');
-    this.orderDetailAvailableNameInp = document.getElementById('OrderDetailAvailableNameInp');
-    this.orderDetailQuantityInp = document.getElementById('OrderDetailQuantityInp');
-    this.orderDetailUnitPriceInp = document.getElementById('OrderDetailUnitPriceInp');
-    this.orderDetailAmountInp = document.getElementById('OrderDetailAmountInp');
   }
   getInformationSupplier(supplierID) {
     this.address = document.getElementById('Address');
@@ -126,7 +84,7 @@ class InvoiceImportManager {
     const InvoiceImportRef = ref(this.db, 'InvoiceImport/' + InvoiceImportID);
     set(InvoiceImportRef, {
       ID: InvoiceImportID,
-      Date: this.dateInp.value,
+      Date: this.utils.formatDateToDDMMYYYY(this.dateInp.value),
       Supplier: this.supplierInp.value,
       Note: this.noteInp.value,
       PaymentMethod: this.paymentMethodInp.value
@@ -190,93 +148,6 @@ class InvoiceImportManager {
     this.getInformationSupplier(data[2]);
 
     this.orderDetailIDInvoiceInp.value = data[0];
-  }
-  addLoopShowHide() {
-    setInterval(() => {
-      if (this.orderDetailAvailableNameInp.value !== '') {
-        this.orderDetailNewNameInp.disabled = true;
-      }
-      if (this.orderDetailNewNameInp.value !== '') {
-        this.orderDetailAvailableNameInp.disabled = true;
-      }
-
-      if (this.IDInp.value !== '') {
-        this.formOrderDetail.hidden = false;
-        this.formOrder.hidden = true;
-      }
-    }, 1000);
-  }
-  applyConditionInputName() {
-    this.orderDetailNewNameInp.addEventListener('focus', () => {
-      this.orderDetailAvailableNameInp.disabled = true
-    });
-    this.orderDetailNewNameInp.addEventListener('blur', () => {
-      this.orderDetailAvailableNameInp.disabled = false;
-    });
-    this.orderDetailAvailableNameInp.addEventListener('focus', () => {
-      this.orderDetailNewNameInp.disabled = true;
-    });
-    this.orderDetailAvailableNameInp.addEventListener('blur', () => {
-      this.orderDetailNewNameInp.disabled = false;
-    })
-  }
-
-  async addEventAddProduct() {
-    const dbref = ref(this.db);
-    if (this.orderDetailAvailableNameInp.value === '') {
-      const runTransactionResult = await runTransaction(ref(this.db, 'ProductCounter'), (counter) => {
-        return counter + 1;
-      })
-      const ProductID = 'SP' + this.utils.formatCounter(runTransactionResult.snapshot.val(), 5);
-      const Size = {
-        L: 0,
-        M: 0,
-        S: 0,
-        XL: 0,
-        XXL: 0
-      }
-      Size[this.orderDetailSizeInp.value] = Number(this.orderDetailQuantityInp.value);
-      const data = {
-        Name: this.orderDetailNewNameInp.value,
-        Price: '',
-        PurchasePrice: Number(this.orderDetailUnitPriceInp.value),
-        Promotion: '',
-        Size: Size,
-        Category: '',
-        Images: '',
-        CreateDate: this.utils.getCurrentDay(),
-        UpdateDate: this.utils.getCurrentDay(),
-        Detail: '',
-        Description: ''
-      }
-      set(child(dbref, 'Product/' + ProductID), data).then(() => {
-        alert('Add Product Success');
-        window.location.reload();
-      }).catch((error) => {
-        alert('Add Product Fail');
-        console.error(error);
-      })
-
-    }
-    else {
-      const productRef = ref(this.db, 'Product/' + this.orderDetailAvailableNameInp.value);
-      get(productRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const Size = data.Size;
-          Size[this.orderDetailSizeInp.value] += Number(this.orderDetailQuantityInp.value);
-          update(productRef, {
-            Size: Size
-          }).then(() => {
-            alert('Update Product Success');
-            window.location.reload();
-          }).catch((error) => {
-            alert('Update Product Fail');
-            console.error(error);
-          })
-        }
-      })
-    }
   }
 }
 
