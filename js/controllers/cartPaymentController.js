@@ -166,7 +166,8 @@ class CartPaymentController {
             methodPay,
             this.getVietnamDate(),
             document.getElementById('totalPrice').dataset.vnd,
-            {}
+            {},
+            false
         );
 
         selectedItems.forEach(prdIDSize => {

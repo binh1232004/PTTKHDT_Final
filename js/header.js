@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     userProfile.addEventListener('click', () => {
         if (isLoggedIn()) {
             console.log('user');
-            path = "./view/user/profile/user_profile_UI.html";
+            path = "user_profile_UI.html";
             window.location.href = path;
 
         }

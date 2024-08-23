@@ -1,5 +1,5 @@
 class Order {
-    constructor(userID, name, phone, email, address, note, paymentMethod, orderDate, totalAmount, items) {
+    constructor(userID, name, phone, email, address, note, paymentMethod, orderDate, totalAmount, items, isIssue) {
         this.userID = userID;
         this.name = name;
         this.phone = phone;
@@ -10,6 +10,7 @@ class Order {
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.items = items;
+        this.isIssue = isIssue;
     }
 }
 
