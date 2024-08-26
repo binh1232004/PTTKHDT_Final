@@ -73,23 +73,19 @@ class User {
      * 
      * @param {String} role {User, Admin, Warehouse, Cashier, Sales}
      */
-    redirectBasedOnRole(role) {
-        switch (role) {
-            case 'User': case undefined:
+      redirectBasedOnRole(role) {
+        const title = document.title;
+        if (role === 'User' || role === undefined) {
+            if(title !== 'FishBig')
                 window.location.href = this.originURL;
-                break;
-            case 'Admin':
-                window.location.href = `../${this.originURL}/view/admin/user.html`;
-                break;
-            case 'Warehouse':
-                window.location.href = `../${this.originURL}/view/admin/warehouse.html`;
-                break;
-            case 'Cashier':
-                window.location.href = `../${this.originURL}/view/admin/statisticSales.html`;
-                break;
-            case 'Sales':
-                window.location.href = `../${this.originURL}/view/admin/category.html`;
-                break;
+        } else if (role === 'Admin') {
+            window.location.href = `../${this.originURL}/view/admin/user.html`;
+        } else if (role === 'Warehouse') {
+            window.location.href = `../${this.originURL}/view/admin/warehouse.html`;
+        } else if (role === 'Cashier') {
+            window.location.href = `../${this.originURL}/view/admin/statisticSales.html`;
+        } else if (role === 'Sales') {
+            window.location.href = `../${this.originURL}/view/admin/category.html`;
         }
     }
     /**
