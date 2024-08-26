@@ -3,10 +3,10 @@ import "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import Utils from "./utils.js";
 import { getDatabase, ref, get, set, runTransaction, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import InvoiceImport from "../DAO/invoiceImport.js";
-import Supplier from "../DAO/supplier.js";
-import Product from "../DAO/product.js";
-import Order from "../DAO/order.js";
+import InvoiceImport from "../model/invoiceImport.js";
+import Supplier from "../model/supplier.js";
+import Product from "../model/product.js";
+import Order from "../model/order.js";
 class OrderManager {
     constructor() {
         this.utils = new Utils();

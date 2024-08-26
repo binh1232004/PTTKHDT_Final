@@ -1,5 +1,6 @@
 // import { initializeApp } from 'firebase/app';
-import  { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import User from "../view/admin/model/user.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
     btnSubmit,
     inputPassword,
@@ -19,7 +20,6 @@ import {
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    connectAuthEmulator,
     signInWithEmailAndPassword,
     onAuthStateChanged,
     sendEmailVerification,
@@ -27,11 +27,10 @@ import {
     signInWithPopup,
     FacebookAuthProvider,
     sendPasswordResetEmail,
-    signOut,
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { signInDialog } from '../public/js/popUpAction.js';
 // import { get,getDatabase, set, ref } from 'firebase/database';
-import { getDatabase, ref, get, set  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { logout } from "./logout.js";
 const firebaseConfig = {
     apiKey: 'AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus',
@@ -71,6 +70,8 @@ const writeUserData = (
     //console.log(db);
     const reference = ref(db, 'User/' + userID);
     //console.log(reference);
+    const userModel = new User();
+    let iRole = userModel.ROLE[role.toUpperCase()];
     set(reference, {
         Address: address,
         Birth: birth,
@@ -78,7 +79,7 @@ const writeUserData = (
         Email: email,
         FullName: fullName,
         Phone: phone,
-        role: false,
+        Role: iRole,
         UpdateDate: updateDate,
     });
 };
@@ -114,8 +115,6 @@ const createUser = async () => {
                 strValPassword,
             );
 
-            //Write user data into database
-            //console.log(userCredentials.user.uid);
             const arrArgs = [
                 userCredentials.user.uid,
                 '',
@@ -123,7 +122,7 @@ const createUser = async () => {
                 strValueEmail,
                 strValName,
                 strValPhone,
-                false,
+                'User',
                 getCurrentDate(),
             ];
             writeUserData(...arrArgs);
@@ -146,44 +145,30 @@ const createUser = async () => {
 };
 
 btnSubmitSignUp.addEventListener('click', createUser);
-const getRoleUser = async (userID) => {
-    const db = getDatabase();
-    const reference = ref(db, 'User/' + userID);
-    const snapshot = await get(reference);
-    if (snapshot.exists()) {
-        return snapshot.val().Role;
-    }
-};
 const loginElement = document.getElementById('index__log-in');
 const monitorAuthState = async () => {
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
+            console.log(user)
             signInDialog.close();
             strLoginUID = user.uid;
-            getRoleUser(strLoginUID).then((role) => {
-                if (role === true) {
-                    window.location.href = '../view/admin/category.html';
-                    console.log('admin');
-                } else {
-                    // Chuyển hướng đến trang chính
-                    // window.location.href = '../user/main.html';
-                }
-            });
             isLoggin = true;
-            console.log(strLoginUID);
             localStorage.setItem('userID', strLoginUID);
             if (loginElement) {
-                loginElement.innerHTML = 'Đăng xuất'; 
+                loginElement.innerHTML = 'Đăng xuất';
                 loginElement.addEventListener('click', () => {
                     logout('../index.html');
                 });
             }
+            const userModel = new User();   
+            const userRole = await userModel.getRoleUser(user.uid); 
+            userModel.redirectBasedOnRole(userRole);    
         } else {
             isLoggin = false;
             console.log('log out');
             localStorage.setItem('userID', null);
             if (loginElement) {
-                loginElement.innerHTML = 'Đăng nhập'; 
+                loginElement.innerHTML = 'Đăng nhập';
             }
         }
     });
@@ -199,35 +184,41 @@ const btnSignupGoogle = document.getElementsByClassName(
 const providerGoogle = new GoogleAuthProvider();
 const googleAuth = () => {
     signInWithPopup(auth, providerGoogle)
-        .then((result) => {
+        .then(async (result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
-            console.log(user);
-            //write in database
-            const arrArgs = [
-                user.uid,
-                '',
-                '',
-                user.email,
-                user.displayName,
-                '',
-                false,
-                getCurrentDate(),
-            ];
+            // console.log(user);
             isLoggin = true;
-            writeUserData(...arrArgs);
-            //redirect into login.html
-            window.location.href = '.';
+            //write for me a function to check if that user id is existed in database
+            const userModel = new User();
+            const bIsUserExist = await userModel.checkUserExist(user.uid);  
+            if (bIsUserExist) {
+                //write in database
+                const arrArgs = [
+                    user.uid,
+                    '',
+                    '',
+                    user.email,
+                    user.displayName,
+                    '',
+                    userModel.ROLE['USER'],
+                    getCurrentDate(),
+                ];
+                await writeUserData(...arrArgs);
+            }
+            // const userRole = await userModel.getRoleUser(user.uid); 
+            // userModel.redirectBasedOnRole(userRole);    
+
         })
         .catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
             // The email of the user's account used.
-            const email = error.customData.email;
+            // const email = error.customData.email;
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
             // ...
@@ -239,48 +230,48 @@ const btnSigninGoogle = document.getElementsByClassName(
     'Google-auth__sign-in',
 )[0];
 btnSigninGoogle.addEventListener('click', googleAuth);
-//**********************Facebook auth**********************
-const btnSignupFacebook = document.getElementsByClassName(
-    'Facebook-auth__sign-up',
-)[0];
-const providerFacebook = new FacebookAuthProvider();
-const facebookAuth = () => {
-    signInWithPopup(auth, providerFacebook)
-        .then((result) => {
-            // The signed-in user info.
-            console.log(1);
-            const user = result.user;
+// //**********************Facebook auth**********************
+// const btnSignupFacebook = document.getElementsByClassName(
+//     'Facebook-auth__sign-up',
+// )[0];
+// const providerFacebook = new FacebookAuthProvider();
+// const facebookAuth = () => {
+//     signInWithPopup(auth, providerFacebook)
+//         .then((result) => {
+//             // The signed-in user info.
+//             console.log(1);
+//             const user = result.user;
 
-            console.log(user);
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            const credential =
-                FacebookAuthProvider.credentialFromResult(result);
-            const accessToken = credential.accessToken;
-            //write user data in database
-            const arrArgs = [
-                user.uid,
-                '',
-                '',
-                user.email,
-                user.displayName,
-                '',
-                false,
-                getCurrentDate(),
-            ];
-            isLoggin = true;
-            writeUserData(...arrArgs);
-        })
-        .catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = FacebookAuthProvider.credentialFromError(error);
-        });
-};
-btnSignupFacebook.addEventListener('click', facebookAuth);
+//             console.log(user);
+//             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+//             const credential =
+//                 FacebookAuthProvider.credentialFromResult(result);
+//             const accessToken = credential.accessToken;
+//             //write user data in database
+//             const arrArgs = [
+//                 user.uid,
+//                 '',
+//                 '',
+//                 user.email,
+//                 user.displayName,
+//                 '',
+//                 false,
+//                 getCurrentDate(),
+//             ];
+//             isLoggin = true;
+//             writeUserData(...arrArgs);
+//         })
+//         .catch((error) => {
+//             // Handle Errors here.
+//             const errorCode = error.code;
+//             const errorMessage = error.message;
+//             // The email of the user's account used.
+//             const email = error.customData.email;
+//             // The AuthCredential type that was used.
+//             const credential = FacebookAuthProvider.credentialFromError(error);
+//         });
+// };
+// btnSignupFacebook.addEventListener('click', facebookAuth);
 
 //**********************Forget password**********************
 const sendEmailResetPass = () => {
@@ -298,4 +289,4 @@ const sendEmailResetPass = () => {
 };
 forgotpassbtnSubmit.addEventListener('click', sendEmailResetPass);
 
-export {strLoginUID};
+export { strLoginUID };

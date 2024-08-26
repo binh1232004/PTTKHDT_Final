@@ -308,8 +308,9 @@ $(document).ready(function() {
     get(child(dbref, 'Product')).then(function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
             var value = childSnapshot.val();
+            const productID = childSnapshot.key;
             dataSet.push([
-                value.ProductID,
+                productID,
                 value.Name,
                 value.Price,
                 value.CreateDate,
@@ -330,7 +331,7 @@ $(document).ready(function() {
                 $(row).on('click', function() {
                     get(child(dbref, 'Product/' + data[0])).then((snapshot)=>{
                         if(snapshot.exists()) {
-                            ProductID.value = snapshot.val().ProductID;
+                            ProductID.value = snapshot.key;
                             ProductName.value = snapshot.val().Name;
                             ProductPrice.value = snapshot.val().Price;
                             ProductCategory.value = snapshot.val().Category;

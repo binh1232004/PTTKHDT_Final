@@ -1,7 +1,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, runTransaction, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import Utils from "../model/utils.js";
+import Utils from "../controller/utils.js";
 class InvoiceImport{
     constructor() {
         this.getFirebaseStuff();
@@ -23,7 +23,7 @@ class InvoiceImport{
         this.db = getDatabase();
     }
     /**
-     *  @returns {Promise<Array<object>} array of objects {key, Date, Note, PaymentMethod, Supplier, Items}
+     *  @returns {Promise<Array<object>} array of objects {key, item: {Date, Note, PaymentMethod, Supplier, Items}}
      */
     async getInvoiceImportList(){
         const dbref = ref(this.db, 'InvoiceImport');
@@ -43,7 +43,7 @@ class InvoiceImport{
      * @param {Object} data 
      */
     async addInvoiceImport( data){
-        const runTransactionResult = await runTransaction(ref(this.db, 'InvoiceImport'), (invoiceImportCounter) => {
+        const runTransactionResult = await runTransaction(ref(this.db, 'InvoiceImportCounter'), (invoiceImportCounter) => {
             return invoiceImportCounter + 1;
         });
         const invoiceImportID = 'HDNH' + this.utils.formatCounter(runTransactionResult.snapshot.val());

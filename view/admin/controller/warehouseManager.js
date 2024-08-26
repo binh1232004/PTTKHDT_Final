@@ -1,7 +1,7 @@
 import Utils from "./utils.js";
-import InvoiceImport from "../DAO/invoiceImport.js";
-import Supplier from "../DAO/supplier.js";
-import Product from "../DAO/product.js";
+import InvoiceImport from "../model/invoiceImport.js";
+import Supplier from "../model/supplier.js";
+import Product from "../model/product.js";
 class WarehouseManager {
     constructor() {
         this.utils = new Utils();

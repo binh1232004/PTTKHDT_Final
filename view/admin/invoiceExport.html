@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier</title>
+    <title>Warehouse</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -65,12 +65,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="detailInvoiceImport.html" id="detailInvoiceImportHref">
-                    <i class="bi bi-receipt"></i>
-                    <span>Chi tiết hóa đơn nhập hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="warehouse.html" id="warehouseHref">
                     <i class="bi bi-box2"></i>
                     <span>Kho</span>
@@ -116,8 +110,18 @@
                                 <h5 class="card-title col-sm-6">Chi tiết hóa đơn</h5>
                                 <h5 class="card-title col-sm-6" id="ODID"></h5>
                             </div>
-
-
+                            <div class="row">
+                                <p class="col-sm-4">ID hóa đơn bán hàng</p>
+                                <p id="OrderID" class="col-sm-8"></p>
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-4">ID Người xuất</p>
+                                <p id="WarehouseID" class="col-sm-8"></p>
+                            </div>
+                            <div class="row">
+                                <p class="col-sm-4">Người xuất</p>
+                                <p id="WarehouseName" class="col-sm-8"></p>
+                            </div>
                             <div class="row">
                                 <p class="col-sm-4">Khách hàng</p>
                                 <p id="Customer" class="col-sm-8"></p>
@@ -180,9 +184,9 @@
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
 
     <script type="module" src="./js/adminLogout.js" defer></script>
-    <script type="module" src="./model/invoiceExportManager.js" defer></script>
+    <script type="module" src="./controller/invoiceExportManager.js" defer></script>
     <script type="module" src="./js/checkCollapsedWarehouse.js" defer></script>
-
+    <script type="module" src="./controller/rightAuthorization.js" defer></script>
 
 
 </body>

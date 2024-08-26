@@ -1,13 +1,9 @@
+import { getDatabase, ref, get, set, runTransaction, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, runTransaction, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import Utils from "../model/utils.js";
-class Order{
+import Utils from "./utils.js";
+class Order {
     constructor() {
-        this.getFirebaseStuff();
-        this.utils = new Utils();
-    }
-    getFirebaseStuff() {
-        const firebaseConfig = {
+        this.firebaseConfig = {
             apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
             authDomain: "demosoftwaretechnology.firebaseapp.com",
             databaseURL: "https://demosoftwaretechnology-default-rtdb.firebaseio.com",
@@ -17,31 +13,11 @@ class Order{
             appId: "1:375046175781:web:0d1bfac1b8ca71234293cc",
             measurementId: "G-120GXQ1F6L"
         };
-
-        this.app = initializeApp(firebaseConfig);
+        const app = initializeApp(this.firebaseConfig);
         this.db = getDatabase();
-        this.collectionName = 'orders';
+        this.utils = new Utils();
         this.currentMonnth = new Date().getMonth() + 1;
     }
-
-    /**
-     * 
-     * @returns {Promise<Array<object>} array of objects {key, item: {address, email, items, name, note, orderDate, paymentMethod, phone, totalAmount, userID, isIssue}}
-     */
-    async getOrderList() {
-        const dbref = ref(this.db, this.collectionName);
-        return get(dbref).then((snapshot) => {
-            if (snapshot.exists()) {
-                return this.utils.snapshotToArray(snapshot);
-            } else {
-                return [];
-            }
-        }).catch((error) => {
-            console.error(error);
-            return [];
-        });
-    }
-
     getArrSalesOnEachDayInOneMonth(month, year) {
         const dbref = ref(this.db);
         const daysInMonth = new Date(year, month, 0).getDate();
@@ -115,21 +91,6 @@ class Order{
             });
         });
     }
-
-
-
-    /**
-     * 
-     * @param {string} orderID 
-     * @param {Object} data data need to be updated
-     */
-    updateOrder(orderID, data) {
-        const dbref = ref(this.db, this.collectionName + '/' + orderID);
-        update(dbref, data).then(() => {
-            alert('Update order successfully');
-        }).catch((error) => {
-            alert('Update order failed');
-        });
-    }
 }
+
 export default Order;

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, runTransaction, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import Utils from "../model/utils.js";
+import Utils from "../controller/utils.js";
 class Supplier {
     constructor() {
         this.getFirebaseStuff();

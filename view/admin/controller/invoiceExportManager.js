@@ -1,9 +1,9 @@
 import Utils from "./utils.js";
-import InvoiceImport from "../DAO/invoiceImport.js";
-import Supplier from "../DAO/supplier.js";
-import Product from "../DAO/product.js";
-import Order from "../DAO/order.js";
-import InvoiceExport from "../DAO/invoiceExport.js";
+import InvoiceImport from "../model/invoiceImport.js";
+import Supplier from "../model/supplier.js";
+import Product from "../model/product.js";
+import Order from "../model/order.js";
+import InvoiceExport from "../model/invoiceExport.js";
 class IssueManager {
     constructor() {
         this.utils = new Utils();
@@ -12,80 +12,53 @@ class IssueManager {
         this.productDB = new Product();
         this.orderDB = new Order();
         this.invoiceExportDB = new InvoiceExport();
-        this.getInp();
+        this.getTag();
         this.createTable();
-        this.issueBtn = document.getElementById('issue-btn');
-
     }
-    getInp() {
+    getTag(){
         this.OrderDetail = document.getElementById('order-detail');
+        this.orderID = document.getElementById('OrderID');
+        this.warehouse = document.getElementById('WarehouseName'); 
+        this.warehouseID = document.getElementById('WarehouseID');
         this.ODID = document.getElementById('ODID');
         this.Customer = document.getElementById('Customer');
         this.Address = document.getElementById('Address');
         this.Phone = document.getElementById('Phone');
         this.getTotal = document.getElementById('total-full');
 
-
-        this.ZIPInp = document.getElementById('ZIPInp');
-        this.NoteInp = document.getElementById('NoteInp');
     }
     async createTable() {
-        const orderList = await this.orderDB.getOrderList();
-        let objData = [];
         let dataSet = [];
-        orderList.forEach(order => {
-            objData.push(order.item)
-        })
-        orderList.forEach(order => {
-            dataSet.push([
-                order.key,
-                order.item.name,
-                this.utils.formatDateToDDMMYYYY(order.item.orderDate),
-                this.utils.formatToVND(order.item.totalAmount),
-                order.item.isIssue ? 'Đã xuất' : 'Chưa xuất'
-            ]);
+        let objData = []
+        let invoiceExportList = await this.invoiceExportDB.getInvoiceExportList();
+        invoiceExportList.forEach((invoiceExport) => {
+            dataSet.push([invoiceExport.key, invoiceExport.item['ZIPIssue'], invoiceExport.item['dateIssue'] ]);
+            objData.push(invoiceExport.item);
         });
         $('#table-order').DataTable({
             data: dataSet,
             columns: [
-                { title: "ID" },
-                { title: "Khách hàng" },
+                { title: "ID xuất kho" },
+                { title: "Mã bưu điện" },
                 { title: "Ngày xuất hóa đơn" },
-                { title: "Thành tiền" },
-                { title: "Xuất kho" }
             ],
             rowCallback: (row, data) => {
-                if(data[4] == 'Đã xuất'){
-                    $(row).addClass('bg-success text-white');
-                }
+               
                 $(row).on('click', () => {
                     this.handleRowClick(row, data, objData);
+                    console.log(objData);
                 });
             }
         });
     }
     handleRowClick(row, data, objData) {
-        this.issueBtn.addEventListener('click', () => {
-            if (this.ZIPInp.value !== '') {
-                this.invoiceExportDB.addInvoiceExport({
-                    ...objData[row._DT_RowIndex],
-                    dateIssue: this.utils.getCurrentDayBinh(),
-                    noteIssue: this.NoteInp.value,
-                    ZIPIssue: this.ZIPInp.value
-                })
-                this.orderDB.updateOrder(data[0], {
-                    isIssue: true
-                })
-            }
-            else{
-                alert('Nhập Mã bưu điện')
-            }
-        })
-        this.issueBtn.hidden = false;
         let indexRow = row._DT_RowIndex;
         $('#order-detail tbody').remove();
         this.ODID.innerText = data[0];
         let totalFull = 0;
+        this.warehouse.innerText = objData[indexRow].userFullName;
+        this.orderID.innerText = objData[indexRow].orderID;
+        this.warehouseID.innerText = objData[indexRow].userID;
         this.Customer.innerText = objData[indexRow].name;
         this.Address.innerText = objData[indexRow].address;
         this.Phone.innerText = objData[indexRow].phone;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier</title>
+    <title>Warehouse</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -28,59 +28,76 @@
 
 <body>
     <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center bg-info">
+    <header id="header" class="header fixed-top d-flex align-items-center bg-warning">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="product.html" class="logo d-flex align-items-center">
                 <img src="" alt="">
-                <span class="d-none d-lg-block text-light">FishBigCashier</span>
+                <span class="d-none d-lg-block text-light">FishBigWarehouse</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
     </header><!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
 
+    <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <!-- Statistic  -->
             <li class="nav-item">
-                <a class="nav-link" href="statisticSales.html">
+                <a class="nav-link" href="statisticWarehouse.html" id="statisticWarehouseHref">
                     <i class="bi bi-bar-chart-line"></i>
                     <span>Thống kê</span>
                 </a>
             </li>
             <!-- Statistic  -->
 
-
-            
-
             <li class="nav-item">
-                <a class="nav-link collapsed" href="order.html">
-                    <i class="bi bi-receipt"></i>
-                    <span>Hóa đơn</span>
+                <a class="nav-link" href="supplier.html" id="supplierHref">
+                    <i class="bi bi-person"></i>
+                    <span>Nhà cung cấp</span>
                 </a>
-            </li><!-- Bill Nav -->
-
-
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="invoiceImport.html" id="invoiceImportHref">
+                    <i class="bi bi-receipt"></i>
+                    <span>Hóa đơn nhập hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="warehouse.html" id="warehouseHref">
+                    <i class="bi bi-box2"></i>
+                    <span>Kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="issue.html" id="issueHref">
+                    <i class="bi bi-truck"></i>
+                    <span>Xuất kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="invoiceExport.html" id="invoiceExportHref">
+                    <i class="bi bi-receipt"></i>
+                    <span>Hóa đơn xuất kho</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" id="admin__sign-out">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>Sign Out</span>
                 </a>
-            </li><!-- End Login Page Nav -->
-
+            </li>
+            <!-- End Login Page Nav -->
         </ul>
-
     </aside><!-- End Sidebar-->
     <main id="main" class="main ">
         <div class="pagetitle">
             <h1>Thống kê</h1>
         </div>
         <div class="section dashboard">
-            <div class="card p-5">
-                <canvas id="salesChart"></canvas>
+            <div class="card p-5" >
+                <canvas id="invetoryChart" width="100" height="100"></canvas>
                 <div style="margin-top: 10px;">
                     <button id="exportExcel" class="btn btn-outline-info btn-lg " style="margin-left: 65px;">Chi
                         tiết</button>
@@ -111,9 +128,10 @@
     <script src="https://kit.fontawesome.com/0d84cb8634.js" crossorigin="anonymous"></script>
 
 
-    <script type="module" src="./controller/statisticSalesManager.js" defer></script>
+    <script type="module" src="./controller/statisticWarehouseManager.js" defer></script>
     <script type="module" src="./js/adminLogout.js" defer></script>
     <script type="module" src="./controller/rightAuthorization.js" defer></script>
+    <script type="module" src="./js/checkCollapsedWarehouse.js" defer></script>
 
 
 </body>

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, runTransaction, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import Utils from "../model/utils.js";
+import Utils from "../controller/utils.js";
 class Product {
     constructor() {
         this.getFirebaseStuff();
@@ -20,6 +20,23 @@ class Product {
 
         this.app = initializeApp(firebaseConfig);
         this.db = getDatabase();
+    }
+    /**
+     * 
+     * @returns {Promise<Number>} get current product counter
+     */
+    async getNextProductID() {
+        const dbref = ref(this.db, 'ProductCounter');
+        return get(dbref).then((snapshot) => {
+            if (snapshot.exists()) {
+                return 'SP' + this.utils.formatCounter(snapshot.val() + 1);
+            } else {
+                return 0;
+            }
+        }).catch((error) => {
+            console.error(error);
+            return 0;
+        });
     }
     /**
      * 
@@ -95,7 +112,21 @@ class Product {
             alert('Update product failed');
         })
     }
-
+    /** 
+     * @param {String} productID 
+     * @param {Object} size {size, quantity}
+     */
+    async updateQuantityBasedOnSize(productID, size) {
+        const dbref = ref(this.db, 'Product/' + productID + '/Size');
+        const product = await this.querryProductByID(productID);
+        const productSize = product.Size;
+        productSize[size.size] += size.quantity;    
+        update(dbref, productSize).then(() => {
+            alert('Update product size successfully');
+        }).catch((error) => {
+            alert('Update product size failed');
+        })
+    }
     /**
      * 
      * @returns {Promise<Array>} array of objects {key , item : {Category, CreatedDate, Description, Detail, Images, Name, Price, PurchasePrice,  Promotion , Size, UpdateDate}}

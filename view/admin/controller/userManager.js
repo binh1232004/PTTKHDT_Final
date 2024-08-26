@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import User from './user.js';
+// import User from './user.js';
+import User from "../model/user.js";
 class UserManager {
     constructor() {
         this.userModel = new User();
@@ -129,6 +130,9 @@ class UserManager {
                     }
                     else if (role == 'Thu ngân') {
                         $(row).addClass('bg-info text-white');
+                    }
+                    else if (role == 'Nhân viên bán hàng') {
+                        $(row).addClass('bg-secondary text-white');
                     }
                     $(row).on('click', () => {
                         get(child(dbref, 'User/' + data[0])).then((snapshot) => {
