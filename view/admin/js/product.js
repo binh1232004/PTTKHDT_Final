@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getDatabase, ref, get, set, runTransaction, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus",
@@ -14,10 +15,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-import { getDatabase, ref, get, set, runTransaction, child, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 const db = getDatabase();
+const storage = getStorage(app);
 
 let AddBtn = document.getElementById('AddBtn');
 let UpdBtn = document.getElementById('UpdateBtn');
@@ -35,21 +34,24 @@ let stdno = 1;
 
 function getProductCategory() {
     const dbref = ref(db);
-    get(child(dbref, 'Category')).then((category)=>{
+    get(child(dbref, 'Category')).then((category) => {
         category.forEach(std => {
             AddProductCategory(std);
         });
-    })
+    }).catch((error) => {
+        console.error("Failed to fetch product categories:", error);
+    });
 }
 
 function AddProductCategory(std) {
     let key = std.key;
     let value = std.val();
+    console.log(`key: ${key} - value: ${value}`);
 
     let opt = document.createElement('option');
-
     opt.value = value.CateID;
     opt.innerText = value.CateName;
+    opt.setAttribute('data-catid', key);
 
     ProductCategory.append(opt);
 
@@ -69,28 +71,44 @@ function formatDateToYYYYMMDD(date) {
 const today = new Date();
 const formattedDate = formatDateToYYYYMMDD(today);
 
-
 //=================================== ĐỌC FILE IMAGE=============================================
-
 var files = [];
 var proglab = document.getElementById('UpProgress');
-
 var input = document.getElementById('file-image');
 
 input.onchange = e => {
     files = e.target.files;
+    console.log("Files selected: ", files);
 }
-
-// function GetFileExt(file) {
-//     var temp = file.name.split('.');
-//     var ext = temp.slice((temp.length - 1), (temp.length));
-//     return '.' + ext[0];
-// }
 
 function GetFileName(file) {
     var temp = file.name.split('.');
     var fname = temp.slice(0, -1).join('.');
     return fname;
+}
+
+async function handleFileUpload(inputElement) {
+    const files = inputElement.files;
+    let image = {};
+
+    for (const file of files) {
+        try {
+            const url = await UploadProgress(file);
+            console.log(`Uploaded file: ${file.name} to URL: ${url}`);
+            const getName = GetFileName(file);
+            image[getName] = {
+                ImgName: file.name,
+                ImgURL: url
+            };
+        } catch (error) {
+            console.log("Failed to upload file: ", file.name, error);
+            alert("Some images failed to upload. Please try again.");
+            return null;
+        }
+    }
+    console.log("Images uploaded: ", image);
+
+    return image;
 }
 
 async function UploadProgress(file) {
@@ -100,16 +118,15 @@ async function UploadProgress(file) {
         contentType: ImgToUpload.type
     };
 
-    const storage = getStorage();
     const storageRef = sRef(storage, "Images/" + imgName);
     const UploadTask = uploadBytesResumable(storageRef, ImgToUpload, metaData);
 
     return new Promise((resolve, reject) => {
-        UploadTask.on('state-changed', (snapshot) => {
+        UploadTask.on('state_changed', (snapshot) => {
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            // You can update a progress bar here if you want
+            console.log('Upload is ' + progress + '% done');
         }, (error) => {
-            alert("Error: Image not uploaded!");
+            console.error("Error during upload: ", error);
             reject(error);
         }, () => {
             getDownloadURL(UploadTask.snapshot.ref).then((downloadURL) => {
@@ -127,12 +144,12 @@ function Interface(e) {
     if (BtnId == 'AddBtn') {
         AddData();
     } else {
-        get(child(dbref, 'Product/' + ProId)).then((snapshot)=>{
-            if(snapshot.exists()){
+        get(child(dbref, 'Product/' + ProId)).then((snapshot) => {
+            if (snapshot.exists()) {
                 if (BtnId == 'UpdateBtn')
                     UpdateData(ProId);
                 else if (BtnId == 'DeleteBtn')
-                    DeleteData(ProId); 
+                    DeleteData(ProId);
             }
             else {
                 if (BtnId == 'UpdateBtn')
@@ -140,159 +157,104 @@ function Interface(e) {
                 else if (BtnId == 'DeleteBtn')
                     alert("Cannot delete, product does not exist");
             }
+        }).catch((error) => {
+            console.error("Error accessing product data: ", error);
         });
     }
 }
 
 async function AddData() {
     var checkbox = document.getElementsByName('size');
-    var image = {};
+    let image = await handleFileUpload(document.getElementById('file-image'));
 
-    for (const file of files) {
-        try {
-            const url = await UploadProgress(file);
-            console.log(url);
-            var getName = GetFileName(file);
-            image[getName] = {
-                ImgName: file.name,
-                ImgURL: url
-            };
-        } catch (error) {
-            console.log("Failed to upload file: ", file.name, error);
-            alert("Some images failed to upload. Please try again.");
-            return; // Exit if any upload fails
-        }
+    if (!image) {
+        console.error("No images uploaded, aborting AddData.");
+        return;
     }
+
     const counterRef = ref(db, 'ProductCounter');
     runTransaction(counterRef, (currentValue) => {
         return (currentValue || 0) + 1;
     }).then(({ snapshot }) => {
         const newCateId = 'SP' + formatCounter(snapshot.val());
 
-        // Lấy nội dung từ TinyMCE editor
         let detailContent = tinymce.get('Detail').getContent();
 
-        set(ref(db, 'Product/' + newCateId), {
+        const productData = {
             ProductID: newCateId,
             Name: ProductName.value,
             Price: Number(ProductPrice.value),
             Promotion: Number(ProductPromotion.value),
-            Size: {
-                XS: checkbox[0].checked,
-                S: checkbox[1].checked,
-                M: checkbox[2].checked,
-                L: checkbox[3].checked,
-                XL: checkbox[4].checked,
-                '2XL': checkbox[5].checked,
-                '3XL': checkbox[6].checked,
-                '4XL': checkbox[7].checked
-            },
             Category: ProductCategory.value,
             Images: image,
             CreateDate: formattedDate,
             UpdateDate: formattedDate,
             Detail: detailContent,
             Description: Description.value
-        }).then(() => {
+        };
+
+        set(ref(db, 'Product/' + newCateId), productData).then(() => {
             alert("Data Added Successfully with ID: " + newCateId);
             location.reload();
         }).catch((error) => {
             alert("Unsuccessful");
-            console.log(error);
+            console.error("Failed to save product data: ", error);
         });
     }).catch((error) => {
         alert("Transaction failed");
-        console.log(error);
+        console.error("Failed to increment product counter: ", error);
     });
 }
 
-function RetData(ID){
-    const dbref = ref(db);
-
-    get(child(dbref, 'Product/' + ID)).then((snapshot)=>{
-        if(snapshot.exists()) {
-            ProductID.value = snapshot.val().ProductID;
-            ProductName.value = snapshot.val().Name;
-            ProductPrice.value = snapshot.val().Price;
-            ProductCategory.value = snapshot.val().Category;
-            // Detail.value = snapshot.val().Detail;
-            // Hiển thị nội dung từ Firebase lên trình soạn thảo TinyMCE
-            let detailContent = snapshot.val().Detail;
-            tinymce.get('Detail').setContent(detailContent);
-            Description.value = snapshot.val().Description;
-        }
-        else {
-            alert("Product does not exist");
-        }
-    })
-    .catch((error)=>{
-        alert("Unsuccessful");
-        console.log(error);
-    })
-}
-
-async function UpdateData(ProID){
+async function UpdateData(ProID) {
+    console.log("ProID: ", ProID);
+    console.log("Starting UpdateData function for Product ID: ", ProID);
 
     var checkbox = document.getElementsByName('size');
-    var image = {};
+    let image = await handleFileUpload(document.getElementById('file-image'));
 
-    for (const file of files) {
-        try {
-            const url = await UploadProgress(file);
-            console.log(url);
-            var getName = GetFileName(file);
-            image[getName] = {
-                ImgName: file.name,
-                ImgURL: url
-            };
-        } catch (error) {
-            console.log("Failed to upload file: ", file.name, error);
-            alert("Some images failed to upload. Please try again.");
-            return; 
-        }
-    }
+    const productCategorySelect = document.getElementById('ProductCategory');
+    const selectedOption = productCategorySelect.options[productCategorySelect.selectedIndex];
+    const dataCatID = selectedOption.getAttribute('data-catid');
 
-    // Lấy nội dung từ trình soạn thảo TinyMCE
     let detailContent = tinymce.get('Detail').getContent();
 
-    update(ref(db, 'Product/' + ProID), {
+    // Tạo đối tượng productData
+    const productData = {
         Name: ProductName.value,
         Price: Number(ProductPrice.value),
         Promotion: Number(ProductPromotion.value),
-        Size: {
-            XS: checkbox[0].checked,
-            S: checkbox[1].checked,
-            M: checkbox[2].checked,
-            L: checkbox[3].checked,
-            XL: checkbox[4].checked,
-            '2XL': checkbox[5].checked,
-            '3XL': checkbox[6].checked,
-            '4XL': checkbox[7].checked
-        },
-        Category: ProductCategory.value,
-        Images: image,
+        Category: dataCatID,
         UpdateDate: formattedDate,
         Detail: detailContent,
         Description: Description.value
-    }).then(()=>{
+    };
+
+    // Nếu image không rỗng, thêm thuộc tính Images vào productData
+    if (image && Object.keys(image).length > 0) {
+        productData.Images = image;
+    }
+
+    console.log(productData);
+
+    update(ref(db, 'Product/' + ProID), productData).then(() => {
         alert("Data Updated Successfully");
         location.reload();
-    }).catch((error)=>{
+    }).catch((error) => {
         alert("Unsuccessful");
-        console.log(error);
-    })
+        console.error("Failed to update product data: ", error);
+    });
 }
 
-function DeleteData(ProID){
-    remove(ref(db, 'Product/' + ProID), {
 
-    }).then(()=>{
+function DeleteData(ProID) {
+    remove(ref(db, 'Product/' + ProID)).then(() => {
         alert("Data Deleted Successfully");
         location.reload();
-    }).catch((error)=>{
+    }).catch((error) => {
         alert("Unsuccessful");
-        console.log(error);
-    })
+        console.error("Failed to delete product data: ", error);
+    });
 }
 
 AddBtn.addEventListener('click', Interface);
@@ -300,13 +262,12 @@ UpdBtn.addEventListener('click', Interface);
 DelBtn.addEventListener('click', Interface);
 
 //===================================DANH SÁCH SẢN PHẨM=====================================
-
-$(document).ready(function() {
+$(document).ready(function () {
     var dataSet = [];
     const dbref = ref(db);
 
-    get(child(dbref, 'Product')).then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+    get(child(dbref, 'Product')).then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
             var value = childSnapshot.val();
             const productID = childSnapshot.key;
             dataSet.push([
@@ -317,8 +278,8 @@ $(document).ready(function() {
                 value.UpdateDate
             ]);
         });
+
         var table = $('#listProduct').DataTable({
-            // DataTable options
             data: dataSet,
             columns: [
                 { title: "ID" },
@@ -327,14 +288,29 @@ $(document).ready(function() {
                 { title: "Ngày tạo" },
                 { title: "Ngày cập nhật" }
             ],
-            rowCallback: function(row, data) {
-                $(row).on('click', function() {
-                    get(child(dbref, 'Product/' + data[0])).then((snapshot)=>{
-                        if(snapshot.exists()) {
+            rowCallback: function (row, data) {
+                $(row).on('click', function () {
+                    get(child(dbref, 'Product/' + data[0])).then((snapshot) => {
+                        if (snapshot.exists()) {
                             ProductID.value = snapshot.key;
                             ProductName.value = snapshot.val().Name;
                             ProductPrice.value = snapshot.val().Price;
-                            ProductCategory.value = snapshot.val().Category;
+
+                            const categoryID = snapshot.val().Category; // Lấy giá trị của Category từ snapshot
+                            const selectElement = document.getElementById('ProductCategory'); // Lấy phần tử select
+
+                            // Duyệt qua tất cả các tùy chọn trong select
+                            for (let i = 0; i < selectElement.options.length; i++) {
+                                let option = selectElement.options[i];
+
+                                // Kiểm tra xem giá trị của data-catid có bằng với Category từ snapshot không
+                                if (option.getAttribute('data-catid') === categoryID) {
+                                    option.selected = true; // Chọn tùy chọn này
+                                    console.log(`Selected category: ${option.innerText} with data-catid: ${categoryID}`);
+                                    break; // Thoát vòng lặp khi tìm thấy tùy chọn phù hợp
+                                }
+                            }
+
                             let detailContent = snapshot.val().Detail;
                             tinymce.get('Detail').setContent(detailContent);
                             Description.value = snapshot.val().Description;
@@ -342,22 +318,20 @@ $(document).ready(function() {
                         else {
                             alert("Product does not exist");
                         }
-                    })
-                    .catch((error)=>{
+                    }).catch((error) => {
                         alert("Unsuccessful");
-                        console.log(error);
-                    })
+                        console.error("Failed to fetch product details: ", error);
+                    });
                 });
-                $(row).on('mouseenter', function() {
-                    
+                $(row).on('mouseenter', function () {
+                    // Optional: Add hover functionality here
                 });
             }
         });
+    }).catch((error) => {
+        console.error("Failed to fetch product list: ", error);
     });
 });
-
-
-
 
 //===================================PRIMARY KEY=============================================
 function initializeCounter() {
@@ -383,16 +357,14 @@ function formatCounter(value) {
 
 function resetCounter() {
     const counterRef = ref(db, 'ProductCounter');
-    set(counterRef, + 0).then(() => {
+    set(counterRef, 0).then(() => {
         alert("ProductCounter has been reset to SP00000");
     }).catch((error) => {
         console.error("Error resetting counter:", error);
     });
 }
 
-// Initialize counter on application start
 initializeCounter();
 
-// Call this function to reset the counter
+// Uncomment to reset the counter
 // resetCounter();
-
