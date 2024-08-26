@@ -76,7 +76,7 @@ class User {
       redirectBasedOnRole(role) {
         const title = document.title;
         if (role === 'User' || role === undefined) {
-            if(title !== 'FishBig')
+            if(title !== 'FishBig' || title !== 'pageCart' || title !== 'User profile')
                 window.location.href = this.originURL;
         } else if (role === 'Admin') {
             window.location.href = `../${this.originURL}/view/admin/user.html`;
