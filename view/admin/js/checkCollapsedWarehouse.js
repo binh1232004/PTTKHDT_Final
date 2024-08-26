@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // BUG use this.document instead of document
     const statisticWarehouseHref = document.getElementById('statisticWarehouseHref');
     const supplierHref = document.getElementById('supplierHref');
@@ -17,4 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
             element.classList.add('collapsed');
         }
     });
+    const userModel = new User();   
+    const userRole = await userModel.getRoleUser(user.uid); 
+    if(userRole ==='User' || userRole === undefined)
+        window.location.href = '/';
 });

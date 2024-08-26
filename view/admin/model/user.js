@@ -35,7 +35,7 @@ class User {
     trackUserLogin(currentUser) {
         onAuthStateChanged(this.auth, (user) => {
             if (user) {
-               localStorage.setItem('userID', user.uid); 
+                localStorage.setItem('userID', user.uid);
             } else {
             }
 
@@ -73,12 +73,8 @@ class User {
      * 
      * @param {String} role {User, Admin, Warehouse, Cashier, Sales}
      */
-      redirectBasedOnRole(role) {
-        const title = document.title;
-        if (role === 'User' || role === undefined) {
-            if(title !== 'FishBig' || title !== 'pageCart' || title !== 'User profile')
-                window.location.href = this.originURL;
-        } else if (role === 'Admin') {
+    redirectBasedOnRole(role) {
+        if (role === 'Admin') {
             window.location.href = `../${this.originURL}/view/admin/user.html`;
         } else if (role === 'Warehouse') {
             window.location.href = `../${this.originURL}/view/admin/warehouse.html`;
@@ -97,7 +93,7 @@ class User {
         const db = getDatabase();
         const reference = ref(db, 'User/' + userID);
         const snapshot = await get(reference);
-        if(snapshot.exists()){
+        if (snapshot.exists()) {
             return snapshot.val();
         }
     }
@@ -129,9 +125,9 @@ class User {
         const snapshot = await get(reference);
         return snapshot.exist();
 
-    }   
+    }
 
-    async getListUser() {   
+    async getListUser() {
         const db = getDatabase();
         const reference = ref(db, 'User/');
         const snapshot = await get(reference);
