@@ -14,7 +14,7 @@ class User {
             SALES: 5
         }
         this.defaultPassword = '12345678';
-        this.originURL = "/"
+        this.originURL = ""
         const firebaseConfig = {
             apiKey: 'AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus',
             authDomain: 'demosoftwaretechnology.firebaseapp.com',
@@ -75,13 +75,13 @@ class User {
      */
     redirectBasedOnRole(role) {
         if (role === 'Admin') {
-            window.location.href = `../${this.originURL}/view/admin/user.html`;
+            window.location.href = `${this.originURL}/view/admin/user.html`;
         } else if (role === 'Warehouse') {
-            window.location.href = `../${this.originURL}/view/admin/warehouse.html`;
+            window.location.href = `${this.originURL}/view/admin/warehouse.html`;
         } else if (role === 'Cashier') {
-            window.location.href = `../${this.originURL}/view/admin/statisticSales.html`;
+            window.location.href = `${this.originURL}/view/admin/statisticSales.html`;
         } else if (role === 'Sales') {
-            window.location.href = `../${this.originURL}/view/admin/category.html`;
+            window.location.href = `${this.originURL}/view/admin/category.html`;
         }
     }
     /**

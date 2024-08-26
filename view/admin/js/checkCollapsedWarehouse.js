@@ -1,3 +1,4 @@
+import User from '../model/user.js'; 
 document.addEventListener('DOMContentLoaded', async () => {
     // BUG use this.document instead of document
     const statisticWarehouseHref = document.getElementById('statisticWarehouseHref');
@@ -17,8 +18,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             element.classList.add('collapsed');
         }
     });
-    const userModel = new User();   
-    const userRole = await userModel.getRoleUser(user.uid); 
-    if(userRole ==='User' || userRole === undefined)
-        window.location.href = '/';
 });

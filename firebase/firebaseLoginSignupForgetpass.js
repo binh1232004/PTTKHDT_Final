@@ -163,12 +163,8 @@ const monitorAuthState = async () => {
             const userModel = new User();   
             const userRole = await userModel.getRoleUser(user.uid); 
 
-        const title = document.title;
-        if(title !== 'FishBig' || title !== 'pageCart' ||title !== 'user profile'){
-            console.log('redirect');
-        }
 
-            // userModel.redirectBasedOnRole(userRole);    
+            userModel.redirectBasedOnRole(userRole);    
         } else {
             isLoggin = false;
             console.log('log out');
