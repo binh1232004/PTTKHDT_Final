@@ -30,7 +30,9 @@ class UserManager {
         this.Role = document.getElementById('RoleInp');
         this.Birth = document.getElementById('current-time');
 
+        this.TxtInfor = document.getElementById('txt__infor');
         this.AddBtn = document.getElementById('AddBtn');
+        this.InforBtn = document.getElementById('btn__infor');
         this.UpdBtn = document.getElementById('UpdateBtn');
         this.DelBtn = document.getElementById('DeleteBtn');
         this.listUser = document.getElementById('userList');
@@ -39,6 +41,12 @@ class UserManager {
         this.AddBtn.addEventListener('click', this.registerUser.bind(this));
         this.UpdBtn.addEventListener('click', this.updateUser.bind(this));
         this.DelBtn.addEventListener('click', this.deleteUser.bind(this));
+        this.InforBtn.addEventListener('mouseover', () => {
+            this.TxtInfor.style.display = 'inline-block';
+        });
+        this.InforBtn.addEventListener('mouseout', () => {
+            this.TxtInfor.style.display = 'none';
+        });
         // window.addEventListener('load', this.getUser.bind(this));
         window.addEventListener('load', this.createTableData.bind(this));
         window.addEventListener('load', this.addOptionInRole.bind(this));

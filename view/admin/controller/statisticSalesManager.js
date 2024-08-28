@@ -44,7 +44,17 @@ class Statistic {
           y: {
             beginAtZero: true
           }
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: `Biểu đồ doanh thu theo ngày tại ${this.currentMonth}/${this.currentYear}`,
+          }
         }
+
       }
     });
 

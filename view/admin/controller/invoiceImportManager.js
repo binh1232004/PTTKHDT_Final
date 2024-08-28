@@ -18,12 +18,18 @@ class InvoiceImportManager {
     this.userDB = new UserDB();
     this.loadHandlerExcel = false;
     this.userDB.trackUserLogin();
-    this.excelIpt.addEventListener('change', this.transformDataExcelToDB.bind(this));
+    this.excelIpt.addEventListener('change', this.buyGoods.bind(this));
     this.infoBtn.addEventListener('click', this.exportExcelFile.bind(this));
     this.addBtn.addEventListener('click', async () => {
-        const lstUsers = await this.userDB.getUserList(); 
+      const lstUsers = await this.userDB.getUserList();
     });
     this.creatTableData();
+    this.InforBtn.addEventListener('mouseover', () => {
+      this.TxtInfor.style.display = 'inline-block';
+    });
+    this.InforBtn.addEventListener('mouseout', () => {
+      this.TxtInfor.style.display = 'none';
+    });
   }
   getForm() {
     this.formOrder = document.getElementById('FormOrder');
@@ -32,6 +38,8 @@ class InvoiceImportManager {
     //order
     this.addBtn = document.getElementById('AddBtn');
     this.infoBtn = document.getElementById('InfoBtn');
+    this.TxtInfor = document.getElementById('txt__infor');
+    this.InforBtn = document.getElementById('btn__infor');
     // this.deleteBtn = document.getElementById('DeleteBtn');
     // this.updateBtn = document.getElementById('UpdateBtn');
   }
@@ -55,8 +63,8 @@ class InvoiceImportManager {
     //order
     this.excelIpt = document.getElementById('ExcelIpt');
   }
-  getTotal(){
-    this.totalFull = document.getElementById('total-full');  
+  getTotal() {
+    this.totalFull = document.getElementById('total-full');
   }
   getInformationSupplier(supplierID) {
     this.address = document.getElementById('Address');
@@ -86,7 +94,7 @@ class InvoiceImportManager {
         { title: 'Ngày mua' },
         { title: 'Ghi chú' },
         { title: 'PTTT' },
-        { title: 'Thủ kho' },
+        { title: 'Người nhập' },
         // {title: 'ID thủ kho'}
       ],
       rowCallback: (row, data) => {
@@ -98,13 +106,14 @@ class InvoiceImportManager {
 
   }
   async createTableOrderDetail(dataFromOrder, lstDataInvoiceImport) {
+    $('#table-order-detail').DataTable().clear().destroy();
     const currentDataInvoiceImport = lstDataInvoiceImport.find((item) => (item.key === dataFromOrder[0]));
     const dataSet = []
     for (let key in currentDataInvoiceImport.item.Items) {
       const [idsp, size] = key.split('-');
       const product = await this.productDB.querryProductByID(idsp);
       const productName = product.Name;
-      const price = this.utils.formatToVND(currentDataInvoiceImport.item.Items[key].PurchasePrice); 
+      const price = this.utils.formatToVND(currentDataInvoiceImport.item.Items[key].PurchasePrice);
       const dataTableOrderDetail = [idsp, productName, currentDataInvoiceImport.item.Items[key].Quantity, size, price, currentDataInvoiceImport.item.Items[key].SupplierName];
       dataSet.push(dataTableOrderDetail);
     }
@@ -130,7 +139,7 @@ class InvoiceImportManager {
   }
 
 
-  transformDataExcelToDB(e) {
+  buyGoods(e) {
     const files = this.excelIpt.files;
     const latestFile = this.excelIpt.files[files.length - 1];
     if (latestFile) {
@@ -162,7 +171,7 @@ class InvoiceImportManager {
         }
         let totalAmount = 0;
         const Items = {};
-        for(const item of sheetData) {
+        for (const item of sheetData) {
           //if product exist, store quantity of each size in variable for both productDB to be updated and invoiceImportDB to be set
           const amount = item[dataHeader.quantity] * item[dataHeader.unitPrice];
           totalAmount += amount;

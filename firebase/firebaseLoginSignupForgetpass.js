@@ -273,7 +273,9 @@ btnSigninGoogle.addEventListener('click', googleAuth);
 //             const credential = FacebookAuthProvider.credentialFromError(error);
 //         });
 // };
-// btnSignupFacebook.addEventListener('click', facebookAuth);
+// btnSignupFacebook.addEventListener('click', ()=> {
+//     alert('Chức năng đang được phát triển');
+// });
 
 //**********************Forget password**********************
 const sendEmailResetPass = () => {

@@ -28,7 +28,7 @@
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center bg-warning">
         <div class="d-flex align-items-center justify-content-between">
-            <a href="product.html" class="logo d-flex align-items-center">
+            <a href="#" class="logo d-flex align-items-center">
                 <img src="" alt="" />
                 <span class="d-none d-lg-block text-light">FishBigWareHouse</span>
             </a>
@@ -131,16 +131,20 @@
 
                         <button class="btn btn-success" id="AddBtn">
                             <input type="file" accept=".xlsx" id="ExcelIpt">
-                        </button> 
+                        </button>
                         <button class="btn btn-info" id="InfoBtn">
                             Mẫu hóa đơn
                         </button>
-                        <!-- <button class="btn btn-danger" id="DeleteBtn">
-                            Xóa
-                        </button>
-                        <button class="btn btn-primary" id="UpdateBtn">
-                            Sửa
-                        </button> -->
+                        <div style=" position: relative;display: inline-block; ">
+                            <button
+                                style="border-radius: 50%; background-color: aquamarine; position: relative; left: 50px"
+                                id="btn__infor">
+
+                                <i class="bi bi-question-lg"></i>
+                            </button>
+                            <div style=" display:none; position: absolute; right: -320px; width: 250px;background-color: antiquewhite;"
+                                id="txt__infor">Sản phẩm tồn kho ghi ID <br/> Sản phẩm mới không cần ghi ID</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,22 +173,9 @@
                                 <h5 class="card-title col-sm-6" id="ODID"></h5>
                             </div>
 
-                            <!-- <div class="row">
-                                <p class="col-sm-4">Nhà cung cấp</p>
-                                <p id="Supplier" class="col-sm-8"></p>
-                            </div>
-                            <div class="row">
-                                <p class="col-sm-4">Địa chỉ</p>
-                                <p id="Address" class="col-sm-8"></p>
-                            </div>
-                            <div class="row">
-                                <p class="col-sm-4">Số điện thoại</p>
-                                <p id="Phone" class="col-sm-8"></p>
-                            </div>
- -->
                             <table class="table table-borderless datatable" id="table-order-detail">
                             </table>
-                            <hr/>
+                            <hr />
                             <div class="row justify-content-between">
                                 <p class="col-sm-4">Tổng cộng</p>
                                 <p class="col-sm-3" id="total-full"></p>
@@ -219,7 +210,7 @@
     <script type="module" src="./js/adminLogout.js" defer></script>
     <script type="module" src="./controller/invoiceImportManager.js"></script>
     <script type="module" src="./js/checkCollapsedWarehouse.js" defer></script>
-    
+
     <script type="module" src="./controller/rightAuthorization.js" defer></script>
 
 
