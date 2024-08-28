@@ -1,20 +1,2 @@
-# 🚀 Welcome to your new awesome project!
-
-This project has been created using **webpack-cli**, you can now run
-
-```
-npm run build
-```
-
-or
-
-```
-yarn build
-```
-
-hello_conflict
-ihihkbkjbk
-
-hvftjvkhgiỳyuỵggl
-
-fgfssdffd
+This repo is improvement from [CNPM_Final]( https://github.com/binh1232004/CNPM_Final ) <br/> 
+Shout out to [Tuấn Anh]( https://github.com/lnta09 ), [Đắc Long]( https://github.com/daclong1706 ), [Hoài Trí]( https://github.com/trihoai08 )
