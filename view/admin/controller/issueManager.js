@@ -14,11 +14,43 @@ class IssueManager {
         this.orderDB = new Order();
         this.invoiceExportDB = new InvoiceExport();
         this.userDB = new User();
-        this.eventIssueBtn = false;
+        this.isClickRow = false;
         this.getInp();
         this.createTable();
         this.issueBtn = document.getElementById('issue-btn');
+        const handleIssueBtn = async () => {
+            if(!this.isClickRow){
+                alert('Chọn đơn hàng cần xuất hóa đơn');
+                return;
+            }
+            if(this.data[4] == 'Đã xuất'){
+                alert('Đơn hàng đã được xuất hóa đơn');
+                return;
+            }
 
+            if (this.ZIPInp.value !== '') {
+                const userID = localStorage.getItem('userID');
+                const user = await this.userDB.querryUser(userID);
+                const userFullName = user.FullName;
+                this.invoiceExportDB.addInvoiceExport({
+                    ...this.objData[this.row._DT_RowIndex],
+                    dateIssue: this.utils.getCurrentDayBinh(),
+                    noteIssue: this.NoteInp.value,
+                    ZIPIssue: this.ZIPInp.value,
+                    userID: userID,
+                    userFullName: userFullName,
+                    orderID: this.data[0]
+                })
+                this.orderDB.updateOrder(data[0], {
+                    isIssue: true
+                })
+            }
+            else {
+                alert('Nhập Mã bưu điện')
+            }
+        }
+
+        this.issueBtn.addEventListener('click', handleIssueBtn);
     }
     getInp() {
         this.OrderDetail = document.getElementById('order-detail');
@@ -67,35 +99,11 @@ class IssueManager {
         });
     }
     handleRowClick(row, data, objData) {
-        if (!this.eventIssueBtn) {
-            this.eventIssueBtn = true;
-            this.issueBtn.addEventListener('click', async () => {
-                if(data[4] == 'Đã xuất'){
-                    alert('Đơn hàng đã được xuất hóa đơn');
-                    return;
-                }
-                if (this.ZIPInp.value !== '') {
-                    const userID = localStorage.getItem('userID');
-                    const user = await this.userDB.querryUser(userID);
-                    const userFullName = user.FullName;
-                    this.invoiceExportDB.addInvoiceExport({
-                        ...objData[row._DT_RowIndex],
-                        dateIssue: this.utils.getCurrentDayBinh(),
-                        noteIssue: this.NoteInp.value,
-                        ZIPIssue: this.ZIPInp.value,
-                        userID: userID,
-                        userFullName: userFullName,
-                        orderID: data[0]
-                    })
-                    this.orderDB.updateOrder(data[0], {
-                        isIssue: true
-                    })
-                }
-                else {
-                    alert('Nhập Mã bưu điện')
-                }
-            })
-
+        this.row = row;
+        this.data = data;
+        this.objData = objData; 
+        if (!this.isClickRow) {
+            this.isClickRow = true;
         }
         this.issueBtn.hidden = false;
         let indexRow = row._DT_RowIndex;
