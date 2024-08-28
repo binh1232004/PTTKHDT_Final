@@ -14,7 +14,7 @@ class User {
             SALES: 5
         }
         this.defaultPassword = '12345678';
-        this.originURL = ""
+        this.originURL = "."
         const firebaseConfig = {
             apiKey: 'AIzaSyDDOUEj5ZXHt_TvN10dbyj5Yg3xX1T5fus',
             authDomain: 'demosoftwaretechnology.firebaseapp.com',
