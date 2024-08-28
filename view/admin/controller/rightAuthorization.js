@@ -5,6 +5,6 @@ const redirect = async () => {
     const role = await userDB.getRoleUser(userID);
     const getCurrentPageTitle = document.title; 
     if(role !== getCurrentPageTitle)
-        window.location.href = '/';
+        window.location.href = '../../index.html';
 }
 redirect();
