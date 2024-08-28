@@ -83,7 +83,7 @@ class CartView {
     }
 
     openPayment() {
-        window.location.href = '../../pageCart.html'
+        window.location.href = './pageCart.html'
     }
 
     bindChangeQuantity(handler) {
