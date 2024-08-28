@@ -2,6 +2,11 @@ class ProductDetailView {
     constructor() {
         this.productWrapper = document.getElementById('product-single-wrapper');
     }
+
+    formatPrice(number) {
+        let formattedNumber = number.toLocaleString('vi-VN');
+        return formattedNumber + "đ";
+    }
     
     renderProductDetails(product) {
         let imagesHtml = '';
@@ -26,7 +31,7 @@ class ProductDetailView {
             </div>
             <div class="card-body">
                 <h3 class="card-title">${product.name}</h3>
-                <div class="price">${product.price}đ</div>
+                <div class="price">${this.formatPrice(product.price)}</div>
                 <div class="size-product d-flex flex-column">
                     <div class="size-top d-flex justify-content-between">
                         <p class="card-subtitle">Kích thước:</p>
