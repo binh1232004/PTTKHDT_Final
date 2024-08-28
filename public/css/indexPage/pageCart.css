@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+.disableInforCart {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 main div.custom-color img {
     max-width: 40px;
     height: auto;

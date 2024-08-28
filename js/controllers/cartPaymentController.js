@@ -187,8 +187,14 @@ class CartPaymentController {
 
         console.log(orderData);
 
+        const disableCart = document.getElementById('disableCart');
+        const disableInfor = document.getElementById('disableInfor');
+
         try {
             document.getElementById("btnMakePayment").style.display = "none"
+            // Hàm disable
+            disableCart.classList.add('disableInforCart');
+            disableInfor.classList.add('disableInforCart');
 
             // Tạo hóa đơn trên PayPal
             // let usdAmount = document.getElementById('totalPrice').dataset.usd;
@@ -240,6 +246,9 @@ class CartPaymentController {
                             // Ẩn nút PayPal
                             document.getElementById('paypal-button-container').innerHTML = '';
                             document.getElementById("btnMakePayment").style.display = "block";
+                            // Hàm enable
+                            disableCart.classList.remove('disableInforCart');
+                            disableInfor.classList.remove('disableInforCart');
                         } catch (error) {
                             this.view.showAlert('Thanh toán thất bại', 'danger');
                         }

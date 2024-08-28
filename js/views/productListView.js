@@ -9,16 +9,17 @@ class ProductListView {
     }
  
     renderProducts(products) {
+        console.log(" renderProducts(products): ", products)
         this.listProductHTML.innerHTML = '';
 
         // Lặp qua các giá trị của đối tượng products
         Object.values(products).forEach(product => {
             const newProduct = document.createElement('div');
             newProduct.classList.add('item');
-            newProduct.dataset.id = product.productID;
+            newProduct.dataset.id = product.id;
 
             newProduct.innerHTML = `
-                <a href="detail.html?id=${product.productID}">
+                <a href="detail.html?id=${product.id}">
                     <img class="card-img-top" src="${product.imgURL}" alt="${product.name}">
                 </a>
                 <h2>${product.name}</h2>

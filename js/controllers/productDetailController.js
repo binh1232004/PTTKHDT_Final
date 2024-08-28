@@ -17,6 +17,7 @@ class ProductDetailController {
     async fetchProductDetails() {
         const productRef = FirebaseService.getRef(`Product/${this.productId}`);
         const snapshot = await FirebaseService.getData(productRef);
+        console.log("this.productId: ", this.productId)
 
         if (snapshot.exists()) {
             const productData = snapshot.val();
