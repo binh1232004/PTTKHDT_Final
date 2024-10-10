@@ -1,6 +1,7 @@
 import User from '../model/user.js'; 
 document.addEventListener('DOMContentLoaded', async () => {
     // BUG use this.document instead of document
+
     const statisticWarehouseHref = document.getElementById('statisticWarehouseHref');
     const supplierHref = document.getElementById('supplierHref');
     const warehouseHref = document.getElementById('warehouseHref');
