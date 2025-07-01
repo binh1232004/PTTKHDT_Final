@@ -37,31 +37,31 @@ FishBig is a dynamic e-commerce web application for an online clothing store, en
 2. **Product Detail Page**: Shows detailed product information and size selection.  
    ![Product Detail](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296467/product_detail_lbpkdw.png)
 3. **Shopping Cart**: Allows users to review selected items before checkout.  
-   ![Shopping Cart](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296467/cart_zhxvar.png)
+   ![Shopping Cart](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367368/cart_i0c17r.png)
 4. **Size Selection**: Enables users to choose clothing sizes.  
-   ![Size Selection](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296467/size_of_clothes_izfysd.png)
+   ![Size Selection](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367457/hd_size_durioi.png)
 5. **Payment Page**: Facilitates secure checkout with PayPal.  
-   ![Payment Page](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296466/page_payment_tcdhlv.png)
+   ![Payment Page](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367565/paypal_djlfks.png)
 6. **PayPal Payment Integration**: Displays the PayPal payment dialog.  
-   ![PayPal Payment](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296466/payment_with_paypal_yrqcbz.png)
+   ![PayPal Payment](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367630/detal_paypal_edqafa.png)
 7. **Order History**: Shows users their past purchases.  
    ![Order History](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296467/profile_history_invoice_pqfoje.png)
 8. **Login Page**: Provides secure user authentication.  
    ![Login Page](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296465/login_mpemhm.png)
 9. **Live Chat with Tawk.to**: Offers real-time customer support.  
-   ![Live Chat](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296467/chat_th%C3%B4n_qua_tawkto_sygbly.png)
+   ![Live Chat](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367705/tawkto_rl5p8q.png)
 10. **Admin User Management**: Interface for admins to manage user accounts.  
-    ![Admin User Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296468/Giao_di%E1%BB%87n_c%E1%BB%A7a_qu%E1%BA%A3n_tr%E1%BB%8B_vi%C3%AAn_qu%E1%BA%A3n_l%C3%BD_ng%C6%B0%E1%BB%9Di_d%C3%B9ng_zp5w90.png)
+    ![Admin User Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367802/fishbigadmin_ovltbu.png)
 11. **Sales Staff Product Management**: Allows sales staff to manage product listings.  
-    ![Product Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296466/23_Giao_di%E1%BB%87n_qu%E1%BA%A3n_l%C3%BD_s%E1%BA%A3n_ph%E1%BA%A9m_c%E1%BB%A7a_nh%C3%A2n_vi%C3%AAn_b%C3%A1n_h%C3%A0ng_ph%E1%BA%A7n_d%C6%B0%E1%BB%9Bi_gm1shy.png)
+    ![Product Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751368083/confused_product_zee35i.png)
 12. **Warehouse Inventory Management**: Interface for warehouse staff to manage stock.  
-    ![Inventory Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296468/Giao_di%E1%BB%87n_c%E1%BB%A7a_th%E1%BB%A7_kho_%C4%91%E1%BB%83_qu%E1%BA%A3n_l%C3%BD_kh_wht51o.png)
+    ![Inventory Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751367913/magage_product_qm75ci.png)
 13. **Warehouse Supplier Management**: Manages supplier information.  
-    ![Supplier Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296468/Giao_di%E1%BB%87n_qu%E1%BA%A3n_l%C3%BD_nh%C3%A0_cung_c%E1%BA%A5p_c%E1%BB%A7a_th%E1%BB%A7_kho_imvgjd.png)
+    ![Supplier Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751368159/supplier_ymoylm.png)
 14. **Warehouse Import Invoice Management**: Handles import order invoices.  
-    ![Import Invoice Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296466/18_Giao_di%E1%BB%87n_qu%E1%BA%A3n_l%C3%AD_h%C3%B3a_%C4%91%C6%A1n_nh%E1%BA%ADp_h%C3%A0ng_c%E1%BB%A7a_th%E1%BB%A7_kho_wrwddm.png)
+    ![Import Invoice Management](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751368255/import_invoice_mxnnj6.png)
 15. **Revenue Analytics**: Displays revenue statistics with exportable charts.  
-    ![Revenue Analytics](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751296465/H%C3%ACnh_minh_h%E1%BB%8Da_th%E1%BB%91ng_k%C3%AA_doanh_thu_vjpvla.png)
+    ![Revenue Analytics](https://res.cloudinary.com/dapvvdxw7/image/upload/v1751368349/chart_rszszl.png)
 
 ## Prerequisites
 Before setting up the project, ensure you have:
